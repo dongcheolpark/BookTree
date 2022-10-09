@@ -6,7 +6,7 @@ on:
       - develop
 
 jobs:
-  build:
+  BackEnd:
     runs-on: ubuntu-latest
 
     strategy:
@@ -26,3 +26,4 @@ jobs:
         npm run lint
       env:
         CI: true
+  
