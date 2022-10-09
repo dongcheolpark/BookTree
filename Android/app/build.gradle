@@ -1,5 +1,12 @@
 plugins {
     id 'com.android.application'
+    id 'checkstyle'
+}
+
+checkstyle {
+    maxWarnings = 0 // 규칙이 어긋나는 코드가 하나라도 있을 경우 빌드 fail
+    configFile = file("${rootDir}/config/google-convention.xml") // 설정 파일 경로 지정
+    toolVersion = "8.39" // 처음에 낮은 버전을 사용했더니 깨지는 현상이 있었다. 설정파일의 내용에 맞는 버전을 선택
 }
 
 android {
