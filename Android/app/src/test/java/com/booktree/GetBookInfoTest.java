@@ -2,14 +2,11 @@ package com.booktree;
 
 import static org.junit.Assert.*;
 
-import androidx.test.ext.junit.runners.AndroidJUnit4;
 import com.booktree.API.APIClient;
 import java.io.IOException;
 import org.junit.Test;
-import org.junit.runner.RunWith;
 import static org.assertj.core.api.Assertions.assertThat;
 
-@RunWith(AndroidJUnit4.class)
 public class GetBookInfoTest {
   @Test
   public void isAPIValid() {
