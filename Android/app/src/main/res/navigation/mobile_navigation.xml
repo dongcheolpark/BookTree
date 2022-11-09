@@ -18,8 +18,15 @@
     tools:layout="@layout/fragment_dashboard"/>
 
   <fragment
+    android:id="@+id/navigation_book"
+    android:label="@string/title_book"
+    android:name="com.booktree.ui.book.BookFragment"
+    tools:layout="@layout/fragment_book"/>
+
+  <fragment
     android:id="@+id/navigation_notifications"
     android:label="@string/title_notifications"
     android:name="com.booktree.ui.notifications.NotificationsFragment"
     tools:layout="@layout/fragment_notifications"/>
+
 </navigation>

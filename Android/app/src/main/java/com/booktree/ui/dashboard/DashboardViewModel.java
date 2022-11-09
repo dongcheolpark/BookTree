@@ -13,6 +13,10 @@ public class DashboardViewModel extends ViewModel {
     mText.setValue("This is dashboard fragment");
   }
 
+  public void ChangeValue() {
+    mText.setValue("hello,world!\n");
+  }
+
   public LiveData<String> getText() {
     return mText;
   }
