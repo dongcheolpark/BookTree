@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "488963872516",
+    "project_id": "booktree-41c1b",
+    "storage_bucket": "booktree-41c1b.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:488963872516:android:e326cf668454b39e12e251",
+        "android_client_info": {
+          "package_name": "com.booktree"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "488963872516-ir4re4di925f3le1hnotq0kgnqrdp1cm.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCc7wOWUZx8dd2q0ADxvEPGNTwt4OtKjlo"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "488963872516-ir4re4di925f3le1hnotq0kgnqrdp1cm.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
