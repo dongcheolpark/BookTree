@@ -6,14 +6,17 @@ import androidx.lifecycle.ViewModel;
 
 public class BookViewModel extends ViewModel {
 
-  private MutableLiveData<String> mText;
+  private MutableLiveData<String> mQueryString;
 
   public BookViewModel() {
-    mText = new MutableLiveData<>();
-    mText.setValue("This is book fragment");
+    mQueryString = new MutableLiveData<>();
+    mQueryString.setValue("This is book fragment");
   }
 
-  public LiveData<String> getText() {
-    return mText;
+  public LiveData<String> getQueryString() {
+    return mQueryString;
+  }
+  public void getQueryString(String value) {
+    mQueryString.setValue(value);
   }
 }
