@@ -3,7 +3,7 @@ package com.booktree.API.DTO;
 import com.google.gson.annotations.SerializedName;
 import java.util.Date;
 
-public class BookDocDTO {
+public class Doucuments {
 
   @SerializedName("title")
   public String title; //도서 제목

@@ -16,7 +16,7 @@ public class BookViewModel extends ViewModel {
   public LiveData<String> getQueryString() {
     return mQueryString;
   }
-  public void getQueryString(String value) {
+  public void setQueryString(String value) {
     mQueryString.setValue(value);
   }
 }
