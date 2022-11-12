@@ -19,28 +19,15 @@
     app:layout_constraintHorizontal_bias="0.497"
     app:layout_constraintStart_toStartOf="parent"
     app:layout_constraintTop_toTopOf="parent"/>
-  <TextView
-    android:id="@+id/text_book"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:layout_marginTop="16dp"
-    android:layout_marginStart="8dp"
-    android:layout_marginEnd="8dp"
-    android:textAlignment="center"
-    android:textSize="20sp"
-    app:layout_constraintEnd_toEndOf="parent"
-    app:layout_constraintHorizontal_bias="0.0"
-    app:layout_constraintStart_toStartOf="parent"
-    app:layout_constraintTop_toBottomOf="@+id/searchBookInfo"/>
 
   <androidx.recyclerview.widget.RecyclerView
     android:id="@+id/bookInfoList"
-    android:layout_width="409dp"
-    android:layout_height="625dp"
+    android:layout_width="match_parent"
+    android:layout_height="0dp"
     app:layout_constraintBottom_toBottomOf="parent"
     app:layout_constraintEnd_toEndOf="parent"
-    app:layout_constraintHorizontal_bias="1.0"
+    app:layout_constraintHorizontal_bias="0.495"
     app:layout_constraintStart_toStartOf="parent"
-    app:layout_constraintTop_toBottomOf="@+id/text_book"
+    app:layout_constraintTop_toBottomOf="@+id/searchBookInfo"
     app:layout_constraintVertical_bias="0.0"/>
 </androidx.constraintlayout.widget.ConstraintLayout>

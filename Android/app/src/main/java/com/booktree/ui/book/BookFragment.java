@@ -35,7 +35,6 @@ public class BookFragment extends Fragment {
     binding = FragmentBookBinding.inflate(inflater, container, false);
     View root = binding.getRoot();
 
-    final var textView = binding.textBook;
     final var searchBookInfo = binding.searchBookInfo;
     searchBookInfo.setOnKeyListener((v, keyCode, event) -> {
       if (keyCode == KeyEvent.KEYCODE_ENTER) {
@@ -45,7 +44,7 @@ public class BookFragment extends Fragment {
     });
 
     var bookInfoList = binding.bookInfoList;
-    var adapter = new bookListAdapter();
+    var adapter = new bookListAdapter(getActivity());
     var linearManager = new LinearLayoutManager(getActivity());
     linearManager.setOrientation(RecyclerView.VERTICAL);
     bookInfoList.setAdapter(adapter);

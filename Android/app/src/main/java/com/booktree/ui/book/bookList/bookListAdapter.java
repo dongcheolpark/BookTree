@@ -1,5 +1,9 @@
 package com.booktree.ui.book.bookList;
 
+import static android.content.ContentValues.TAG;
+
+import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -9,14 +13,17 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 import com.booktree.API.DTO.Doucuments;
 import com.booktree.R;
+import com.bumptech.glide.Glide;
 import org.jetbrains.annotations.NotNull;
 
 public class bookListAdapter extends RecyclerView.Adapter<bookListAdapter.ViewHolder> {
 
   private Doucuments[] documents;
+  private final Context context;
 
-  public bookListAdapter() {
+  public bookListAdapter(Context context) {
     documents = new Doucuments[0];
+    this.context = context;
   }
 
   public void setDocuments(Doucuments[] doc) {
@@ -36,7 +43,10 @@ public class bookListAdapter extends RecyclerView.Adapter<bookListAdapter.ViewHo
 
   @Override
   public void onBindViewHolder(@NonNull @NotNull bookListAdapter.ViewHolder holder, int position) {
-    holder.getTextView().setText(documents[position].title);
+    var item = documents[position];
+    holder.getTextView().setText(item.title);
+    holder.getContentText().setText(item.publisher);
+    Glide.with(context).load(item.thumbnail).into(holder.getThumbNailContents());
   }
 
   @Override
