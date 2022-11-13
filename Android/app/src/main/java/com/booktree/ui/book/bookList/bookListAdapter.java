@@ -3,13 +3,16 @@ package com.booktree.ui.book.bookList;
 import static android.content.ContentValues.TAG;
 
 import android.content.Context;
+import android.text.Layout;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 import androidx.annotation.NonNull;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.RecyclerView;
 import com.booktree.API.DTO.Doucuments;
 import com.booktree.R;
@@ -47,6 +50,9 @@ public class bookListAdapter extends RecyclerView.Adapter<bookListAdapter.ViewHo
     holder.getTextView().setText(item.title);
     holder.getContentText().setText(item.publisher);
     Glide.with(context).load(item.thumbnail).into(holder.getThumbNailContents());
+    holder.bookInfoLayout.setOnClickListener((View view) -> {
+      Toast.makeText(context, item.title, Toast.LENGTH_SHORT).show();
+    });
   }
 
   @Override
@@ -57,6 +63,7 @@ public class bookListAdapter extends RecyclerView.Adapter<bookListAdapter.ViewHo
     private final TextView titleText;
     private final TextView contentText;
     private final ImageView thumbNailContents;
+    private final ConstraintLayout bookInfoLayout;
 
     public ViewHolder(View view) {
       super(view);
@@ -64,6 +71,7 @@ public class bookListAdapter extends RecyclerView.Adapter<bookListAdapter.ViewHo
       titleText = view.findViewById(R.id.bookInfoTitle);
       contentText = view.findViewById(R.id.bookInfoContents);
       thumbNailContents = view.findViewById(R.id.Thumbnail);
+      bookInfoLayout = view.findViewById(R.id.bookInfoLayout);
     }
 
     public TextView getTextView() {
@@ -76,6 +84,10 @@ public class bookListAdapter extends RecyclerView.Adapter<bookListAdapter.ViewHo
 
     public ImageView getThumbNailContents() {
       return thumbNailContents;
+    }
+
+    public ConstraintLayout getBookInfoLayout() {
+      return bookInfoLayout;
     }
   }
 }

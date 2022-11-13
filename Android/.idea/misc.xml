@@ -8,7 +8,7 @@
         <entry key="app/src/main/res/drawable/ic_launcher_background.xml" value="0.2520833333333333" />
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.3150684931506849" />
         <entry key="app/src/main/res/layout/bookInfoItem.xml" value="0.2545289855072464" />
-        <entry key="app/src/main/res/layout/book_info_item.xml" value="0.16852971758360374" />
+        <entry key="app/src/main/res/layout/book_info_item.xml" value="0.11968994140625" />
         <entry key="app/src/main/res/layout/fragment_book.xml" value="0.335" />
         <entry key="app/src/main/res/layout/fragment_dashboard.xml" value="0.1" />
         <entry key="app/src/main/res/layout/fragment_home.xml" value="0.1" />

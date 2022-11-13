@@ -7,8 +7,10 @@
   android:layout_height="wrap_content">
 
   <androidx.constraintlayout.widget.ConstraintLayout
+    android:id="@+id/bookInfoLayout"
     android:layout_width="300dp"
     android:layout_height="wrap_content"
+    android:padding="10dp"
     android:orientation="horizontal"
     app:layout_constraintEnd_toEndOf="parent"
     app:layout_constraintStart_toStartOf="parent"
