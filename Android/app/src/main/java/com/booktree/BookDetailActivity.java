@@ -1,10 +1,8 @@
 package com.booktree;
 
-import android.media.Image;
 import android.os.Bundle;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 import com.booktree.API.DTO.Documents;
 import com.bumptech.glide.Glide;
@@ -29,7 +27,7 @@ public class BookDetailActivity extends AppCompatActivity {
 
     title.setText(doc.title);
     author.setText(doc.authorString());
-    date.setText(doc.datetime.toString());
+    date.setText(doc.getDateString());
     publisher.setText(doc.publisher);
     Glide.with(this).load(doc.thumbnail).into(Thumbnail);
   }

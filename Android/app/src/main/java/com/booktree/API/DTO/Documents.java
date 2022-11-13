@@ -4,9 +4,8 @@ import static java.util.stream.Collectors.joining;
 
 import com.google.gson.annotations.SerializedName;
 import java.io.Serializable;
-import java.util.Arrays;
+import java.time.ZoneId;
 import java.util.Date;
-import java.util.stream.Collectors;
 
 public class Documents implements Serializable {
 
@@ -49,6 +48,10 @@ public class Documents implements Serializable {
   public String status;  // 도서 판매 상태 정보 (정상, 품절, 절판 등)
   //상황에 따라 변동 가능성이 있으므로 문자열 처리 지양, 단순 노출 요소로 활용 권장
   public String authorString() {
-    return Arrays.stream(authors).collect(joining(", "));
+    return String.join(", ", authors);
+  }
+
+  public String getDateString() {
+    return datetime.toInstant().atZone(ZoneId.systemDefault()).toLocalDate().toString();
   }
 }
