@@ -6,5 +6,5 @@ public class BookDTO {
   @SerializedName("meta")
   public BookMetaDTO meta;
   @SerializedName("documents")
-  public Doucuments[] documents;
+  public Documents[] documents;
 }

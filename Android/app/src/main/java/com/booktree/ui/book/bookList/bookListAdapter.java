@@ -1,35 +1,32 @@
 package com.booktree.ui.book.bookList;
 
-import static android.content.ContentValues.TAG;
-
 import android.content.Context;
-import android.text.Layout;
-import android.util.Log;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.RecyclerView;
-import com.booktree.API.DTO.Doucuments;
+import com.booktree.API.DTO.Documents;
+import com.booktree.BookDetailActivity;
 import com.booktree.R;
 import com.bumptech.glide.Glide;
 import org.jetbrains.annotations.NotNull;
 
 public class bookListAdapter extends RecyclerView.Adapter<bookListAdapter.ViewHolder> {
 
-  private Doucuments[] documents;
+  private Documents[] documents;
   private final Context context;
 
   public bookListAdapter(Context context) {
-    documents = new Doucuments[0];
+    documents = new Documents[0];
     this.context = context;
   }
 
-  public void setDocuments(Doucuments[] doc) {
+  public void setDocuments(Documents[] doc) {
     documents = doc;
   }
 
@@ -46,13 +43,7 @@ public class bookListAdapter extends RecyclerView.Adapter<bookListAdapter.ViewHo
 
   @Override
   public void onBindViewHolder(@NonNull @NotNull bookListAdapter.ViewHolder holder, int position) {
-    var item = documents[position];
-    holder.getTextView().setText(item.title);
-    holder.getContentText().setText(item.publisher);
-    Glide.with(context).load(item.thumbnail).into(holder.getThumbNailContents());
-    holder.bookInfoLayout.setOnClickListener((View view) -> {
-      Toast.makeText(context, item.title, Toast.LENGTH_SHORT).show();
-    });
+    holder.setContents(context,documents[position]);
   }
 
   @Override
@@ -74,20 +65,15 @@ public class bookListAdapter extends RecyclerView.Adapter<bookListAdapter.ViewHo
       bookInfoLayout = view.findViewById(R.id.bookInfoLayout);
     }
 
-    public TextView getTextView() {
-      return titleText;
-    }
-
-    public TextView getContentText() {
-      return contentText;
-    }
-
-    public ImageView getThumbNailContents() {
-      return thumbNailContents;
-    }
-
-    public ConstraintLayout getBookInfoLayout() {
-      return bookInfoLayout;
+    public void setContents(Context context, Documents item) {
+      titleText.setText(item.title);
+      contentText.setText(item.publisher);
+      Glide.with(context).load(item.thumbnail).into(thumbNailContents);
+      bookInfoLayout.setOnClickListener((View view) -> {
+        Intent intent = new Intent(context, BookDetailActivity.class);
+        intent.putExtra("document", item);
+        context.startActivity(intent);
+      });
     }
   }
 }
