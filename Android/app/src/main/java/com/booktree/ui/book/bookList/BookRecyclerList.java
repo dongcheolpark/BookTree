@@ -23,6 +23,8 @@ public class BookRecyclerList {
   private Integer currentPage = 0;
   private final Integer pageSize = 10;
 
+  private boolean isEnd = false;
+
   public BookRecyclerList(RecyclerView list, Context context) {
     bookInfoList = list;
     this.context = context;
@@ -53,10 +55,12 @@ public class BookRecyclerList {
         new Callback<BookDTO>() {
           @Override
           public void onResponse(Call<BookDTO> call, Response<BookDTO> response) {
-            if(response.body().meta.total_count != 0) {
+            if(response.body().meta.total_count != 0&& !isEnd) {
+              int bottom = adapter.getItemCount();
               adapter.addDocuments(response.body().documents);
-              adapter.notifyItemInserted((page-1)*pageSize);
+              adapter.notifyItemInserted(bottom);
             }
+            isEnd = response.body().meta.is_end;
           }
           @Override
           public void onFailure(Call<BookDTO> call, Throwable t) {
@@ -73,6 +77,7 @@ public class BookRecyclerList {
         query = s;
         currentPage = 0;
         adapter.clearDocuments();
+        isEnd = true;
         getItems(++currentPage);
       }
     };
