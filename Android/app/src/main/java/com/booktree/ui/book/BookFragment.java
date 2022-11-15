@@ -17,6 +17,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.booktree.API.APIClient;
 import com.booktree.API.DTO.BookDTO;
 import com.booktree.databinding.FragmentBookBinding;
+import com.booktree.ui.book.bookList.BookRecyclerList;
 import com.booktree.ui.book.bookList.bookListAdapter;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -44,31 +45,8 @@ public class BookFragment extends Fragment {
     });
 
     var bookInfoList = binding.bookInfoList;
-    var adapter = new bookListAdapter(getActivity());
-    var linearManager = new LinearLayoutManager(getActivity());
-    linearManager.setOrientation(RecyclerView.VERTICAL);
-    bookInfoList.setAdapter(adapter);
-
-    bookInfoList.setLayoutManager(linearManager);
-    bookViewModel.getQueryString().observe(getViewLifecycleOwner(), (queryString) -> {
-      APIClient.getInstance().getKakaoAPI().getBookInfo(queryString,
-        "accuracy",
-        1, 10).enqueue(
-          new Callback<BookDTO>() {
-            @Override
-            public void onResponse(Call<BookDTO> call, Response<BookDTO> response) {
-              if(response.body().meta.total_count != 0) {
-                adapter.setDocuments(response.body().documents);
-                adapter.notifyDataSetChanged();
-              }
-            }
-            @Override
-            public void onFailure(Call<BookDTO> call, Throwable t) {
-              //
-            }
-          }
-      );
-    });
+    var list = new BookRecyclerList(bookInfoList,getActivity());
+    bookViewModel.getQueryString().observe(getViewLifecycleOwner(), list.getInitialListItems());
 
     return root;
   }
