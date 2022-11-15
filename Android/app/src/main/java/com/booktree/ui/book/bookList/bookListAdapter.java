@@ -14,20 +14,28 @@ import com.booktree.API.DTO.Documents;
 import com.booktree.BookDetailActivity;
 import com.booktree.R;
 import com.bumptech.glide.Glide;
+import java.util.ArrayList;
+import java.util.Arrays;
 import org.jetbrains.annotations.NotNull;
 
 public class bookListAdapter extends RecyclerView.Adapter<bookListAdapter.ViewHolder> {
 
-  private Documents[] documents;
+  private ArrayList<Documents> documents;
   private final Context context;
 
   public bookListAdapter(Context context) {
-    documents = new Documents[0];
+    documents = new ArrayList<>();
     this.context = context;
   }
 
-  public void setDocuments(Documents[] doc) {
-    documents = doc;
+  public void addDocuments(Documents[] doc) {
+    documents.addAll(Arrays.asList(doc)) ;
+  }
+
+  public void clearDocuments() {
+    int size = documents.size();
+    documents.clear();
+    notifyItemRangeRemoved(0,size);
   }
 
   @NonNull
@@ -43,12 +51,12 @@ public class bookListAdapter extends RecyclerView.Adapter<bookListAdapter.ViewHo
 
   @Override
   public void onBindViewHolder(@NonNull @NotNull bookListAdapter.ViewHolder holder, int position) {
-    holder.setContents(context,documents[position]);
+    holder.setContents(context, documents.get(position));
   }
 
   @Override
   public int getItemCount() {
-    return documents.length;
+    return documents.size();
   }
   public static class ViewHolder extends RecyclerView.ViewHolder {
     private final TextView titleText;
