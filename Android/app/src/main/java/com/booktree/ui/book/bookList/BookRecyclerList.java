@@ -76,7 +76,6 @@ public class BookRecyclerList {
     return new Observer<String>() {
       @Override
       public void onChanged(String s) {
-        if(Objects.equals(query, s)) return;
         query = s;
         currentPage = 0;
         adapter.clearDocuments();

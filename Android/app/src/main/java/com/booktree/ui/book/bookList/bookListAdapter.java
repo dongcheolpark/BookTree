@@ -59,6 +59,7 @@ public class bookListAdapter extends RecyclerView.Adapter<bookListAdapter.ViewHo
   public int getItemCount() {
     return documents.size();
   }
+  
   public static class ViewHolder extends RecyclerView.ViewHolder {
     private final TextView titleText;
     private final TextView contentText;
