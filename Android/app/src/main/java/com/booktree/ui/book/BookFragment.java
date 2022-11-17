@@ -4,11 +4,14 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
+
+import com.booktree.MainActivity;
+import com.booktree.R;
 import com.booktree.databinding.FragmentBookBinding;
 
 public class BookFragment extends Fragment {
@@ -28,7 +31,10 @@ public class BookFragment extends Fragment {
 
     bookViewModel.getText().observe(getViewLifecycleOwner(), textView::setText);
 
-    return root;
+    View view = inflater.inflate(R.layout.fragment_book,container,false);
+    Button barcodeBtn = (Button)view.findViewById(R.id.barcodeBtn);
+    barcodeBtn.setOnClickListener(new View.OnClickListener(){ public void onClick(View v){((MainActivity)getActivity()).startBarcodeMain();}});
+    return view;
   }
 
   @Override
