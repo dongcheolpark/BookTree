@@ -1,6 +1,9 @@
 package com.booktree;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.widget.Toast;
+import com.booktree.ui.book.BarcodeScanActivity;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.navigation.NavController;
@@ -30,5 +33,9 @@ public class MainActivity extends AppCompatActivity {
     NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration);
     NavigationUI.setupWithNavController(binding.navView, navController);
   }
-
+  public void startBarcodeMain(){
+//    Toast.makeText(this,"실행중",Toast.LENGTH_SHORT).show();
+    Intent intent = new Intent(this, BarcodeScanActivity.class);
+    startActivity(intent);
+  }
 }
