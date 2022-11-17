@@ -1,7 +1,5 @@
 package com.booktree.ui.book;
 
-import static android.content.ContentValues.TAG;
-
 import android.os.Bundle;
 import android.util.Log;
 import android.view.KeyEvent;
