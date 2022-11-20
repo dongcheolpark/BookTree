@@ -1,4 +1,4 @@
-package com.booktree.ui.dashboard;
+package com.booktree.ui.feed;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -10,18 +10,17 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
-import com.booktree.R;
 import com.booktree.databinding.FragmentDashboardBinding;
 
-public class DashboardFragment extends Fragment {
+public class FeedFragment extends Fragment {
 
-  private DashboardViewModel dashboardViewModel;
+  private FeedViewModel dashboardViewModel;
   private FragmentDashboardBinding binding;
 
   public View onCreateView(@NonNull LayoutInflater inflater,
       ViewGroup container, Bundle savedInstanceState) {
     dashboardViewModel =
-        new ViewModelProvider(this).get(DashboardViewModel.class);
+        new ViewModelProvider(this).get(FeedViewModel.class);
 
     binding = FragmentDashboardBinding.inflate(inflater, container, false);
     View root = binding.getRoot();

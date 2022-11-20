@@ -1,14 +1,14 @@
-package com.booktree.ui.dashboard;
+package com.booktree.ui.feed;
 
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
-public class DashboardViewModel extends ViewModel {
+public class FeedViewModel extends ViewModel {
 
   private MutableLiveData<String> mText;
 
-  public DashboardViewModel() {
+  public FeedViewModel() {
     mText = new MutableLiveData<>();
     mText.setValue("This is dashboard fragment");
   }
