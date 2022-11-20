@@ -20,7 +20,7 @@
   <fragment
     android:id="@+id/navigation_book"
     android:label="@string/title_book"
-    android:name="com.booktree.ui.book.BookFragment"
+    android:name="com.booktree.ui.book.BookFragment.BookToInfoFragment"
     tools:layout="@layout/fragment_book"/>
 
   <fragment
