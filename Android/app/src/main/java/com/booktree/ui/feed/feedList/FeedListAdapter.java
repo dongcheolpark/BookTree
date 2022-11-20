@@ -62,7 +62,7 @@ public class FeedListAdapter extends RecyclerView.Adapter<FeedListAdapter.ViewHo
 
     public void setContents(Context context,Feed feed) {
       author.setText(feed.author);
-      author.setText(feed.contents);
+      content.setText(feed.contents);
       Glide.with(context).load(feed.imageUrl).into(image);
     }
   }
