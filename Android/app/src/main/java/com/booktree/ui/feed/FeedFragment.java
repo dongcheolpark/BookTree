@@ -4,34 +4,33 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
-import com.booktree.databinding.FragmentDashboardBinding;
+import com.booktree.databinding.FragmentFeedBinding;
+import com.booktree.ui.book.bookList.BookRecyclerList;
+import com.booktree.ui.feed.feedList.FeedRecyclerList;
 
 public class FeedFragment extends Fragment {
 
-  private FeedViewModel dashboardViewModel;
-  private FragmentDashboardBinding binding;
+  private FeedViewModel feedViewModel;
+  private FragmentFeedBinding binding;
 
   public View onCreateView(@NonNull LayoutInflater inflater,
       ViewGroup container, Bundle savedInstanceState) {
-    dashboardViewModel =
+    feedViewModel =
         new ViewModelProvider(this).get(FeedViewModel.class);
 
-    binding = FragmentDashboardBinding.inflate(inflater, container, false);
+    binding = FragmentFeedBinding.inflate(inflater, container, false);
+
+    final var feedListView = binding.feedList;
+    var feedList = new FeedRecyclerList(feedListView,getActivity());
+    feedViewModel.getFeedList().observe(getViewLifecycleOwner(), feedList::setFeedList);
+
+    feedViewModel.refreshFeedList();
+
     View root = binding.getRoot();
 
-    final TextView textView = binding.textDashboard;
-    dashboardViewModel.getText().observe(getViewLifecycleOwner(), new Observer<String>() {
-      @Override
-      public void onChanged(@Nullable String s) {
-        textView.setText(s);
-      }
-    });
     return root;
   }
 
