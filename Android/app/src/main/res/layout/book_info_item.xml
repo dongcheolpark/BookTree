@@ -16,27 +16,43 @@
     app:layout_constraintEnd_toEndOf="parent"
     app:layout_constraintStart_toStartOf="parent"
     app:layout_constraintTop_toTopOf="parent">
-    <ImageView
-      android:id="@+id/Thumbnail"
-      android:layout_width="80dp"
-      android:layout_height="100dp"
-      android:layout_weight="1"
+    <androidx.cardview.widget.CardView
+      android:id="@+id/cardView"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_margin="7dp"
+      app:cardCornerRadius="5dp"
+      app:cardElevation="5dp"
+      app:layout_constraintBottom_toBottomOf="parent"
       app:layout_constraintStart_toStartOf="parent"
-      app:layout_constraintTop_toTopOf="parent"
-      tools:srcCompat="@tools:sample/avatars"/>
+      app:layout_constraintTop_toTopOf="parent">
+      <ImageView
+        android:id="@+id/Thumbnail"
+        android:layout_width="60dp"
+        android:layout_height="90dp"
+        android:layout_weight="1"
+        android:scaleType="centerCrop"
+        tools:srcCompat="@tools:sample/avatars"/>
+    </androidx.cardview.widget.CardView>
     <LinearLayout
       android:layout_width="0dp"
       android:layout_height="match_parent"
       android:layout_weight="1"
+      android:layout_marginStart="10dp"
       android:orientation="vertical"
+      app:layout_constraintBottom_toBottomOf="parent"
       app:layout_constraintEnd_toEndOf="parent"
-      app:layout_constraintStart_toEndOf="@+id/Thumbnail">
+      app:layout_constraintStart_toEndOf="@+id/cardView"
+      app:layout_constraintTop_toTopOf="parent"
+      app:layout_constraintVertical_bias="0.23000002">
       <TextView
         android:id="@+id/bookInfoTitle"
+        android:textStyle="bold"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:singleLine="true"
-        android:text="null"/>
+        android:text="null"
+        android:textAppearance="@style/TextAppearance.AppCompat.Medium"/>
       <TextView
         android:id="@+id/bookInfoContents"
         android:layout_width="wrap_content"
