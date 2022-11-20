@@ -7,11 +7,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.RecyclerView;
-import com.booktree.API.DTO.Documents;
+import com.booktree.model.Documents;
 import com.booktree.BookDetailActivity;
 import com.booktree.R;
 import com.bumptech.glide.Glide;
@@ -19,12 +18,12 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import org.jetbrains.annotations.NotNull;
 
-public class bookListAdapter extends RecyclerView.Adapter<bookListAdapter.ViewHolder> {
+public class BookListAdapter extends RecyclerView.Adapter<BookListAdapter.ViewHolder> {
 
   private ArrayList<Documents> documents;
   private final Context context;
 
-  public bookListAdapter(Context context) {
+  public BookListAdapter(Context context) {
     documents = new ArrayList<>();
     this.context = context;
   }
@@ -42,7 +41,7 @@ public class bookListAdapter extends RecyclerView.Adapter<bookListAdapter.ViewHo
   @NonNull
   @NotNull
   @Override
-  public bookListAdapter.ViewHolder onCreateViewHolder(@NonNull @NotNull ViewGroup parent,
+  public BookListAdapter.ViewHolder onCreateViewHolder(@NonNull @NotNull ViewGroup parent,
       int viewType) {
     View view = LayoutInflater.from(parent.getContext())
         .inflate(R.layout.book_info_item, parent, false);
@@ -51,7 +50,7 @@ public class bookListAdapter extends RecyclerView.Adapter<bookListAdapter.ViewHo
   }
 
   @Override
-  public void onBindViewHolder(@NonNull @NotNull bookListAdapter.ViewHolder holder, int position) {
+  public void onBindViewHolder(@NonNull @NotNull BookListAdapter.ViewHolder holder, int position) {
     holder.setContents(context, documents.get(position));
   }
 

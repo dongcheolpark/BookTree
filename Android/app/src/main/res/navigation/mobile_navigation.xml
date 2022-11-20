@@ -14,8 +14,8 @@
   <fragment
     android:id="@+id/navigation_dashboard"
     android:label="@string/title_dashboard"
-    android:name="com.booktree.ui.dashboard.DashboardFragment"
-    tools:layout="@layout/fragment_dashboard"/>
+    android:name="com.booktree.ui.feed.FeedFragment"
+    tools:layout="@layout/fragment_feed"/>
 
   <fragment
     android:id="@+id/navigation_book"
