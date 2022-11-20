@@ -37,15 +37,19 @@
       app:layout_constraintTop_toTopOf="parent"/>
   </androidx.constraintlayout.widget.ConstraintLayout>
 
-  <androidx.recyclerview.widget.RecyclerView
-    android:id="@+id/bookInfoList"
+  <FrameLayout
     android:layout_width="match_parent"
     android:layout_height="0dp"
+    android:foreground="@drawable/gradient"
     app:layout_constraintBottom_toBottomOf="parent"
-    app:layout_constraintEnd_toEndOf="parent"
-    app:layout_constraintHorizontal_bias="0.495"
-    app:layout_constraintStart_toStartOf="parent"
-    app:layout_constraintTop_toBottomOf="@+id/constraintLayout2"
-    app:layout_constraintVertical_bias="0.0"/>
+    app:layout_constraintTop_toBottomOf="@+id/constraintLayout2">
+
+    <androidx.recyclerview.widget.RecyclerView
+      android:id="@+id/bookInfoList"
+      android:layout_width="match_parent"
+      android:layout_height="match_parent"
+      >
+    </androidx.recyclerview.widget.RecyclerView>
+  </FrameLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
