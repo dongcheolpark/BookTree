@@ -1,7 +1,6 @@
 package com.booktree.ui.book.bookList;
 
 import android.content.Context;
-import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.lifecycle.Observer;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -9,7 +8,6 @@ import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.RecyclerView.OnScrollListener;
 import com.booktree.API.APIClient;
 import com.booktree.API.DTO.BookDTO;
-import java.util.Objects;
 import org.jetbrains.annotations.NotNull;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -18,7 +16,7 @@ import retrofit2.Response;
 public class BookRecyclerList {
   private final RecyclerView bookInfoList;
   private final Context context;
-  private final bookListAdapter adapter;
+  private final BookListAdapter adapter;
   private LinearLayoutManager layoutManager;
   private String query;
 
@@ -30,7 +28,7 @@ public class BookRecyclerList {
   public BookRecyclerList(RecyclerView list, Context context) {
     bookInfoList = list;
     this.context = context;
-    adapter = new bookListAdapter(this.context);
+    adapter = new BookListAdapter(this.context);
     layoutManager = new LinearLayoutManager(this.context);
     layoutManager.setOrientation(RecyclerView.VERTICAL);
     bookInfoList.setAdapter(adapter);

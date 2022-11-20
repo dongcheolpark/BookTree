@@ -3,21 +3,25 @@ package com.booktree.ui.feed;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
+import com.booktree.common.MutableListLiveData;
+import com.booktree.model.Feed;
+import java.util.ArrayList;
 
 public class FeedViewModel extends ViewModel {
 
-  private MutableLiveData<String> mText;
+  private MutableListLiveData<Feed> mFeedList;
 
   public FeedViewModel() {
-    mText = new MutableLiveData<>();
-    mText.setValue("This is dashboard fragment");
+    mFeedList = new MutableListLiveData<Feed>();
   }
 
-  public void ChangeValue() {
-    mText.setValue("hello,world!\n");
+  public void refreshFeedList() {
+    mFeedList.add(new Feed("testAuthor",
+        "test content",
+        "https://i.stack.imgur.com/GsDIl.jpg"));
   }
 
-  public LiveData<String> getText() {
-    return mText;
+  public LiveData<ArrayList<Feed>> getFeedList() {
+    return mFeedList;
   }
 }
