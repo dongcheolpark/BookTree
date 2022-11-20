@@ -10,8 +10,12 @@ import android.widget.Button;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
+import com.booktree.R;
 import com.booktree.databinding.FragmentBookBinding;
+import com.booktree.ui.book.bookList.BookListAdapter;
 import com.booktree.ui.book.bookList.BookRecyclerList;
+import com.booktree.ui.book.bookList.Viewholder.ToBookInfoViewHolder;
+import org.jetbrains.annotations.NotNull;
 
 public class BookFragment extends Fragment {
 
@@ -35,7 +39,19 @@ public class BookFragment extends Fragment {
     });
 
     var bookInfoList = binding.bookInfoList;
-    var list = new BookRecyclerList(bookInfoList,getActivity());
+    var list = new BookRecyclerList(bookInfoList,getActivity(),
+        new BookListAdapter<ToBookInfoViewHolder>(getActivity()) {
+          @NonNull
+          @NotNull
+          @Override
+          public ToBookInfoViewHolder onCreateViewHolder(@NonNull @NotNull ViewGroup parent,
+              int viewType) {
+            View view = LayoutInflater.from(parent.getContext())
+                .inflate(R.layout.book_info_item, parent, false);
+            return new ToBookInfoViewHolder(view);
+          }
+        });
+
     bookViewModel.getQueryString().observe(getViewLifecycleOwner(), list.getInitialListItems());
 
     Button barcodeBtn = binding.barcodeBtn;
