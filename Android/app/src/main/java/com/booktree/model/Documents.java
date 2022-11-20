@@ -1,4 +1,4 @@
-package com.booktree.API.DTO;
+package com.booktree.model;
 
 import static java.util.stream.Collectors.joining;
 
