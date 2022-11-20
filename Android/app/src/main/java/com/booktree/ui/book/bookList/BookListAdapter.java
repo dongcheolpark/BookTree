@@ -30,6 +30,11 @@ public abstract class BookListAdapter<T extends BasicViewHolder> extends Recycle
     this.context = context;
   }
 
+  public View createView(ViewGroup parent) {
+    return LayoutInflater.from(parent.getContext())
+        .inflate(R.layout.book_info_item, parent, false);
+  }
+
   public void addDocuments(Documents[] doc) {
     documents.addAll(Arrays.asList(doc)) ;
   }
