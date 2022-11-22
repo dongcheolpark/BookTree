@@ -12,6 +12,7 @@ import androidx.recyclerview.widget.RecyclerView.OnScrollListener;
 import com.booktree.API.APIClient;
 import com.booktree.API.DTO.BookDTO;
 import com.booktree.R;
+import com.booktree.ui.book.bookList.BookListAdapter.Type;
 import com.booktree.ui.book.bookList.Viewholder.ToBookInfoViewHolder;
 import org.jetbrains.annotations.NotNull;
 import retrofit2.Call;
@@ -30,10 +31,10 @@ public class BookRecyclerList {
 
   private boolean isEnd = false;
 
-  public BookRecyclerList(RecyclerView list, Context context,BookListAdapter adapter) {
+  public BookRecyclerList(RecyclerView list, Context context, Type type) {
     bookInfoList = list;
     this.context = context;
-    this.adapter = adapter;
+    this.adapter = new BookListAdapter(context,type);
     layoutManager = new LinearLayoutManager(this.context);
     layoutManager.setOrientation(RecyclerView.VERTICAL);
     bookInfoList.setAdapter(adapter);
