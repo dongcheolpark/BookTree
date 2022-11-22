@@ -16,7 +16,8 @@ public class FeedViewModel extends ViewModel {
   }
 
   public void refreshFeedList() {
-    mFeedList.add(new Feed("testAuthor",
+    mFeedList.add(new Feed("9791159171772",
+        "testAuthor",
         "test content",
         "https://i.stack.imgur.com/GsDIl.jpg"));
   }
