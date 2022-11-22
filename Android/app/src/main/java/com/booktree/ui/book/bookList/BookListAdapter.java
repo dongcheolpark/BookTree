@@ -15,22 +15,39 @@ import com.booktree.model.Documents;
 import com.booktree.BookDetailActivity;
 import com.booktree.R;
 import com.booktree.ui.book.bookList.Viewholder.BasicViewHolder;
+import com.booktree.ui.book.bookList.Viewholder.ToBookInfoViewHolder;
+import com.booktree.ui.book.bookList.Viewholder.getBookInfoViewholder;
 import com.bumptech.glide.Glide;
 import java.util.ArrayList;
 import java.util.Arrays;
 import org.jetbrains.annotations.NotNull;
 
-public abstract class BookListAdapter<T extends BasicViewHolder> extends RecyclerView.Adapter<T> {
+public class BookListAdapter extends RecyclerView.Adapter<BasicViewHolder> {
 
+  public enum Type {
+    basic(0),
+    getBook(1),
+    toBook(2);
+    private final int value;
+    Type(int i) {
+      this.value = i;
+    }
+
+    public int getValue() {
+      return value;
+    }
+  };
   private ArrayList<Documents> documents;
+  private Type type;
   private final Context context;
 
-  public BookListAdapter(Context context) {
+  public BookListAdapter(Context context,Type type) {
     documents = new ArrayList<>();
     this.context = context;
+    this.type = type;
   }
 
-  public View createView(ViewGroup parent) {
+  private View createView(ViewGroup parent) {
     return LayoutInflater.from(parent.getContext())
         .inflate(R.layout.book_info_item, parent, false);
   }
@@ -46,7 +63,29 @@ public abstract class BookListAdapter<T extends BasicViewHolder> extends Recycle
   }
 
   @Override
-  public void onBindViewHolder(@NonNull @NotNull T holder, int position) {
+  public int getItemViewType(int position) {
+    return type.getValue();
+  }
+
+  @NonNull
+  @NotNull
+  @Override
+  public BasicViewHolder onCreateViewHolder(@NonNull @NotNull ViewGroup parent, int viewType) {
+    var type = Type.values()[viewType];
+    var view = createView(parent);
+    switch (type) {
+      case basic:
+        return new BasicViewHolder(view);
+      case getBook:
+        return new getBookInfoViewholder(view);
+      case toBook:
+        return new ToBookInfoViewHolder(view);
+    }
+    return null;
+  }
+
+  @Override
+  public void onBindViewHolder(@NonNull @NotNull BasicViewHolder holder, int position) {
     holder.setContents(context, documents.get(position));
   }
 
