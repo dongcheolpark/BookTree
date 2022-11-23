@@ -7,6 +7,8 @@ import com.booktree.API.FBDatabase;
 import com.booktree.model.Feed;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.util.Map;
+import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.TimeUnit;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
@@ -17,13 +19,17 @@ public class FireBaseTest {
     FBDatabase.getInstance();
   }
   @Test
-  public void 피드_생성_테스트() {
+  public void 피드_생성_테스트() throws InterruptedException {
+    final CountDownLatch signal = new CountDownLatch(1);
     var feed = new Feed("9791159171772",
         "testAuthor",
         "test content",
         "https://i.stack.imgur.com/GsDIl.jpg");
     var res =  FBDatabase.getInstance().createFeed(feed);
     res.onSuccessTask((response) -> {
+      signal.countDown();
+      return null;
     });
+    signal.await(30, TimeUnit.SECONDS);
   }
 }
