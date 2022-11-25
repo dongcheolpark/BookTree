@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -13,19 +14,42 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.booktree.model.Documents;
 import com.booktree.BookDetailActivity;
 import com.booktree.R;
+import com.booktree.ui.book.bookList.Viewholder.BasicViewHolder;
+import com.booktree.ui.book.bookList.Viewholder.ToBookInfoViewHolder;
+import com.booktree.ui.book.bookList.Viewholder.getBookInfoViewholder;
 import com.bumptech.glide.Glide;
 import java.util.ArrayList;
 import java.util.Arrays;
 import org.jetbrains.annotations.NotNull;
 
-public class BookListAdapter extends RecyclerView.Adapter<BookListAdapter.ViewHolder> {
+public class BookListAdapter extends RecyclerView.Adapter<BasicViewHolder> {
 
+  public enum Type {
+    basic(0),
+    getBook(1),
+    toBook(2);
+    private final int value;
+    Type(int i) {
+      this.value = i;
+    }
+
+    public int getValue() {
+      return value;
+    }
+  };
   private ArrayList<Documents> documents;
+  private Type type;
   private final Context context;
 
-  public BookListAdapter(Context context) {
+  public BookListAdapter(Context context,Type type) {
     documents = new ArrayList<>();
     this.context = context;
+    this.type = type;
+  }
+
+  private View createView(ViewGroup parent) {
+    return LayoutInflater.from(parent.getContext())
+        .inflate(R.layout.book_info_item, parent, false);
   }
 
   public void addDocuments(Documents[] doc) {
@@ -38,19 +62,30 @@ public class BookListAdapter extends RecyclerView.Adapter<BookListAdapter.ViewHo
     notifyItemRangeRemoved(0,size);
   }
 
+  @Override
+  public int getItemViewType(int position) {
+    return type.getValue();
+  }
+
   @NonNull
   @NotNull
   @Override
-  public BookListAdapter.ViewHolder onCreateViewHolder(@NonNull @NotNull ViewGroup parent,
-      int viewType) {
-    View view = LayoutInflater.from(parent.getContext())
-        .inflate(R.layout.book_info_item, parent, false);
-
-    return new ViewHolder(view);
+  public BasicViewHolder onCreateViewHolder(@NonNull @NotNull ViewGroup parent, int viewType) {
+    var type = Type.values()[viewType];
+    var view = createView(parent);
+    switch (type) {
+      case basic:
+        return new BasicViewHolder(view);
+      case getBook:
+        return new getBookInfoViewholder(view);
+      case toBook:
+        return new ToBookInfoViewHolder(view);
+    }
+    return null;
   }
 
   @Override
-  public void onBindViewHolder(@NonNull @NotNull BookListAdapter.ViewHolder holder, int position) {
+  public void onBindViewHolder(@NonNull @NotNull BasicViewHolder holder, int position) {
     holder.setContents(context, documents.get(position));
   }
 
@@ -59,30 +94,4 @@ public class BookListAdapter extends RecyclerView.Adapter<BookListAdapter.ViewHo
     return documents.size();
   }
   
-  public static class ViewHolder extends RecyclerView.ViewHolder {
-    private final TextView titleText;
-    private final TextView contentText;
-    private final ImageView thumbNailContents;
-    private final ConstraintLayout bookInfoLayout;
-
-    public ViewHolder(View view) {
-      super(view);
-      // Define click listener for the ViewHolder's View
-      titleText = view.findViewById(R.id.bookInfoTitle);
-      contentText = view.findViewById(R.id.bookInfoContents);
-      thumbNailContents = view.findViewById(R.id.Thumbnail);
-      bookInfoLayout = view.findViewById(R.id.bookInfoLayout);
-    }
-
-    public void setContents(Context context, Documents item) {
-      titleText.setText(item.title);
-      contentText.setText(item.publisher);
-      Glide.with(context).load(item.thumbnail).into(thumbNailContents);
-      bookInfoLayout.setOnClickListener((View view) -> {
-        Intent intent = new Intent(context, BookDetailActivity.class);
-        intent.putExtra("document", item);
-        context.startActivity(intent);
-      });
-    }
-  }
 }

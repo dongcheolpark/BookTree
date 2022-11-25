@@ -1,13 +1,16 @@
 package com.booktree.ui.feed.feedList;
 
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
+import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
+import com.booktree.BookDetailActivity;
 import com.booktree.R;
 import com.booktree.model.Feed;
 import com.bumptech.glide.Glide;
@@ -52,18 +55,25 @@ public class FeedListAdapter extends RecyclerView.Adapter<FeedListAdapter.ViewHo
     private TextView author;
     private TextView content;
     private ImageView image;
+    private CardView card;
 
     public ViewHolder(@NonNull @NotNull View view) {
       super(view);
       author = view.findViewById(R.id.feedAuthor);
       content = view.findViewById(R.id.feedContent);
       image = view.findViewById(R.id.feedImage);
+      card = view.findViewById(R.id.card);
     }
 
     public void setContents(Context context,Feed feed) {
       author.setText(feed.author);
       content.setText(feed.contents);
       Glide.with(context).load(feed.imageUrl).into(image);
+      card.setOnClickListener((view) -> {
+        Intent intent = new Intent(context, BookDetailActivity.class);
+        intent.putExtra("isbn",feed.book);
+        context.startActivity(intent);
+      });
     }
   }
 }

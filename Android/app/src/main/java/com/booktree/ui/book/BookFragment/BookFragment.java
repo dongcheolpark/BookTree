@@ -1,4 +1,4 @@
-package com.booktree.ui.book;
+package com.booktree.ui.book.BookFragment;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -10,10 +10,17 @@ import android.widget.Button;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.recyclerview.widget.RecyclerView;
+import com.booktree.R;
 import com.booktree.databinding.FragmentBookBinding;
+import com.booktree.ui.book.BarcodeScanActivity;
+import com.booktree.ui.book.BookViewModel;
+import com.booktree.ui.book.bookList.BookListAdapter;
 import com.booktree.ui.book.bookList.BookRecyclerList;
+import com.booktree.ui.book.bookList.Viewholder.ToBookInfoViewHolder;
+import org.jetbrains.annotations.NotNull;
 
-public class BookFragment extends Fragment {
+public abstract class BookFragment extends Fragment {
 
   private BookViewModel bookViewModel;
   private FragmentBookBinding binding;
@@ -35,7 +42,8 @@ public class BookFragment extends Fragment {
     });
 
     var bookInfoList = binding.bookInfoList;
-    var list = new BookRecyclerList(bookInfoList,getActivity());
+    var list = getList(bookInfoList);
+
     bookViewModel.getQueryString().observe(getViewLifecycleOwner(), list.getInitialListItems());
 
     Button barcodeBtn = binding.barcodeBtn;
@@ -46,6 +54,8 @@ public class BookFragment extends Fragment {
 
     return root;
   }
+
+  protected abstract BookRecyclerList getList(RecyclerView bookInfoList);
 
   @Override
   public void onDestroyView() {
