@@ -54,4 +54,8 @@ public class Documents implements Serializable {
   public String getDateString() {
     return datetime.toInstant().atZone(ZoneId.systemDefault()).toLocalDate().toString();
   }
+
+  public String getIsbn() {
+    return isbn.split(" ")[0];
+  }
 }

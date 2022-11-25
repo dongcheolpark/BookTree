@@ -36,7 +36,7 @@ public class FeedCreateViewModel extends ViewModel {
 
   public boolean createFeed() {
     if(!validate()) return false;
-    var feed = new Feed(mDocument.getValue().isbn,
+    var feed = new Feed(mDocument.getValue().getIsbn(),
         "test",
         mContents.getValue(),
         "https://i.stack.imgur.com/GsDIl.jpg");
