@@ -6,6 +6,7 @@ import androidx.lifecycle.ViewModel;
 import com.booktree.API.FBDatabase;
 import com.booktree.model.Documents;
 import com.booktree.model.Feed;
+import java.util.Objects;
 
 public class FeedCreateViewModel extends ViewModel {
   private MutableLiveData<Documents> mDocument;
@@ -30,6 +31,7 @@ public class FeedCreateViewModel extends ViewModel {
 
   private boolean validate() {
     if(mDocument.getValue() == null) return false;
+    if(mDocument.getValue().isbn.equals("")) return false;
     if(mContents.getValue() == null) return false;
     return true;
   }

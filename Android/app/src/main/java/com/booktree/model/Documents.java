@@ -56,6 +56,7 @@ public class Documents implements Serializable {
   }
 
   public String getIsbn() {
-    return isbn.split(" ")[0];
+    var res = isbn.split(" ")[0];
+    return res.equals("") ? isbn : res;
   }
 }
