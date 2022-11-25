@@ -14,13 +14,13 @@ import org.junit.runner.RunWith;
 
 @RunWith(AndroidJUnit4.class)
 public class FireBaseTest {
+  private final CountDownLatch signal = new CountDownLatch(1);
   @Test
   public void 파이어베이스_연결_테스트() {
     FBDatabase.getInstance();
   }
   @Test
   public void 피드_생성_테스트() throws InterruptedException {
-    final CountDownLatch signal = new CountDownLatch(1);
     var feed = new Feed("9791159171772",
         "testAuthor",
         "test content",
@@ -31,5 +31,13 @@ public class FireBaseTest {
       return null;
     });
     signal.await(30, TimeUnit.SECONDS);
+  }
+  @Test
+  public void 피드_가져오기_테스트() throws InterruptedException {
+    FBDatabase.getInstance().getFeed(list -> {
+      assertThat(list.size()).isGreaterThan(0);
+      signal.countDown();
+    });
+    signal.await(5, TimeUnit.SECONDS);
   }
 }

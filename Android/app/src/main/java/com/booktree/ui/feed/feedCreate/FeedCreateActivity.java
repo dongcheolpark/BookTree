@@ -55,11 +55,23 @@ public class FeedCreateActivity extends AppCompatActivity {
       getResult.launch(intent);
     });
 
+    binding.feedContent.setOnKeyListener((v, keyCode, event) -> {
+      viewModel.setContents(binding.feedContent.getText().toString());
+      return true;
+    });
+
     viewModel.getDocument().observe(this,(data) -> {
       binding.selectBookLayout.setVisibility(View.INVISIBLE);
       binding.createFeedBookInfo.getRoot().setVisibility(View.VISIBLE);
       viewHolder.setContents(this,data);
       Toast.makeText(this, data.title, Toast.LENGTH_SHORT).show();
+    });
+
+    binding.createFeedBtn.setOnClickListener((view)-> {
+      if(!viewModel.createFeed()) {
+        Toast.makeText(this, "실패", Toast.LENGTH_SHORT).show();
+      }
+      finish();
     });
   }
 }

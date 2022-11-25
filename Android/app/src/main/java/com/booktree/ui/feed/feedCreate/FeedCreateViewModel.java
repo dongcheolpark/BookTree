@@ -3,21 +3,44 @@ package com.booktree.ui.feed.feedCreate;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
+import com.booktree.API.FBDatabase;
 import com.booktree.model.Documents;
-import com.booktree.ui.feed.feedList.FeedListAdapter.ViewHolder;
+import com.booktree.model.Feed;
 
 public class FeedCreateViewModel extends ViewModel {
-  private MutableLiveData<Documents> Document;
+  private MutableLiveData<Documents> mDocument;
+  private MutableLiveData<String> mContents;
 
   public FeedCreateViewModel() {
-    Document = new MutableLiveData<>();
+    mDocument = new MutableLiveData<>();
+    mContents = new MutableLiveData<>();
   }
 
   public void setDocument(Documents document) {
-    Document.setValue(document);
+    mDocument.postValue(document);
+  }
+
+  public void setContents(String value) {
+    mContents.postValue(value);
   }
 
   public LiveData<Documents> getDocument() {
-    return Document;
+    return mDocument;
+  }
+
+  private boolean validate() {
+    if(mDocument.getValue() == null) return false;
+    if(mContents.getValue() == null) return false;
+    return true;
+  }
+
+  public boolean createFeed() {
+    if(!validate()) return false;
+    var feed = new Feed(mDocument.getValue().isbn,
+        "test",
+        mContents.getValue(),
+        "https://i.stack.imgur.com/GsDIl.jpg");
+    FBDatabase.getInstance().createFeed(feed);
+    return true;
   }
 }
