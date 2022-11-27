@@ -32,9 +32,4 @@ public class MainActivity extends AppCompatActivity {
         R.id.nav_host_fragment_activity_main);
     NavigationUI.setupWithNavController(binding.navView, navController);
   }
-  public void startBarcodeMain(){
-//    Toast.makeText(this,"실행중",Toast.LENGTH_SHORT).show();
-    Intent intent = new Intent(this, BarcodeScanActivity.class);
-    startActivity(intent);
-  }
 }
