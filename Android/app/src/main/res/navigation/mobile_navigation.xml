@@ -14,13 +14,13 @@
   <fragment
     android:id="@+id/navigation_dashboard"
     android:label="@string/title_dashboard"
-    android:name="com.booktree.ui.dashboard.DashboardFragment"
-    tools:layout="@layout/fragment_dashboard"/>
+    android:name="com.booktree.ui.feed.FeedFragment"
+    tools:layout="@layout/fragment_feed"/>
 
   <fragment
     android:id="@+id/navigation_book"
     android:label="@string/title_book"
-    android:name="com.booktree.ui.book.BookFragment"
+    android:name="com.booktree.ui.book.BookFragment.BookToInfoFragment"
     tools:layout="@layout/fragment_book"/>
 
   <fragment

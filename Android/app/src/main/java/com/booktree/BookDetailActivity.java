@@ -1,36 +1,46 @@
 package com.booktree;
 
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.widget.ImageView;
 import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
-import com.booktree.API.DTO.Documents;
+import androidx.lifecycle.ViewModelProvider;
+import com.booktree.API.APIClient;
+import com.booktree.model.Documents;
 import com.bumptech.glide.Glide;
+import com.booktree.databinding.ActivityBookDetailBinding;
+import java.io.IOException;
+import java.util.Objects;
 
 public class BookDetailActivity extends AppCompatActivity {
-  Documents doc;
+  private ActivityBookDetailBinding binding;
+  private BookDetailViewModel viewModel;
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
-    doc = (Documents)getIntent().getSerializableExtra("document");
-    setContentView(R.layout.activity_book_detail);
+    binding = ActivityBookDetailBinding.inflate(getLayoutInflater());
 
-    setTopViewGroup();
+    setContentView(binding.getRoot());
 
+    viewModel = new ViewModelProvider(this).get(BookDetailViewModel.class);
+
+    viewModel.getDocument().observe(this, this::setTopViewGroup);
+    var isbn = getIntent().getStringExtra("isbn");
+    if(TextUtils.isEmpty(isbn)) {
+      viewModel.setDocument((Documents) getIntent().getSerializableExtra("document"));
+    }
+    else {
+      viewModel.setDocumentWithIsbn(isbn);
+    }
   }
 
-  protected void setTopViewGroup() {
-    ImageView Thumbnail = findViewById(R.id.bookDetailThumbnail);
-    TextView title = findViewById(R.id.bookDetailTitle);
-    TextView author = findViewById(R.id.bookDetailAuthor);
-    TextView date = findViewById(R.id.bookDetailDate);
-    TextView publisher = findViewById(R.id.bookDetailPublisher);
-
-    title.setText(doc.title);
-    author.setText(doc.authorString());
-    date.setText(doc.getDateString());
-    publisher.setText(doc.publisher);
-    Glide.with(this).load(doc.thumbnail).into(Thumbnail);
+  protected void setTopViewGroup(Documents doc) {
+    binding.bookDetailTitle.setText(doc.title);
+    binding.bookDetailAuthor.setText(doc.authorString());
+    binding.bookDetailDate.setText(doc.getDateString());
+    binding.bookDetailPublisher.setText(doc.publisher);
+    Glide.with(this).load(doc.thumbnail).into(binding.bookDetailThumbnail);
   }
 }
