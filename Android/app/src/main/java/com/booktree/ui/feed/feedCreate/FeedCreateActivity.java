@@ -1,25 +1,21 @@
 package com.booktree.ui.feed.feedCreate;
 
+import static androidx.core.content.FileProvider.getUriForFile;
+
 import android.app.Activity;
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Build.VERSION;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Toast;
-import androidx.activity.result.ActivityResult;
-import androidx.activity.result.ActivityResultCallback;
-import androidx.activity.result.contract.ActivityResultContract;
 import androidx.activity.result.contract.ActivityResultContracts;
-import androidx.activity.result.contract.ActivityResultContracts.GetContent;
 import androidx.activity.result.contract.ActivityResultContracts.StartActivityForResult;
-import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.lifecycle.LifecycleOwner;
 import androidx.lifecycle.ViewModelProvider;
 import com.booktree.databinding.ActivityCreateFeedBinding;
 import com.booktree.model.Documents;
 import com.booktree.ui.book.bookList.Viewholder.BasicViewHolder;
+import java.io.File;
 
 public class FeedCreateActivity extends AppCompatActivity {
 
@@ -38,7 +34,7 @@ public class FeedCreateActivity extends AppCompatActivity {
 
     final var viewHolder = new BasicViewHolder(selectBookInfo);
 
-    var getResult = registerForActivityResult(new StartActivityForResult(),
+    var getBookInfo = registerForActivityResult(new StartActivityForResult(),
         result -> {
           if(result.getResultCode() == Activity.RESULT_OK) {
             if (VERSION.SDK_INT >= 33) {
@@ -49,10 +45,22 @@ public class FeedCreateActivity extends AppCompatActivity {
             }
           }
         });
+    var takePhoto = registerForActivityResult(new ActivityResultContracts.TakePicture(),(result) -> {});
+
+    viewModel.getUri().observe(this,(data) -> {
+      binding.feedImage.setImageURI(data);
+    });
+
+    binding.feedImage.setOnClickListener((view) -> {
+      var file = new File(getFilesDir(),"tempFile.png");
+      var uri = getUriForFile(this,getApplicationContext().getPackageName() + ".fileProvider",file);
+      viewModel.setImage(uri);
+      takePhoto.launch(uri);
+    });
 
     selectBookBtn.setOnClickListener((view) -> {
       Intent intent = new Intent(this, FeedBookSelectActivity.class);
-      getResult.launch(intent);
+      getBookInfo.launch(intent);
     });
 
     binding.feedContent.setOnKeyListener((v, keyCode, event) -> {
