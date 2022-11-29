@@ -60,12 +60,11 @@
       android:id="@+id/feedContent"
       android:layout_width="250dp"
       android:layout_height="wrap_content"
-      android:layout_marginTop="15dp"
       android:ems="10"
       android:hint="한줄 평을 적어주세요."
       android:inputType="textPersonName"
       app:layout_constraintStart_toStartOf="parent"
-      app:layout_constraintTop_toBottomOf="@+id/textView"/>
+      app:layout_constraintTop_toBottomOf="@+id/feedImage"/>
     <TextView
       android:id="@+id/textView"
       android:layout_width="wrap_content"
@@ -74,6 +73,13 @@
       android:text="사진"
       app:layout_constraintStart_toStartOf="parent"
       app:layout_constraintTop_toTopOf="parent"/>
+    <ImageView
+      android:id="@+id/feedImage"
+      android:layout_width="120dp"
+      android:layout_height="120dp"
+      android:src="@drawable/add_picture"
+      app:layout_constraintStart_toStartOf="parent"
+      app:layout_constraintTop_toBottomOf="@+id/textView"/>
   </androidx.constraintlayout.widget.ConstraintLayout>
   <Button
     android:id="@+id/createFeedBtn"
