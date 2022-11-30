@@ -44,6 +44,12 @@ public class FeedFragment extends Fragment {
   }
 
   @Override
+  public void onResume() {
+    super.onResume();
+    feedViewModel.refreshFeedList();
+  }
+
+  @Override
   public void onDestroyView() {
     super.onDestroyView();
     binding = null;
