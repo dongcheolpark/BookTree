@@ -2,6 +2,7 @@ package com.booktree.API;
 
 import android.net.Uri;
 import androidx.annotation.NonNull;
+import androidx.core.content.FileProvider;
 import com.booktree.model.Feed;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -49,17 +50,24 @@ public class FBDatabase {
           }});
   }
 
-  public void uploadImage(Uri uri, FBCallbackUploadImage callback) {
+  public void uploadImage(File file, FBCallbackUploadImage callback) {
     try {
-      var imageRef = storageRef.child(uri.getLastPathSegment());
-      var inputStream = new FileInputStream(new File(uri.getPath()));
-      //imageRef.putStream(inputStream).onSuccessTask();
+      var imageRef = storageRef.child(file.getName());
+      var inputStream = new FileInputStream(file);
+      imageRef.putStream(inputStream).addOnCompleteListener((snapshot)-> {
+        if(snapshot.isSuccessful()) {
+          imageRef.getDownloadUrl().addOnCompleteListener((resTask) -> {
+            if(resTask.isSuccessful()) {
+              callback.func(resTask.getResult().toString());
+            }
+          });
+        }
+      });
     } catch (FileNotFoundException e) {
       return;
     } catch (Exception e) {
       return;
     }
-
   }
 
   public interface FBCallbackWithArray<T> {
