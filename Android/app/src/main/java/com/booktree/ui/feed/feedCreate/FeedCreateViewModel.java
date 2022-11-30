@@ -5,6 +5,7 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 import com.booktree.API.FBDatabase;
+import com.booktree.common.VoidCallback;
 import com.booktree.model.Documents;
 import com.booktree.model.Feed;
 import java.io.File;
@@ -47,7 +48,7 @@ public class FeedCreateViewModel extends ViewModel {
     return true;
   }
 
-  public void createFeed(voidCallback success,voidCallback fail) {
+  public void createFeed(VoidCallback success, VoidCallback fail) {
     if(!validate()) {
       fail.func();
       return;
@@ -66,8 +67,5 @@ public class FeedCreateViewModel extends ViewModel {
         }
       });
     });
-  }
-  public interface voidCallback {
-    public void func();
   }
 }

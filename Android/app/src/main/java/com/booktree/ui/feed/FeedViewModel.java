@@ -5,6 +5,7 @@ import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 import com.booktree.API.FBDatabase;
 import com.booktree.common.MutableListLiveData;
+import com.booktree.common.VoidCallback;
 import com.booktree.model.Feed;
 import java.util.ArrayList;
 
@@ -16,10 +17,11 @@ public class FeedViewModel extends ViewModel {
     mFeedList = new MutableListLiveData<Feed>();
   }
 
-  public void refreshFeedList() {
+  public void refreshFeedList(VoidCallback callback) {
     FBDatabase.getInstance().getFeed((list) -> {
       mFeedList.clear(false);
       mFeedList.addAll(list);
+      callback.func();
     });
   }
 

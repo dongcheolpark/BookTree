@@ -26,11 +26,15 @@ public class FeedFragment extends Fragment {
 
     binding = FragmentFeedBinding.inflate(inflater, container, false);
 
+    binding.shimmerFeedList.startShimmer();
+    binding.shimmerFeedList.setVisibility(View.VISIBLE);
+    binding.feedList.setVisibility(View.INVISIBLE);
+
     final var feedListView = binding.feedList;
     var feedList = new FeedRecyclerList(feedListView,getActivity());
     feedViewModel.getFeedList().observe(getViewLifecycleOwner(), feedList::setFeedList);
 
-    feedViewModel.refreshFeedList();
+    feedViewModel.refreshFeedList(this::stopShimmer);
 
     final var createFeedBtn = binding.createFeedBtn;
     createFeedBtn.setOnClickListener((view) -> {
@@ -43,10 +47,16 @@ public class FeedFragment extends Fragment {
     return root;
   }
 
+  private void stopShimmer() {
+    binding.shimmerFeedList.stopShimmer();
+    binding.feedList.setVisibility(View.VISIBLE);
+    binding.shimmerFeedList.setVisibility(View.INVISIBLE);
+  }
+
   @Override
   public void onResume() {
     super.onResume();
-    feedViewModel.refreshFeedList();
+    feedViewModel.refreshFeedList(this::stopShimmer);
   }
 
   @Override
