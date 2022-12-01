@@ -1,17 +1,12 @@
-package com.booktree;
+package com.booktree.ui.book.bookDetail;
 
 import android.os.Bundle;
 import android.text.TextUtils;
-import android.widget.ImageView;
-import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.ViewModelProvider;
-import com.booktree.API.APIClient;
 import com.booktree.model.Documents;
 import com.bumptech.glide.Glide;
 import com.booktree.databinding.ActivityBookDetailBinding;
-import java.io.IOException;
-import java.util.Objects;
 
 public class BookDetailActivity extends AppCompatActivity {
   private ActivityBookDetailBinding binding;

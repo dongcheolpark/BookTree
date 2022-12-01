@@ -1,4 +1,4 @@
-package com.booktree;
+package com.booktree.ui.book.bookDetail;
 
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;

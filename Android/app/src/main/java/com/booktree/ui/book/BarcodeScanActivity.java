@@ -1,29 +1,15 @@
 package com.booktree.ui.book;
 
-import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.lifecycle.MutableLiveData;
-import androidx.lifecycle.ViewModelProvider;
-import androidx.recyclerview.widget.RecyclerView;
 
-import android.app.Activity;
 import android.content.Intent;
-import android.os.Build;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
 import android.widget.Toast;
 
 
-import com.booktree.BookDetailActivity;
-import com.booktree.BookDetailViewModel;
-import com.booktree.R;
-import com.booktree.databinding.FragmentBookBinding;
-import com.booktree.model.Documents;
+import com.booktree.ui.book.bookDetail.BookDetailActivity;
 import com.booktree.ui.book.BookFragment.BookFragment;
-import com.booktree.ui.book.bookList.BookRecyclerList;
-import com.booktree.ui.book.bookList.Viewholder.BasicViewHolder;
-import com.booktree.ui.feed.feedCreate.DocumentEventListener;
 import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
 
