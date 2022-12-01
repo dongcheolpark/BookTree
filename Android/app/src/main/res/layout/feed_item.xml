@@ -21,14 +21,12 @@
       android:id="@+id/constraintLayout"
       android:layout_width="match_parent"
       android:layout_height="wrap_content"
-      android:layout_marginTop="20dp"
-      android:layout_marginStart="32dp"
-      android:layout_marginEnd="32dp"
       >
 
       <ImageView
         android:id="@+id/feedImage"
-        android:layout_width="240dp"
+        android:scaleType="centerCrop"
+        android:layout_width="300dp"
         android:layout_height="150dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -38,7 +36,9 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
+        android:layout_marginBottom="10dp"
         android:layout_marginStart="20dp"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/feedImage">
 
@@ -46,9 +46,9 @@
           android:id="@+id/feedAuthor"
           android:layout_width="wrap_content"
           android:layout_height="wrap_content"
-          android:layout_marginTop="1dp"
-          android:layout_marginStart="0dp"
           android:text="TextView"
+          android:textColor="@color/text_sub"
+          android:textSize="10sp"
           app:layout_constraintStart_toStartOf="parent"
           app:layout_constraintTop_toTopOf="parent"/>
         <TextView
@@ -56,6 +56,8 @@
           android:layout_width="wrap_content"
           android:layout_height="wrap_content"
           android:layout_marginStart="0dp"
+          android:textSize="15sp"
+          android:textColor="@color/text_main"
           android:text="TextView"
           app:layout_constraintStart_toStartOf="parent"
           app:layout_constraintTop_toBottomOf="@+id/feedAuthor"/>
