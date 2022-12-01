@@ -8,9 +8,7 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
-import com.booktree.BookDetailActivity;
 import com.booktree.databinding.FragmentFeedBinding;
-import com.booktree.ui.book.bookList.BookRecyclerList;
 import com.booktree.ui.feed.feedCreate.FeedCreateActivity;
 import com.booktree.ui.feed.feedList.FeedRecyclerList;
 
