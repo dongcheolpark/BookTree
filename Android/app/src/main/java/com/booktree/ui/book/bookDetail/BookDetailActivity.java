@@ -1,10 +1,12 @@
 package com.booktree.ui.book.bookDetail;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.ViewModelProvider;
 import com.booktree.model.Documents;
+import com.booktree.ui.feed.feedCreate.FeedCreateActivity;
 import com.bumptech.glide.Glide;
 import com.booktree.databinding.ActivityBookDetailBinding;
 
@@ -19,9 +21,17 @@ public class BookDetailActivity extends AppCompatActivity {
 
     setContentView(binding.getRoot());
 
+
     viewModel = new ViewModelProvider(this).get(BookDetailViewModel.class);
 
-    viewModel.getDocument().observe(this, this::setTopViewGroup);
+    viewModel.getDocument().observe(this,(doc) -> {
+      binding.createFeedBtnDetail.setOnClickListener((view) -> {
+        var intent = new Intent(this, FeedCreateActivity.class);
+        intent.putExtra("document",doc);
+        startActivity(intent);
+      });
+      setTopViewGroup(doc);
+    });
     var isbn = getIntent().getStringExtra("isbn");
     if(TextUtils.isEmpty(isbn)) {
       viewModel.setDocument((Documents) getIntent().getSerializableExtra("document"));
@@ -29,6 +39,7 @@ public class BookDetailActivity extends AppCompatActivity {
     else {
       viewModel.setDocumentWithIsbn(isbn);
     }
+
   }
 
   protected void setTopViewGroup(Documents doc) {
