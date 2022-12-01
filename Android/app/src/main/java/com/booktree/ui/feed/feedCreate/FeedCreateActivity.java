@@ -52,10 +52,10 @@ public class FeedCreateActivity extends AppCompatActivity {
     });
 
     binding.feedImage.setOnClickListener((view) -> {
-      var file = new File(getFilesDir(),"tempFile.png");
-      var uri = getUriForFile(this,getApplicationContext().getPackageName() + ".fileProvider",file);
-      viewModel.setImage(uri);
+      viewModel.setImageFile(new File(getFilesDir(),"tempFile.png"));
+      var uri = getUriForFile(this,getApplicationContext().getPackageName() + ".fileProvider",viewModel.getFile().getValue());
       takePhoto.launch(uri);
+      viewModel.setImage(uri);
     });
 
     selectBookBtn.setOnClickListener((view) -> {
@@ -76,10 +76,11 @@ public class FeedCreateActivity extends AppCompatActivity {
     });
 
     binding.createFeedBtn.setOnClickListener((view)-> {
-      if(!viewModel.createFeed()) {
+      viewModel.createFeed(() -> {
+        finish();
+      },() -> {
         Toast.makeText(this, "실패", Toast.LENGTH_SHORT).show();
-      }
-      finish();
+      });
     });
   }
 }
