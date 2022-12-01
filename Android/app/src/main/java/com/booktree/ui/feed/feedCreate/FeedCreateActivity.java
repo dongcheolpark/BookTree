@@ -32,6 +32,15 @@ public class FeedCreateActivity extends AppCompatActivity {
     final var selectBookBtn = binding.selectBook;
     final var selectBookInfo = binding.createFeedBookInfo.getRoot();
 
+    Documents doc;
+    if (android.os.Build.VERSION.SDK_INT >= 33) {
+      doc = getIntent().getSerializableExtra("document",Documents.class);
+    }
+    else {
+      doc = (Documents) getIntent().getSerializableExtra("document");
+    }
+    if(doc != null) viewModel.setDocument(doc);
+
     final var viewHolder = new BasicViewHolder(selectBookInfo);
 
     var getBookInfo = registerForActivityResult(new StartActivityForResult(),
