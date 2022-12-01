@@ -20,7 +20,7 @@ public class FireBaseTest {
   public void 파이어베이스_연결_테스트() {
     FBDatabase.getInstance();
   }
-  @Test
+  //@Test
   public void 피드_생성_테스트() throws InterruptedException {
     var feed = new Feed("9791159171772",
         "testAuthor",
@@ -37,6 +37,14 @@ public class FireBaseTest {
   @Test
   public void 피드_가져오기_테스트() throws InterruptedException {
     FBDatabase.getInstance().getFeed(list -> {
+      assertThat(list.size()).isGreaterThan(0);
+      signal.countDown();
+    });
+    signal.await(5, TimeUnit.SECONDS);
+  }
+  @Test
+  public void 피드_가져오기_테스트2() throws InterruptedException {
+    FBDatabase.getInstance().getFeedWithIsbn("1158318804",list -> {
       assertThat(list.size()).isGreaterThan(0);
       signal.countDown();
     });

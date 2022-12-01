@@ -68,6 +68,7 @@ dependencies {
     implementation 'com.google.firebase:firebase-database:19.2.1'
     implementation 'com.google.firebase:firebase-storage'
     implementation 'com.github.sundeepk:compact-calendar-view:3.0.0' //캘린더 라이브러리
+    implementation 'de.hdodenhof:circleimageview:3.1.0'
     annotationProcessor 'com.github.bumptech.glide:compiler:4.9.0'
     testImplementation 'junit:junit:4.+'
     androidTestImplementation 'androidx.test.ext:junit:1.1.3'

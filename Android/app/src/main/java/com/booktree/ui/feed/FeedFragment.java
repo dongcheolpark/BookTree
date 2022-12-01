@@ -30,7 +30,9 @@ public class FeedFragment extends Fragment {
 
     final var feedListView = binding.feedList;
     var feedList = new FeedRecyclerList(feedListView,getActivity());
-    feedViewModel.getFeedList().observe(getViewLifecycleOwner(), feedList::setFeedList);
+    feedViewModel.getFeedList().observe(getViewLifecycleOwner(), (list) -> {
+      feedList.getAdapter().setList(list);
+    });
 
     feedViewModel.refreshFeedList(this::stopShimmer);
 

@@ -20,7 +20,8 @@ public class FeedViewModel extends ViewModel {
   public void refreshFeedList(VoidCallback callback) {
     FBDatabase.getInstance().getFeed((list) -> {
       mFeedList.clear(false);
-      mFeedList.addAll(list);
+      if(!list.isEmpty())
+        mFeedList.addAll(list);
       callback.func();
     });
   }
