@@ -3,19 +3,24 @@ package com.booktree.ui.feed.feedCreate;
 import static androidx.core.content.FileProvider.getUriForFile;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Build.VERSION;
 import android.os.Bundle;
+import android.util.AttributeSet;
 import android.view.View;
 import android.widget.Toast;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.activity.result.contract.ActivityResultContracts.StartActivityForResult;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.ViewModelProvider;
 import com.booktree.databinding.ActivityCreateFeedBinding;
 import com.booktree.model.Documents;
 import com.booktree.ui.book.bookList.Viewholder.BasicViewHolder;
 import java.io.File;
+import org.jetbrains.annotations.NotNull;
 
 public class FeedCreateActivity extends AppCompatActivity {
 

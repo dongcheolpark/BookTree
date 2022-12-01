@@ -6,6 +6,7 @@ import androidx.test.ext.junit.runners.AndroidJUnit4;
 import com.booktree.API.FBDatabase;
 import com.booktree.model.Feed;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import java.util.Date;
 import java.util.Map;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
@@ -24,7 +25,8 @@ public class FireBaseTest {
     var feed = new Feed("9791159171772",
         "testAuthor",
         "test content",
-        "https://i.stack.imgur.com/GsDIl.jpg");
+        "https://i.stack.imgur.com/GsDIl.jpg",
+        new Date());
     var res =  FBDatabase.getInstance().createFeed(feed);
     res.onSuccessTask((response) -> {
       signal.countDown();

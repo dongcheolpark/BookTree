@@ -9,6 +9,7 @@ import com.booktree.common.VoidCallback;
 import com.booktree.model.Documents;
 import com.booktree.model.Feed;
 import java.io.File;
+import java.util.Date;
 
 public class FeedCreateViewModel extends ViewModel {
   private MutableLiveData<Documents> mDocument;
@@ -57,7 +58,8 @@ public class FeedCreateViewModel extends ViewModel {
       var feed = new Feed(mDocument.getValue().getIsbn(),
           "test",
           mContents.getValue(),
-          uri);
+          uri,
+          new Date());
       FBDatabase.getInstance().createFeed(feed).addOnCompleteListener(task -> {
         if(task.isSuccessful()) {
           success.func();
