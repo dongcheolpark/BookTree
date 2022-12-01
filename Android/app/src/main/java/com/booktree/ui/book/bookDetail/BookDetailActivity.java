@@ -3,6 +3,7 @@ package com.booktree.ui.book.bookDetail;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.ViewModelProvider;
 import com.booktree.model.Documents;
@@ -21,7 +22,6 @@ public class BookDetailActivity extends AppCompatActivity {
 
     setContentView(binding.getRoot());
 
-
     viewModel = new ViewModelProvider(this).get(BookDetailViewModel.class);
 
     viewModel.getDocument().observe(this,(doc) -> {
@@ -39,7 +39,15 @@ public class BookDetailActivity extends AppCompatActivity {
     else {
       viewModel.setDocumentWithIsbn(isbn);
     }
+    viewModel.getDocument().observe(this,(doc)->{
+      viewModel.refreshFeedList(()->{});
+    });
 
+    var bookReviewList = new BookReviewList(binding.recyclerView,this);
+
+    viewModel.getFeedList().observe(this,(list) -> {
+      bookReviewList.getAdapter().setList(list);
+    });
   }
 
   protected void setTopViewGroup(Documents doc) {
