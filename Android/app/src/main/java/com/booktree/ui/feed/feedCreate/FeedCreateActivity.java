@@ -31,12 +31,31 @@ public class FeedCreateActivity extends AppCompatActivity {
     super.onCreate(savedInstanceState);
 
     binding = ActivityCreateFeedBinding.inflate(getLayoutInflater());
-
     viewModel = new ViewModelProvider(this).get(FeedCreateViewModel.class);
-    setContentView(binding.getRoot());
-    final var selectBookBtn = binding.selectBook;
-    final var selectBookInfo = binding.createFeedBookInfo.getRoot();
+  }
 
+  @Nullable
+  @org.jetbrains.annotations.Nullable
+  @Override
+  public View onCreateView(@NonNull @NotNull String name, @NonNull @NotNull Context context,
+      @NonNull @NotNull AttributeSet attrs) {
+    setContentView(binding.getRoot());
+    return super.onCreateView(name, context, attrs);
+  }
+
+  @Override
+  protected void onStart() {
+    super.onStart();
+
+    getDocument();
+    setDocumentHolder();
+    setImageBtn();
+    setFeedContents();
+    createFeedBtn();
+
+  }
+
+  private void getDocument() {
     Documents doc;
     if (android.os.Build.VERSION.SDK_INT >= 33) {
       doc = getIntent().getSerializableExtra("document",Documents.class);
@@ -45,9 +64,10 @@ public class FeedCreateActivity extends AppCompatActivity {
       doc = (Documents) getIntent().getSerializableExtra("document");
     }
     if(doc != null) viewModel.setDocument(doc);
+  }
 
-    final var viewHolder = new BasicViewHolder(selectBookInfo);
-
+  private void setDocumentHolder() {
+    final var viewHolder = new BasicViewHolder(binding.createFeedBookInfo.getRoot());
     var getBookInfo = registerForActivityResult(new StartActivityForResult(),
         result -> {
           if(result.getResultCode() == Activity.RESULT_OK) {
@@ -59,11 +79,24 @@ public class FeedCreateActivity extends AppCompatActivity {
             }
           }
         });
-    var takePhoto = registerForActivityResult(new ActivityResultContracts.TakePicture(),(result) -> {});
+    binding.selectBook.setOnClickListener((view) -> {
+      Intent intent = new Intent(this, FeedBookSelectActivity.class);
+      getBookInfo.launch(intent);
+    });
+    viewModel.getDocument().observe(this,(data) -> {
+      binding.selectBookLayout.setVisibility(View.INVISIBLE);
+      binding.createFeedBookInfo.getRoot().setVisibility(View.VISIBLE);
+      viewHolder.setContents(this,data);
+      Toast.makeText(this, data.title, Toast.LENGTH_SHORT).show();
+    });
+  }
 
+  private void setImageBtn() {
     viewModel.getUri().observe(this,(data) -> {
       binding.feedImage.setImageURI(data);
     });
+
+    var takePhoto = registerForActivityResult(new ActivityResultContracts.TakePicture(),(result) -> {});
 
     binding.feedImage.setOnClickListener((view) -> {
       viewModel.setImageFile(new File(getFilesDir(),"tempFile.png"));
@@ -71,24 +104,16 @@ public class FeedCreateActivity extends AppCompatActivity {
       takePhoto.launch(uri);
       viewModel.setImage(uri);
     });
+  }
 
-    selectBookBtn.setOnClickListener((view) -> {
-      Intent intent = new Intent(this, FeedBookSelectActivity.class);
-      getBookInfo.launch(intent);
-    });
-
+  private void setFeedContents() {
     binding.feedContent.setOnKeyListener((v, keyCode, event) -> {
       viewModel.setContents(binding.feedContent.getText().toString());
       return true;
     });
+  }
 
-    viewModel.getDocument().observe(this,(data) -> {
-      binding.selectBookLayout.setVisibility(View.INVISIBLE);
-      binding.createFeedBookInfo.getRoot().setVisibility(View.VISIBLE);
-      viewHolder.setContents(this,data);
-      Toast.makeText(this, data.title, Toast.LENGTH_SHORT).show();
-    });
-
+  private void createFeedBtn() {
     binding.createFeedBtn.setOnClickListener((view)-> {
       viewModel.createFeed(() -> {
         finish();
@@ -96,5 +121,6 @@ public class FeedCreateActivity extends AppCompatActivity {
         Toast.makeText(this, "실패", Toast.LENGTH_SHORT).show();
       });
     });
+
   }
 }
