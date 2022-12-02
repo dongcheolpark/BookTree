@@ -1,9 +1,8 @@
 package com.booktree.API;
 
 import android.net.Uri;
-import androidx.annotation.NonNull;
+
 import com.booktree.model.Feed;
-import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -13,9 +12,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
-import java.util.concurrent.CompletableFuture;
-import java.util.stream.Stream;
-import org.jetbrains.annotations.NotNull;
+import java.util.Date;
 
 public class FBDatabase {
   private FirebaseFirestore database;
@@ -47,6 +44,20 @@ public class FBDatabase {
             });
             callback.onGetSuccess(res);
           }});
+  }
+
+  public void getCalendarFeed(Date date, FBCallbackWithArray<Feed> callback) {
+    var res = new ArrayList<Feed>();
+    var timeStamp =
+    database.collection("Feeds").whereEqualTo("uploadDate",date).get()
+            .addOnCompleteListener((task)-> {
+              if(task.isSuccessful()) {
+                var feedFBList = task.getResult().getDocuments();
+                feedFBList.forEach((item) -> {
+                  res.add(item.toObject(Feed.class));
+                });
+                callback.onGetSuccess(res);
+              }});
   }
 
   public void uploadImage(Uri uri, FBCallbackUploadImage callback) {

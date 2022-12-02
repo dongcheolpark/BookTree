@@ -30,8 +30,8 @@
 
     <com.github.sundeepk.compactcalendarview.CompactCalendarView
         android:id="@+id/compactcalendar_view"
-        android:layout_width="match_parent"
-        android:layout_height="250dp"
+        android:layout_width="414dp"
+        android:layout_height="225dp"
         android:paddingLeft="10dp"
         android:paddingRight="10dp"
         app:compactCalendarBackgroundColor="#FFFFFF"
@@ -41,8 +41,7 @@
         app:compactCalendarTargetHeight="250dp"
         app:compactCalendarTextColor="#2C2C2C"
         app:compactCalendarTextSize="12sp"
-        app:layout_constraintTop_toBottomOf="@id/textView_month"
-        tools:layout_editor_absoluteY="50dp" />
+        app:layout_constraintTop_toBottomOf="@id/textView_month" />
 
     <TextView
         android:id="@+id/textView_result"
@@ -55,17 +54,18 @@
         android:text="클릭한 날짜"
         app:layout_constraintTop_toBottomOf="@id/compactcalendar_view"/>
 
-    <TextView
-        android:id="@+id/textView_feed"
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/calendarFeedList"
         android:layout_width="match_parent"
-        android:layout_height="200dp"
-        android:textAlignment="center"
-        android:background="#FFFFFF"
-        android:textColor="#2C2C2C"
-        android:gravity="center"
-        android:text="feed 내용"
-        app:layout_constraintTop_toBottomOf="@id/textView_result"/>
+        android:layout_height="240dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/textView_result" />
 
-
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="1000dp"
+        android:text="막대그래프 들어갈 곳"
+        android:background="@color/green"
+        app:layout_constraintTop_toBottomOf="@id/calendarFeedList"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
