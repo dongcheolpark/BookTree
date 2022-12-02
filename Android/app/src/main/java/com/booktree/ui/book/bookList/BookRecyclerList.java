@@ -77,15 +77,12 @@ public class BookRecyclerList {
   }
 
   public Observer<String> getInitialListItems() {
-    return new Observer<String>() {
-      @Override
-      public void onChanged(String s) {
-        query = s;
-        currentPage = 0;
-        adapter.clearDocuments();
-        isEnd = false;
-        getItems(++currentPage);
-      }
+    return s -> {
+      query = s;
+      currentPage = 0;
+      adapter.clearDocuments();
+      isEnd = false;
+      getItems(++currentPage);
     };
   }
 }
