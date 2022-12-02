@@ -30,7 +30,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".BookDetailActivity" />
+        <activity android:name=".ui.book.bookDetail.BookDetailActivity" />
         <activity android:name=".ui.book.BarcodeScanActivity" />
         <activity android:name=".ui.feed.feedCreate.FeedCreateActivity" />
         <activity android:name=".ui.feed.feedCreate.FeedBookSelectActivity" />

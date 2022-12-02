@@ -3,7 +3,7 @@ package com.booktree.ui.book.bookList.Viewholder;
 import android.content.Context;
 import android.content.Intent;
 import android.view.View;
-import com.booktree.BookDetailActivity;
+import com.booktree.ui.book.bookDetail.BookDetailActivity;
 import com.booktree.model.Documents;
 
 public class ToBookInfoViewHolder extends BasicViewHolder {

@@ -1,7 +1,5 @@
 package com.booktree.API;
 
-import android.net.Uri;
-
 import com.booktree.model.Feed;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.DocumentReference;
@@ -12,7 +10,6 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
-import java.util.Date;
 
 public class FBDatabase {
   private FirebaseFirestore database;
@@ -45,32 +42,37 @@ public class FBDatabase {
             callback.onGetSuccess(res);
           }});
   }
-
-  public void getCalendarFeed(Date date, FBCallbackWithArray<Feed> callback) {
+  public void getFeedWithIsbn(String isbn,FBCallbackWithArray<Feed> callback) {
     var res = new ArrayList<Feed>();
-    var timeStamp =
-    database.collection("Feeds").whereEqualTo("uploadDate",date).get()
-            .addOnCompleteListener((task)-> {
-              if(task.isSuccessful()) {
-                var feedFBList = task.getResult().getDocuments();
-                feedFBList.forEach((item) -> {
-                  res.add(item.toObject(Feed.class));
-                });
-                callback.onGetSuccess(res);
-              }});
+    database.collection("Feeds").whereEqualTo("book",isbn).get()
+        .addOnCompleteListener((task)-> {
+          if(task.isSuccessful()) {
+            var feedFBList = task.getResult().getDocuments();
+            feedFBList.forEach((item) -> {
+              res.add(item.toObject(Feed.class));
+            });
+            callback.onGetSuccess(res);
+          }});
   }
 
-  public void uploadImage(Uri uri, FBCallbackUploadImage callback) {
+  public void uploadImage(File file, FBCallbackUploadImage callback) {
     try {
-      var imageRef = storageRef.child(uri.getLastPathSegment());
-      var inputStream = new FileInputStream(new File(uri.getPath()));
-      //imageRef.putStream(inputStream).onSuccessTask();
+      var imageRef = storageRef.child(file.getName());
+      var inputStream = new FileInputStream(file);
+      imageRef.putStream(inputStream).addOnCompleteListener((snapshot)-> {
+        if(snapshot.isSuccessful()) {
+          imageRef.getDownloadUrl().addOnCompleteListener((resTask) -> {
+            if(resTask.isSuccessful()) {
+              callback.func(resTask.getResult().toString());
+            }
+          });
+        }
+      });
     } catch (FileNotFoundException e) {
       return;
     } catch (Exception e) {
       return;
     }
-
   }
 
   public interface FBCallbackWithArray<T> {
