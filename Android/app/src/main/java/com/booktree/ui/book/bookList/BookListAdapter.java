@@ -42,7 +42,7 @@ public class BookListAdapter extends RecyclerView.Adapter<BasicViewHolder> {
 
   private View createView(ViewGroup parent) {
     return LayoutInflater.from(parent.getContext())
-        .inflate(R.layout.book_info_item, parent, false);
+        .inflate(R.layout.item_book_info, parent, false);
   }
 
   public void addDocuments(Documents[] doc) {
