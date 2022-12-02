@@ -3,24 +3,19 @@ package com.booktree.ui.feed.feedCreate;
 import static androidx.core.content.FileProvider.getUriForFile;
 
 import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
 import android.os.Build.VERSION;
 import android.os.Bundle;
-import android.util.AttributeSet;
 import android.view.View;
 import android.widget.Toast;
-import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.activity.result.contract.ActivityResultContracts.StartActivityForResult;
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.ViewModelProvider;
+import com.booktree.component.ChooseImageBottomDialog;
 import com.booktree.databinding.ActivityCreateFeedBinding;
 import com.booktree.model.Documents;
 import com.booktree.ui.book.bookList.Viewholder.BasicViewHolder;
 import java.io.File;
-import org.jetbrains.annotations.NotNull;
 
 public class FeedCreateActivity extends AppCompatActivity {
 
@@ -29,18 +24,9 @@ public class FeedCreateActivity extends AppCompatActivity {
   @Override
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
-
     binding = ActivityCreateFeedBinding.inflate(getLayoutInflater());
     viewModel = new ViewModelProvider(this).get(FeedCreateViewModel.class);
-  }
-
-  @Nullable
-  @org.jetbrains.annotations.Nullable
-  @Override
-  public View onCreateView(@NonNull @NotNull String name, @NonNull @NotNull Context context,
-      @NonNull @NotNull AttributeSet attrs) {
     setContentView(binding.getRoot());
-    return super.onCreateView(name, context, attrs);
   }
 
   @Override
@@ -92,17 +78,19 @@ public class FeedCreateActivity extends AppCompatActivity {
   }
 
   private void setImageBtn() {
-    viewModel.getUri().observe(this,(data) -> {
-      binding.feedImage.setImageURI(data);
-    });
-
-    var takePhoto = registerForActivityResult(new ActivityResultContracts.TakePicture(),(result) -> {});
+    viewModel.setImageFile(new File(getFilesDir(),"tempFile.png"));
+    var uri = getUriForFile(this,getApplicationContext().getPackageName() + ".fileProvider",viewModel.getFile().getValue());
+    var dialog =
+        ChooseImageBottomDialog.Create(this,getLayoutInflater(),uri,() -> {
+          viewModel.setImage(uri);
+        });
 
     binding.feedImage.setOnClickListener((view) -> {
-      viewModel.setImageFile(new File(getFilesDir(),"tempFile.png"));
-      var uri = getUriForFile(this,getApplicationContext().getPackageName() + ".fileProvider",viewModel.getFile().getValue());
-      takePhoto.launch(uri);
-      viewModel.setImage(uri);
+      dialog.show();
+    });
+
+    viewModel.getUri().observe(this,(data) -> {
+      binding.feedImage.setImageURI(data);
     });
   }
 

@@ -4,7 +4,7 @@
   xmlns:tools="http://schemas.android.com/tools"
   android:layout_width="match_parent"
   android:layout_height="wrap_content"
-  android:elevation="10dp"
+  android:background="#000000ff"
   >
   <androidx.cardview.widget.CardView
     android:layout_width="match_parent"
@@ -25,20 +25,20 @@
       android:layout_height="match_parent">
 
       <Button
-        android:id="@+id/ChooseImage"
+        android:id="@+id/TakeCamera"
         android:layout_width="320dp"
         android:layout_height="wrap_content"
-        android:text="Button"
-        app:layout_constraintBottom_toTopOf="@+id/TakeCamera"
+        android:text="카메라로 사진 찍기"
+        app:layout_constraintBottom_toTopOf="@+id/ChooseImage"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         />
       <Button
-        android:id="@+id/TakeCamera"
+        android:id="@+id/ChooseImage"
         android:layout_width="320dp"
         android:layout_height="wrap_content"
         android:layout_marginBottom="20dp"
-        android:text="Button"
+        android:text="사진첩 이미지 가져오기"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"/>
@@ -48,7 +48,7 @@
         android:layout_height="wrap_content"
         android:text="어떤 방식으로 사진을 가져올지 선택해 주세요"
         android:textSize="18sp"
-        app:layout_constraintBottom_toTopOf="@+id/ChooseImage"
+        app:layout_constraintBottom_toTopOf="@+id/TakeCamera"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"/>
