@@ -3,7 +3,6 @@ package com.booktree.ui.book.bookDetail;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
-import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.ViewModelProvider;
 import com.booktree.model.Documents;
@@ -14,16 +13,34 @@ import com.booktree.databinding.ActivityBookDetailBinding;
 public class BookDetailActivity extends AppCompatActivity {
   private ActivityBookDetailBinding binding;
   private BookDetailViewModel viewModel;
+  private BookReviewList bookReviewList;
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
-    binding = ActivityBookDetailBinding.inflate(getLayoutInflater());
-
-    setContentView(binding.getRoot());
-
     viewModel = new ViewModelProvider(this).get(BookDetailViewModel.class);
+    binding = ActivityBookDetailBinding.inflate(getLayoutInflater());
+    setContentView(binding.getRoot());
+  }
 
+  @Override
+  protected void onStart() {
+    super.onStart();
+
+    bookReviewList = new BookReviewList(binding.recyclerView,this);
+    var isbn = getIntent().getStringExtra("isbn");
+    if(TextUtils.isEmpty(isbn)) {
+      viewModel.setDocument((Documents) getIntent().getSerializableExtra("document"));
+    }
+    else {
+      viewModel.setDocumentWithIsbn(isbn);
+    }
+
+    setCreateFeedBtn();
+    setBookReviewList();
+  }
+
+  private void setCreateFeedBtn() {
     viewModel.getDocument().observe(this,(doc) -> {
       binding.createFeedBtnDetail.setOnClickListener((view) -> {
         var intent = new Intent(this, FeedCreateActivity.class);
@@ -32,21 +49,15 @@ public class BookDetailActivity extends AppCompatActivity {
       });
       setTopViewGroup(doc);
     });
-    var isbn = getIntent().getStringExtra("isbn");
-    if(TextUtils.isEmpty(isbn)) {
-      viewModel.setDocument((Documents) getIntent().getSerializableExtra("document"));
-    }
-    else {
-      viewModel.setDocumentWithIsbn(isbn);
-    }
-    viewModel.getDocument().observe(this,(doc)->{
-      viewModel.refreshFeedList(()->{});
+  }
+
+  private void setBookReviewList() {
+    viewModel.getReviewList().observe(this,(list) -> {
+      bookReviewList.getAdapter().setList(list);
     });
 
-    var bookReviewList = new BookReviewList(binding.recyclerView,this);
-
-    viewModel.getFeedList().observe(this,(list) -> {
-      bookReviewList.getAdapter().setList(list);
+    viewModel.getDocument().observe(this,(doc)->{
+      viewModel.refreshReviewList(()->{});
     });
   }
 
