@@ -1,4 +1,4 @@
-package com.booktree.ui.RecyclerViewList;
+package com.booktree.common.RecyclerViewList;
 
 import android.content.Context;
 import androidx.recyclerview.widget.LinearLayoutManager;

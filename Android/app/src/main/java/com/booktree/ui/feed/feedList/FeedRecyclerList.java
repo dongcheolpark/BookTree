@@ -4,7 +4,7 @@ import android.content.Context;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import com.booktree.model.Feed;
-import com.booktree.ui.RecyclerViewList.RecyclerViewList;
+import com.booktree.common.RecyclerViewList.RecyclerViewList;
 import java.util.ArrayList;
 
 public class FeedRecyclerList extends RecyclerViewList<FeedListAdapter> {
