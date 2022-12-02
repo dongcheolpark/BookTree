@@ -13,6 +13,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 
+import com.booktree.databinding.ActivityAuthBinding;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
@@ -39,18 +40,14 @@ public class AuthActivity extends AppCompatActivity {
 
     private FirebaseAuth mAuth = null;
     private GoogleSignInClient mGoogleSignInClient;
-    private static final int RC_SIGN_IN = 9001;
-    private SignInButton signInButton;
     private ActivityResultLauncher<Intent> launcher;
-
+    private ActivityAuthBinding binding;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_auth);
-
-
-        signInButton = findViewById(R.id.signInButton);
+        binding = ActivityAuthBinding.inflate(getLayoutInflater());
+        setContentView(binding.getRoot());
 
 
         mAuth = FirebaseAuth.getInstance();
@@ -67,45 +64,20 @@ public class AuthActivity extends AppCompatActivity {
                 .requestEmail()
                 .build();
         mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
-        signInButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                signIn();
-            }
-        });
         launcher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(),
-                result -> handleActivityResult(result)
-        );
-
-    }
-
-
-    public void handleActivityResult(ActivityResult result) {
-        if (result.getResultCode() != RESULT_OK) return;
-        Intent data = result.getData();
-    }
-
-    // [START signin]
-    private void signIn() {
-        Intent signInIntent = mGoogleSignInClient.getSignInIntent();
-        Intent intent = new Intent(this, MainActivity.class);
-        launcher.launch(intent);
-    }
-
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-
-        // Result returned from launching the Intent from GoogleSignInApi.getSignInIntent(...);
-        if (requestCode == RC_SIGN_IN) {
-            Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(data);
-            try {
-                // Google Sign In was successful, authenticate with Firebase
-                GoogleSignInAccount account = task.getResult(ApiException.class);
-                firebaseAuthWithGoogle(account);
-            } catch (ApiException e) {
+            result -> {
+                if (result.getResultCode() != RESULT_OK) return;
+                Intent data = result.getData();
+                Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(data);
+                task.addOnCompleteListener((account) -> {
+                    firebaseAuthWithGoogle(account.getResult());
+                });
             }
-        }
+        );
+        binding.signInButton.setOnClickListener(view -> {
+            Intent signInIntent = mGoogleSignInClient.getSignInIntent();
+            launcher.launch(signInIntent);
+        });
     }
 
     private void firebaseAuthWithGoogle(GoogleSignInAccount acct) {

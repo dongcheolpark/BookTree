@@ -10,7 +10,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
-import com.booktree.BookDetailActivity;
+import com.booktree.ui.book.bookDetail.BookDetailActivity;
 import com.booktree.R;
 import com.booktree.model.Feed;
 import com.bumptech.glide.Glide;

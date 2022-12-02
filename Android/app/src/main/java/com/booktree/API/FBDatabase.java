@@ -1,10 +1,6 @@
 package com.booktree.API;
 
-import android.net.Uri;
-import androidx.annotation.NonNull;
-import androidx.core.content.FileProvider;
 import com.booktree.model.Feed;
-import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -14,9 +10,6 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
-import java.util.concurrent.CompletableFuture;
-import java.util.stream.Stream;
-import org.jetbrains.annotations.NotNull;
 
 public class FBDatabase {
   private FirebaseFirestore database;
@@ -40,6 +33,18 @@ public class FBDatabase {
   public void getFeed(FBCallbackWithArray<Feed> callback) {
     var res = new ArrayList<Feed>();
     database.collection("Feeds").get()
+        .addOnCompleteListener((task)-> {
+          if(task.isSuccessful()) {
+            var feedFBList = task.getResult().getDocuments();
+            feedFBList.forEach((item) -> {
+              res.add(item.toObject(Feed.class));
+            });
+            callback.onGetSuccess(res);
+          }});
+  }
+  public void getFeedWithIsbn(String isbn,FBCallbackWithArray<Feed> callback) {
+    var res = new ArrayList<Feed>();
+    database.collection("Feeds").whereEqualTo("book",isbn).get()
         .addOnCompleteListener((task)-> {
           if(task.isSuccessful()) {
             var feedFBList = task.getResult().getDocuments();

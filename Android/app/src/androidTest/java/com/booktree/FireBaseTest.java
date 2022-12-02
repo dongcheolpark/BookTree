@@ -6,6 +6,7 @@ import androidx.test.ext.junit.runners.AndroidJUnit4;
 import com.booktree.API.FBDatabase;
 import com.booktree.model.Feed;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import java.util.Date;
 import java.util.Map;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
@@ -19,12 +20,13 @@ public class FireBaseTest {
   public void 파이어베이스_연결_테스트() {
     FBDatabase.getInstance();
   }
-  @Test
+  //@Test
   public void 피드_생성_테스트() throws InterruptedException {
     var feed = new Feed("9791159171772",
         "testAuthor",
         "test content",
-        "https://i.stack.imgur.com/GsDIl.jpg");
+        "https://i.stack.imgur.com/GsDIl.jpg",
+        new Date());
     var res =  FBDatabase.getInstance().createFeed(feed);
     res.onSuccessTask((response) -> {
       signal.countDown();
@@ -35,6 +37,14 @@ public class FireBaseTest {
   @Test
   public void 피드_가져오기_테스트() throws InterruptedException {
     FBDatabase.getInstance().getFeed(list -> {
+      assertThat(list.size()).isGreaterThan(0);
+      signal.countDown();
+    });
+    signal.await(5, TimeUnit.SECONDS);
+  }
+  @Test
+  public void 피드_가져오기_테스트2() throws InterruptedException {
+    FBDatabase.getInstance().getFeedWithIsbn("1158318804",list -> {
       assertThat(list.size()).isGreaterThan(0);
       signal.countDown();
     });

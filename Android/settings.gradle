@@ -4,8 +4,6 @@ dependencyResolutionManagement {
         google()
         mavenCentral()
         jcenter() // Warning: this repository is going to shut down soon
-//        maven{url "http://jitpack.io"
-//            allowInsecureProtocol true} //캘린더 사용
     }
 }
 rootProject.name = "BookTree"
