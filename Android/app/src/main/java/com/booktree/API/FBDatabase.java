@@ -1,10 +1,12 @@
 package com.booktree.API;
 
-import android.net.Uri;
-
+import android.os.AsyncTask;
+import android.util.Log;
+import com.booktree.common.ResultCallBack;
+import com.booktree.common.VoidCallback;
 import com.booktree.model.Feed;
 import com.booktree.model.Friend;
-import com.booktree.model.Users;
+import com.booktree.model.User;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -14,6 +16,12 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
+import java.util.List;
+import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.Executor;
+import java.util.concurrent.Executors;
+import java.util.concurrent.TimeUnit;
+import java.util.stream.Collectors;
 
 public class FBDatabase {
   private FirebaseFirestore database;
@@ -28,40 +36,6 @@ public class FBDatabase {
   private FBDatabase() {
     database = FirebaseFirestore.getInstance();
     storageRef = FirebaseStorage.getInstance().getReference();
-  }
-
-  public Task<DocumentReference> createUser (Users user){
-    return database.collection("Users").add(user);
-  }
-
-  public void getUser(FBCallbackWithArray<Users> callback, ArrayList<Friend> friendArrayList){
-    var res = new ArrayList<Users>();
-    database.collection("Users").get()
-            .addOnCompleteListener((task)->{
-              if(task.isSuccessful()){
-                var userFBList = task.getResult().getDocuments();
-                userFBList.forEach((item)->{
-                  res.add(item.toObject(Users.class));
-                });
-                callback.onGetSuccess(res);
-              }});
-  }
-
-  public Task<DocumentReference> createFriend(Friend friend){
-    return database.collection("Friends").add(friend);
-  }
-
-  public void getFriend(FBCallbackWithArray<Friend> callback){
-    var res = new ArrayList<Friend>();
-    database.collection("Friends").get()
-            .addOnCompleteListener((task)->{
-              if(task.isSuccessful()){
-                var friendFBList=task.getResult().getDocuments();
-                friendFBList.forEach((item)->{
-                  res.add(item.toObject(Friend.class));
-                });
-                callback.onGetSuccess(res);
-              }});
   }
 
   public Task<DocumentReference> createFeed(Feed feed) {
@@ -80,6 +54,7 @@ public class FBDatabase {
             callback.onGetSuccess(res);
           }});
   }
+
   public void getFeedWithIsbn(String isbn,FBCallbackWithArray<Feed> callback) {
     var res = new ArrayList<Feed>();
     database.collection("Feeds").whereEqualTo("book",isbn).get()
@@ -111,6 +86,91 @@ public class FBDatabase {
     } catch (Exception e) {
       return;
     }
+  }
+
+  public void createUser(User user, VoidCallback callback) {
+    database.collection("User").whereEqualTo("uid",user.uid).get()
+        .addOnCompleteListener((task) -> {
+          if(task.isSuccessful()) {
+            if(task.getResult().size() == 0) {
+              database.collection("User").add(user);
+              callback.func();
+            }
+          }
+        });
+  }
+
+  public void getUser(String userUid, ResultCallBack<User> callBack) {
+    database.collection("Users").whereEqualTo("uid",userUid).get()
+        .addOnCompleteListener(task -> {
+          if(task.isSuccessful()) {
+            var res = task.getResult().getDocuments().get(0).toObject(User.class);
+            callBack.func(res);
+          }
+        });
+  }
+
+  public void createFollow(Friend friend,VoidCallback callback) {
+    database.collection("Friends")
+        .whereEqualTo("Follower",friend.Follower)
+        .whereEqualTo("Following",friend.Following).get()
+        .addOnCompleteListener((task) -> {
+          if(task.isSuccessful()) {
+            if(task.getResult().size() == 0) {
+              database.collection("Friends").add(friend);
+              callback.func();
+            }
+          }
+        });
+  }
+  public void getFollowing(String uid,ResultCallBack<List<User>> callBack) {
+    getFollow(uid,Follow.Following,callBack);
+  }
+
+  public void getFollower(String uid,ResultCallBack<List<User>> callBack) {
+    getFollow(uid,Follow.Follower,callBack);
+  }
+
+  private void getFollow(String uid,Follow follow,ResultCallBack<List<User>> callBack) {
+    database.collection("Friends")
+        .whereEqualTo(follow == Follow.Follower ? "Following" : "Follower",uid).get()
+        .addOnCompleteListener(task -> {
+          if(task.isSuccessful()) {
+            var friendList = task.getResult()
+                .getDocuments()
+                .stream()
+                .map(item -> {
+                      var obj = item.toObject(Friend.class);
+                      return follow == Follow.Follower ? obj.Follower : obj.Following;
+                    })
+                .collect(Collectors.toList());
+            int size = friendList.size();
+            var executorService = Executors.newFixedThreadPool(size+1);
+            executorService.execute(() -> {
+              try {
+                var res = new ArrayList<User>();
+                var countLatch = new CountDownLatch(size);
+                friendList.forEach(item -> {
+                    executorService.execute(() -> {
+                      getUser(item, (user) -> {
+                        res.add(user);
+                        countLatch.countDown();
+                      });
+                    });
+                });
+                countLatch.await(5, TimeUnit.SECONDS);
+                callBack.func(res);
+              } catch (InterruptedException e) {
+                Log.e("Error", e.getMessage(), null);
+              }
+            });
+          }
+        });
+  }
+
+  public enum Follow{
+    Follower,
+    Following
   }
 
   public interface FBCallbackWithArray<T> {

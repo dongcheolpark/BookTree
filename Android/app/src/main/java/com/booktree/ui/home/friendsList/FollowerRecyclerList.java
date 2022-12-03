@@ -5,8 +5,7 @@ import android.content.Context;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.booktree.model.Users;
-
+import com.booktree.model.User;
 import java.util.ArrayList;
 
 public class FollowerRecyclerList {
@@ -25,5 +24,5 @@ public class FollowerRecyclerList {
         friendList.setLayoutManager(layoutManager);
     }
 
-    public void setFriendList(ArrayList<Users> list){adapter.setFriendsList(list);}
+    public void setFriendList(ArrayList<User> list){adapter.setFriendsList(list);}
 }

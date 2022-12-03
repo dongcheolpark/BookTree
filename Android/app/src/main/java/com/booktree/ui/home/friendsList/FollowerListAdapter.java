@@ -11,16 +11,15 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.booktree.R;
-import com.booktree.model.Friend;
+import com.booktree.model.User;
 import com.bumptech.glide.Glide;
-import com.booktree.model.Users;
 
 import java.util.ArrayList;
 
 
 public class FollowerListAdapter extends RecyclerView.Adapter<FollowerListAdapter.ViewHolder> {
 
-    private ArrayList<Users> friendinfo;
+    private ArrayList<User> friendinfo;
     private final Context context;
 
     public FollowerListAdapter(Context context) {
@@ -28,7 +27,7 @@ public class FollowerListAdapter extends RecyclerView.Adapter<FollowerListAdapte
         this.context = context;
     }
 
-    public void setFriendsList(ArrayList<Users> friendArrayList){
+    public void setFriendsList(ArrayList<User> friendArrayList){
         friendinfo=friendArrayList;
         notifyDataSetChanged();
     }
@@ -65,10 +64,10 @@ public class FollowerListAdapter extends RecyclerView.Adapter<FollowerListAdapte
             tv_followername=view.findViewById(R.id.tv_userid);
         }
 
-        public void setContents(Context context, Users user){
-            tv_followername.setText(user.userName);
-            tv_followerid.setText(user.id);
-            Glide.with(context).load(user.profile).into(iv_followerprofile);
+        public void setContents(Context context, User user){
+            tv_followername.setText(user.name);
+            tv_followerid.setText(user.uid);
+            Glide.with(context).load(user.profileImg).into(iv_followerprofile);
         }
     }
 }
