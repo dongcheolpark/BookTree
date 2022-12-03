@@ -16,6 +16,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.Executor;
@@ -148,7 +149,7 @@ public class FBDatabase {
             var executorService = Executors.newFixedThreadPool(size+1);
             executorService.execute(() -> {
               try {
-                var res = new ArrayList<User>();
+                var res = Collections.synchronizedList(new ArrayList<User>());
                 var countLatch = new CountDownLatch(size);
                 friendList.forEach(item -> {
                     executorService.execute(() -> {
