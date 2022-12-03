@@ -5,6 +5,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import androidx.test.ext.junit.runners.AndroidJUnit4;
 import com.booktree.API.FBDatabase;
 import com.booktree.model.Feed;
+import com.booktree.model.User;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.util.Date;
 import java.util.Map;
@@ -33,6 +34,31 @@ public class FireBaseTest {
       return null;
     });
     signal.await(30, TimeUnit.SECONDS);
+  }
+  @Test
+  public void 유저_생성_테스트() throws InterruptedException {
+    var user = new User(
+        "dongcheolpark",
+        "nvWcwYhZPrXRhGjD4Hiq0qX9vt52",
+        "https://cdn-icons-png.flaticon.com/512/1361/1361876.png"
+    );
+    FBDatabase.getInstance().createUser(user,() ->{
+      signal.countDown();
+    });
+    signal.await(30, TimeUnit.SECONDS);
+  }
+  @Test
+  public void 유저_가져오기_테스트() throws InterruptedException {
+    var user = new User(
+        "dongcheolpark",
+        "nvWcwYhZPrXRhGjD4Hiq0qX9vt52",
+        "https://cdn-icons-png.flaticon.com/512/1361/1361876.png"
+    );
+    FBDatabase.getInstance().getUser(user.uid,(res) ->{
+      assertThat(res).isEqualTo(user);
+      signal.countDown();
+    });
+    signal.await(5, TimeUnit.SECONDS);
   }
   @Test
   public void 피드_가져오기_테스트() throws InterruptedException {

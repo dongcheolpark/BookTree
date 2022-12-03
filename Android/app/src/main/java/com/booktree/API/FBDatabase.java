@@ -1,6 +1,9 @@
 package com.booktree.API;
 
+import com.booktree.common.ResultCallBack;
+import com.booktree.common.VoidCallback;
 import com.booktree.model.Feed;
+import com.booktree.model.User;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -42,6 +45,7 @@ public class FBDatabase {
             callback.onGetSuccess(res);
           }});
   }
+
   public void getFeedWithIsbn(String isbn,FBCallbackWithArray<Feed> callback) {
     var res = new ArrayList<Feed>();
     database.collection("Feeds").whereEqualTo("book",isbn).get()
@@ -73,6 +77,30 @@ public class FBDatabase {
     } catch (Exception e) {
       return;
     }
+  }
+
+  public void createUser(User user, VoidCallback callback) {
+    database.collection("Users").whereEqualTo("uid",user.uid).get()
+        .addOnCompleteListener((task) -> {
+          if(task.isSuccessful()) {
+            if(task.getResult().size() == 0) {
+              database.collection("Users").add(user);
+              callback.func();
+            }
+          }
+        });
+  }
+
+  public void getUser(String userUid, ResultCallBack<User> callBack) {
+    database.collection("Users").whereEqualTo("uid",userUid).get()
+        .addOnCompleteListener(task -> {
+          if(task.isSuccessful()) {
+            if(task.isSuccessful()) {
+              var res = task.getResult().getDocuments().get(0).toObject(User.class);
+              callBack.func(res);
+            }
+          }
+        });
   }
 
   public interface FBCallbackWithArray<T> {
