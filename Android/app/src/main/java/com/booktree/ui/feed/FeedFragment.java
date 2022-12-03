@@ -8,9 +8,7 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
-import com.booktree.BookDetailActivity;
 import com.booktree.databinding.FragmentFeedBinding;
-import com.booktree.ui.book.bookList.BookRecyclerList;
 import com.booktree.ui.feed.feedCreate.FeedCreateActivity;
 import com.booktree.ui.feed.feedList.FeedRecyclerList;
 
@@ -26,11 +24,17 @@ public class FeedFragment extends Fragment {
 
     binding = FragmentFeedBinding.inflate(inflater, container, false);
 
+    binding.shimmerFeedList.startShimmer();
+    binding.shimmerFeedList.setVisibility(View.VISIBLE);
+    binding.feedList.setVisibility(View.INVISIBLE);
+
     final var feedListView = binding.feedList;
     var feedList = new FeedRecyclerList(feedListView,getActivity());
-    feedViewModel.getFeedList().observe(getViewLifecycleOwner(), feedList::setFeedList);
+    feedViewModel.getFeedList().observe(getViewLifecycleOwner(), (list) -> {
+      feedList.getAdapter().setList(list);
+    });
 
-    feedViewModel.refreshFeedList();
+    feedViewModel.refreshFeedList(this::stopShimmer);
 
     final var createFeedBtn = binding.createFeedBtn;
     createFeedBtn.setOnClickListener((view) -> {
@@ -41,6 +45,18 @@ public class FeedFragment extends Fragment {
     View root = binding.getRoot();
 
     return root;
+  }
+
+  private void stopShimmer() {
+    binding.shimmerFeedList.stopShimmer();
+    binding.feedList.setVisibility(View.VISIBLE);
+    binding.shimmerFeedList.setVisibility(View.INVISIBLE);
+  }
+
+  @Override
+  public void onResume() {
+    super.onResume();
+    feedViewModel.refreshFeedList(this::stopShimmer);
   }
 
   @Override

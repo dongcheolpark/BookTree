@@ -8,10 +8,10 @@ import android.os.Build.VERSION;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Toast;
-import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.activity.result.contract.ActivityResultContracts.StartActivityForResult;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.ViewModelProvider;
+import com.booktree.component.ChooseImageBottomDialog;
 import com.booktree.databinding.ActivityCreateFeedBinding;
 import com.booktree.model.Documents;
 import com.booktree.ui.book.bookList.Viewholder.BasicViewHolder;
@@ -24,16 +24,36 @@ public class FeedCreateActivity extends AppCompatActivity {
   @Override
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
-
     binding = ActivityCreateFeedBinding.inflate(getLayoutInflater());
-
     viewModel = new ViewModelProvider(this).get(FeedCreateViewModel.class);
     setContentView(binding.getRoot());
-    final var selectBookBtn = binding.selectBook;
-    final var selectBookInfo = binding.createFeedBookInfo.getRoot();
+  }
 
-    final var viewHolder = new BasicViewHolder(selectBookInfo);
+  @Override
+  protected void onStart() {
+    super.onStart();
 
+    getDocument();
+    setDocumentHolder();
+    setImageBtn();
+    setFeedContents();
+    createFeedBtn();
+
+  }
+
+  private void getDocument() {
+    Documents doc;
+    if (android.os.Build.VERSION.SDK_INT >= 33) {
+      doc = getIntent().getSerializableExtra("document",Documents.class);
+    }
+    else {
+      doc = (Documents) getIntent().getSerializableExtra("document");
+    }
+    if(doc != null) viewModel.setDocument(doc);
+  }
+
+  private void setDocumentHolder() {
+    final var viewHolder = new BasicViewHolder(binding.createFeedBookInfo.getRoot());
     var getBookInfo = registerForActivityResult(new StartActivityForResult(),
         result -> {
           if(result.getResultCode() == Activity.RESULT_OK) {
@@ -45,41 +65,50 @@ public class FeedCreateActivity extends AppCompatActivity {
             }
           }
         });
-    var takePhoto = registerForActivityResult(new ActivityResultContracts.TakePicture(),(result) -> {});
-
-    viewModel.getUri().observe(this,(data) -> {
-      binding.feedImage.setImageURI(data);
-    });
-
-    binding.feedImage.setOnClickListener((view) -> {
-      var file = new File(getFilesDir(),"tempFile.png");
-      var uri = getUriForFile(this,getApplicationContext().getPackageName() + ".fileProvider",file);
-      viewModel.setImage(uri);
-      takePhoto.launch(uri);
-    });
-
-    selectBookBtn.setOnClickListener((view) -> {
+    binding.selectBook.setOnClickListener((view) -> {
       Intent intent = new Intent(this, FeedBookSelectActivity.class);
       getBookInfo.launch(intent);
     });
-
-    binding.feedContent.setOnKeyListener((v, keyCode, event) -> {
-      viewModel.setContents(binding.feedContent.getText().toString());
-      return true;
-    });
-
     viewModel.getDocument().observe(this,(data) -> {
       binding.selectBookLayout.setVisibility(View.INVISIBLE);
       binding.createFeedBookInfo.getRoot().setVisibility(View.VISIBLE);
       viewHolder.setContents(this,data);
       Toast.makeText(this, data.title, Toast.LENGTH_SHORT).show();
     });
+  }
 
-    binding.createFeedBtn.setOnClickListener((view)-> {
-      if(!viewModel.createFeed()) {
-        Toast.makeText(this, "실패", Toast.LENGTH_SHORT).show();
-      }
-      finish();
+  private void setImageBtn() {
+    viewModel.setImageFile(new File(getFilesDir(),"tempFile.png"));
+    var uri = getUriForFile(this,getApplicationContext().getPackageName() + ".fileProvider",viewModel.getFile().getValue());
+    var dialog =
+        ChooseImageBottomDialog.Create(this,getLayoutInflater(),uri,() -> {
+          viewModel.setImage(uri);
+        });
+
+    binding.feedImage.setOnClickListener((view) -> {
+      dialog.show();
     });
+
+    viewModel.getUri().observe(this,(data) -> {
+      binding.feedImage.setImageURI(data);
+    });
+  }
+
+  private void setFeedContents() {
+    binding.feedContent.setOnKeyListener((v, keyCode, event) -> {
+      viewModel.setContents(binding.feedContent.getText().toString());
+      return true;
+    });
+  }
+
+  private void createFeedBtn() {
+    binding.createFeedBtn.setOnClickListener((view)-> {
+      viewModel.createFeed(() -> {
+        finish();
+      },() -> {
+        Toast.makeText(this, "실패", Toast.LENGTH_SHORT).show();
+      });
+    });
+
   }
 }
