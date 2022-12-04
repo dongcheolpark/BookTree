@@ -10,14 +10,14 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
-import com.booktree.BookDetailActivity;
 import com.booktree.R;
 import com.booktree.model.Feed;
+import com.booktree.ui.book.bookDetail.BookDetailActivity;
 import com.bumptech.glide.Glide;
 import java.util.ArrayList;
 import org.jetbrains.annotations.NotNull;
 
-public class CalendarFeedListAdapter extends RecyclerView.Adapter<com.booktree.ui.home.CalendarfeedList.CalendarFeedListAdapter.ViewHolder> {
+public class CalendarFeedListAdapter extends RecyclerView.Adapter<CalendarFeedListAdapter.ViewHolder> {
 
     private ArrayList<Feed> feeds;
     private final Context context;
@@ -35,15 +35,15 @@ public class CalendarFeedListAdapter extends RecyclerView.Adapter<com.booktree.u
     @NonNull
     @NotNull
     @Override
-    public CalendarFeedListAdapter.ViewHolder onCreateViewHolder(@NonNull @NotNull ViewGroup parent, int viewType) {
+    public ViewHolder onCreateViewHolder(@NonNull @NotNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.feed_item, parent, false);
 
-        return new CalendarFeedListAdapter.ViewHolder(view);
+        return new ViewHolder(view);
     }
 
     @Override
-    public void onBindViewHolder(@NotNull CalendarFeedListAdapter.ViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull @NotNull ViewHolder holder, int position) {
         holder.setContents(context,feeds.get(position));
     }
 
