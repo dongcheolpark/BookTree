@@ -7,6 +7,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.ViewModelProvider;
 import com.booktree.databinding.ActivityFeedDetailBinding;
 import com.booktree.model.Feed;
+import com.booktree.ui.book.bookList.Viewholder.BasicViewHolder;
+import com.booktree.ui.book.bookList.Viewholder.ToBookInfoViewHolder;
 import com.bumptech.glide.Glide;
 
 public class FeedDetailActivity extends AppCompatActivity {
@@ -39,6 +41,15 @@ public class FeedDetailActivity extends AppCompatActivity {
       binding.feedAuthor.setText(feed.author);
       binding.feedContent.setText(feed.contents);
       Glide.with(this).load(feed.imageUrl).into(binding.feedImage);
+      setViewHolder(feed.book);
+    });
+  }
+
+  private void setViewHolder(String isbn) {
+    final var viewHolder = new ToBookInfoViewHolder(binding.include.getRoot());
+    viewModel.setDocument(isbn);
+    viewModel.getDocument().observe(this,(doc) -> {
+      viewHolder.setContents(this,doc);
     });
   }
 }
