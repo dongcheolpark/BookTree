@@ -88,9 +88,8 @@ public class FireBaseTest {
   @Test
   public void 피드_날짜_가져오기_테스트() throws InterruptedException {
     var date = new Date(2022,12,1);
-    var timestamp = new Timestamp(date);
     FirebaseFirestore.getInstance().collection("Feeds")
-        .whereLessThan("uploadDate",timestamp.toDate()).get()
+        .whereLessThan("uploadDate",date).get()
         .addOnCompleteListener(task -> {
           if(task.isSuccessful()) {
             var list = task.getResult().
@@ -101,7 +100,7 @@ public class FireBaseTest {
             assertThat(list.size()).isGreaterThan(0);
             var signal2 = new CountDownLatch(list.size());
             list.forEach((item) -> {
-              assertThat(item.uploadDate).isBefore(date);
+              assertThat(item.uploadDate).isAfter(date);
               signal2.countDown();
             });
             try {
