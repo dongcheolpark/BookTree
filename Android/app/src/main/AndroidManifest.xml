@@ -34,6 +34,7 @@
         <activity android:name=".ui.book.BarcodeScanActivity" />
         <activity android:name=".ui.feed.feedCreate.FeedCreateActivity" />
         <activity android:name=".ui.feed.feedCreate.FeedBookSelectActivity" />
+        <activity android:name=".ui.feed.feedDetail.FeedDetailActivity" />
         <activity
             android:name="com.journeyapps.barcodescanner.CaptureActivity"
             android:screenOrientation="fullSensor"

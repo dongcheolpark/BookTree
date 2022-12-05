@@ -1,36 +1,33 @@
 package com.booktree.ui.home;
 
-import android.content.Context;
 import androidx.lifecycle.LiveData;
-import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
-import com.booktree.API.APIClient;
-import java.io.IOException;
+
+import com.booktree.API.FBDatabase;
+import com.booktree.common.MutableListLiveData;
+import com.booktree.common.VoidCallback;
+import com.booktree.model.Feed;
+
+import java.util.ArrayList;
+import java.util.Date;
 
 public class HomeViewModel extends ViewModel {
 
-  private MutableLiveData<String> mText;
+  private MutableListLiveData<Feed> mFeedList;
+
 
   public HomeViewModel() {
-    mText = new MutableLiveData<>();
-    mText.setValue("This is fragment");
+    mFeedList = new MutableListLiveData<Feed>();
   }
 
-  public LiveData<String> getText() {
-    return mText;
+  public void refreshCalendarFeedList(Date date, VoidCallback callback) {
+    FBDatabase.getInstance().getFeedInCalendar(date,(list) -> {
+      mFeedList.clear(false);
+      if(!list.isEmpty())
+        mFeedList.addAll(list);
+      callback.func();
+    });
   }
 
-  public void ChangeValue() {
-    try {
-      var data = APIClient.getInstance().getKakaoAPI().getBookInfo(
-          "어린왕자",
-          "accuracy",
-          1,
-          10
-      ).execute();
-      mText.setValue(data.body().documents[0].title);
-    } catch (IOException e) {
-      e.printStackTrace();
-    }
-  }
+  public LiveData<ArrayList<Feed>> getCalendarFeedList(){return mFeedList;}
 }
