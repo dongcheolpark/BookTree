@@ -13,6 +13,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.booktree.ui.book.bookDetail.BookDetailActivity;
 import com.booktree.R;
 import com.booktree.model.Feed;
+import com.booktree.ui.feed.feedDetail.FeedDetailActivity;
 import com.bumptech.glide.Glide;
 import java.util.ArrayList;
 import org.jetbrains.annotations.NotNull;
@@ -37,7 +38,7 @@ public class FeedListAdapter extends RecyclerView.Adapter<FeedListAdapter.ViewHo
   @Override
   public ViewHolder onCreateViewHolder(@NonNull @NotNull ViewGroup parent, int viewType) {
     View view = LayoutInflater.from(parent.getContext())
-        .inflate(R.layout.feed_item, parent, false);
+        .inflate(R.layout.item_feed, parent, false);
 
     return new ViewHolder(view);
   }
@@ -70,8 +71,8 @@ public class FeedListAdapter extends RecyclerView.Adapter<FeedListAdapter.ViewHo
       content.setText(feed.contents);
       Glide.with(context).load(feed.imageUrl).into(image);
       card.setOnClickListener((view) -> {
-        Intent intent = new Intent(context, BookDetailActivity.class);
-        intent.putExtra("isbn",feed.book);
+        Intent intent = new Intent(context, FeedDetailActivity.class);
+        intent.putExtra("feed",feed);
         context.startActivity(intent);
       });
     }

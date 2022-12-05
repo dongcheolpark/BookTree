@@ -5,11 +5,18 @@ import static org.assertj.core.api.Assertions.assertThat;
 import androidx.test.ext.junit.runners.AndroidJUnit4;
 import com.booktree.API.FBDatabase;
 import com.booktree.model.Feed;
+import com.booktree.model.Friend;
+import com.booktree.model.User;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.google.firebase.Timestamp;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.storage.FirebaseStorage;
 import java.util.Date;
 import java.util.Map;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
+import java.util.stream.Collectors;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
@@ -33,6 +40,79 @@ public class FireBaseTest {
       return null;
     });
     signal.await(30, TimeUnit.SECONDS);
+  }
+  @Test
+  public void 유저_생성_테스트() throws InterruptedException {
+    var user = new User(
+        "cogus",
+        "t02xJtMsiBc7sl4BSYA8EdNEJyo2",
+        "https://cdn-icons-png.flaticon.com/512/1361/1361876.png"
+    );
+    FBDatabase.getInstance().createUser(user,() ->{
+      signal.countDown();
+    });
+    signal.await(30, TimeUnit.SECONDS);
+  }
+  @Test
+  public void 유저_가져오기_테스트() throws InterruptedException {
+    var user = new User(
+        "dongcheolpark",
+        "nvWcwYhZPrXRhGjD4Hiq0qX9vt52",
+        "https://cdn-icons-png.flaticon.com/512/1361/1361876.png"
+    );
+    FBDatabase.getInstance().getUser(user.uid,(res) ->{
+      assertThat(res).isEqualTo(user);
+      signal.countDown();
+    });
+    signal.await(5, TimeUnit.SECONDS);
+  }
+  @Test
+  public void 친구_생성_테스트() throws InterruptedException {
+    var friend = new Friend(
+        "nvWcwYhZPrXRhGjD4Hiq0qX9vt52",
+        "WllfZDNy79RntUt5pEqA13r79Kj2"
+    );
+    FBDatabase.getInstance().createFollow(friend,() ->{
+      signal.countDown();
+    });
+    signal.await(5, TimeUnit.SECONDS);
+  }
+  @Test
+  public void 친구_리스트_가져오기_테스트() throws InterruptedException {
+    FBDatabase.getInstance().getFollowing("nvWcwYhZPrXRhGjD4Hiq0qX9vt52",(list) ->{
+      assertThat(list.size()).isEqualTo(2);
+      signal.countDown();
+    });
+    signal.await(5, TimeUnit.SECONDS);
+  }
+  @Test
+  public void 피드_날짜_가져오기_테스트() throws InterruptedException {
+    var date = new Date(2022,12,1);
+    var timestamp = new Timestamp(date);
+    FirebaseFirestore.getInstance().collection("Feeds")
+        .whereLessThan("uploadDate",timestamp.toDate()).get()
+        .addOnCompleteListener(task -> {
+          if(task.isSuccessful()) {
+            var list = task.getResult().
+                getDocuments()
+                .stream()
+                .map(item -> item.toObject(Feed.class))
+                .collect(Collectors.toList());
+            assertThat(list.size()).isGreaterThan(0);
+            var signal2 = new CountDownLatch(list.size());
+            list.forEach((item) -> {
+              assertThat(item.uploadDate).isBefore(date);
+              signal2.countDown();
+            });
+            try {
+              signal2.await(5,TimeUnit.SECONDS);
+            } catch (InterruptedException e) {
+              e.printStackTrace();
+            }
+            signal.countDown();
+          }
+        });
+    signal.await(5, TimeUnit.SECONDS);
   }
   @Test
   public void 피드_가져오기_테스트() throws InterruptedException {

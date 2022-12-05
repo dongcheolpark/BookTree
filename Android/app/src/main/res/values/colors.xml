@@ -13,4 +13,5 @@
   <color name="shimmer_text">#cfcfcf</color>
   <color name="text_main">#000000</color>
   <color name="text_sub">#4d4d4d</color>
+  <color name="dialog_background">#65000000</color>
 </resources>

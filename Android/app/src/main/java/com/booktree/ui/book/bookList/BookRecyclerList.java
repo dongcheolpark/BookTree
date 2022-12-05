@@ -78,6 +78,7 @@ public class BookRecyclerList {
 
   public Observer<String> getInitialListItems() {
     return s -> {
+      if(s == null || s.isEmpty()) return;
       query = s;
       currentPage = 0;
       adapter.clearDocuments();
