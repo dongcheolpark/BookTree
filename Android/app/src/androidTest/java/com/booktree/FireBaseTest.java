@@ -8,10 +8,15 @@ import com.booktree.model.Feed;
 import com.booktree.model.Friend;
 import com.booktree.model.User;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.google.firebase.Timestamp;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.storage.FirebaseStorage;
 import java.util.Date;
 import java.util.Map;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
+import java.util.stream.Collectors;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
@@ -78,6 +83,35 @@ public class FireBaseTest {
       assertThat(list.size()).isEqualTo(2);
       signal.countDown();
     });
+    signal.await(5, TimeUnit.SECONDS);
+  }
+  @Test
+  public void 피드_날짜_가져오기_테스트() throws InterruptedException {
+    var date = new Date(2022,12,1);
+    var timestamp = new Timestamp(date);
+    FirebaseFirestore.getInstance().collection("Feeds")
+        .whereLessThan("uploadDate",timestamp.toDate()).get()
+        .addOnCompleteListener(task -> {
+          if(task.isSuccessful()) {
+            var list = task.getResult().
+                getDocuments()
+                .stream()
+                .map(item -> item.toObject(Feed.class))
+                .collect(Collectors.toList());
+            assertThat(list.size()).isGreaterThan(0);
+            var signal2 = new CountDownLatch(list.size());
+            list.forEach((item) -> {
+              assertThat(item.uploadDate).isBefore(date);
+              signal2.countDown();
+            });
+            try {
+              signal2.await(5,TimeUnit.SECONDS);
+            } catch (InterruptedException e) {
+              e.printStackTrace();
+            }
+            signal.countDown();
+          }
+        });
     signal.await(5, TimeUnit.SECONDS);
   }
   @Test
