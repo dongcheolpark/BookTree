@@ -58,6 +58,7 @@ public class FBDatabase {
             callback.onGetSuccess(res);
           }});
   }
+
   public void getFeedWithIsbn(String isbn,FBCallbackWithArray<Feed> callback) {
     var res = new ArrayList<Feed>();
     database.collection("Feeds").whereEqualTo("book",isbn).get()
@@ -78,7 +79,7 @@ public class FBDatabase {
     var tomorrow = new Date(date.getTime()+(long)(1000*60*60*24));
     var timestamp2 = new Timestamp(tomorrow);
 
-    database.collection("Feeds").whereLessThan("uploadDate",timestamp2.toDate()).whereGreaterThanOrEqualTo("uploadDate",timestamp.toDate()).get()
+    database.collection("Feeds").whereLessThan("uploadDate",tomorrow).whereGreaterThanOrEqualTo("uploadDate",date).get()
             .addOnCompleteListener((task)-> {
               if(task.isSuccessful()) {
 //                for(QueryDocumentSnapshot document : task.getResult()){
