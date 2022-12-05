@@ -14,6 +14,7 @@ import android.util.Log;
 import android.view.View;
 
 import com.booktree.databinding.ActivityAuthBinding;
+import com.booktree.ui.home.Profile.ProfileEditActivity;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
@@ -103,7 +104,7 @@ public class AuthActivity extends AppCompatActivity {
 
     private void updateUI(FirebaseUser user) { //update ui code here
         if (user != null) {
-            Intent intent = new Intent(this, MainActivity.class);
+            Intent intent = new Intent(this, ProfileEditActivity.class);
             startActivity(intent);
             finish();
         }

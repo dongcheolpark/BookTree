@@ -1,5 +1,7 @@
 package com.booktree.model;
 
+import android.widget.TextView;
+
 import java.util.Objects;
 
 public class User {

@@ -1,18 +1,35 @@
 package com.booktree.ui.home;
 
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.in;
+
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.ViewModelProvider;
+
+import com.booktree.API.FBDatabase;
+import com.booktree.MainActivity;
+import com.booktree.R;
+
+import com.booktree.ui.home.friendsList.FollowerActivity;
+import com.booktree.ui.home.friendsList.FollowingActivity;
+
 import com.github.sundeepk.compactcalendarview.CompactCalendarView;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
+import com.booktree.model.User;
 import com.booktree.databinding.FragmentHomeBinding;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 
 public class HomeFragment extends Fragment {
 
@@ -22,7 +39,8 @@ public class HomeFragment extends Fragment {
 
   private HomeViewModel homeViewModel;
   private FragmentHomeBinding binding;
-
+  private User user;
+  private FirebaseAuth mAuth;
   public View onCreateView(@NonNull LayoutInflater inflater,
                            ViewGroup container, Bundle savedInstanceState) {
     homeViewModel =
@@ -34,6 +52,28 @@ public class HomeFragment extends Fragment {
     final var compactCalendarView = binding.compactcalendarView;
     final var textView_month = binding.textViewMonth;
     final var textView_result = binding.textViewResult;
+    final var profile_image=binding.profileiv;
+    final var textView_username=binding.usernametv;
+    final var follower_Btn=binding.followerbtn;
+    final var following_Btn=binding.followingbtn;
+    mAuth=FirebaseAuth.getInstance();
+    final FirebaseUser curuser = mAuth.getCurrentUser();
+    FBDatabase.getInstance().getUser(curuser.getUid(),(user)->{
+      assertThat(user);});
+    profile_image.setImageURI(Uri.parse(user.profileImg));
+    textView_username.setText(user.name);
+
+    //팔로워 리스트 불러오기
+    follower_Btn.setOnClickListener(view -> {
+      Intent intent=new Intent(getActivity(), FollowerActivity.class);
+      startActivity(intent);
+    });
+
+    //팔로잉 리스트 불러오기
+    following_Btn.setOnClickListener(view->{
+      Intent intent=new Intent(getActivity(), FollowingActivity.class);
+      startActivity(intent);
+    });
 
     textView_month.setText(dateFormatForMonth.format(compactCalendarView.getFirstDayOfCurrentMonth())); //위에 MMM yyyy 표시
     compactCalendarView.setFirstDayOfWeek(Calendar.SUNDAY);  //일요일을 시작으로

@@ -4,8 +4,11 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.widget.Toast;
 import com.booktree.ui.book.BarcodeScanActivity;
+
+
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
@@ -32,4 +35,5 @@ public class MainActivity extends AppCompatActivity {
         R.id.nav_host_fragment_activity_main);
     NavigationUI.setupWithNavController(binding.navView, navController);
   }
+
 }

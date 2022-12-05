@@ -6,27 +6,77 @@
     android:layout_height="match_parent"
     tools:context=".ui.home.HomeFragment">
 
+    <FrameLayout
+        android:id="@+id/linearLayout2"
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
+        tools:ignore="MissingConstraints"
+        tools:layout_editor_absoluteX="0dp"
+        tools:layout_editor_absoluteY="0dp">
+
+        <LinearLayout
+            android:id="@+id/linearLayout3"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            >
+
+            <ImageView
+                android:id="@+id/profileiv"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:src="@drawable/exprofile" />
+
+            <TextView
+                android:id="@+id/usernametv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="#FFFFFF"
+                android:text="닉네임"
+                android:textColor="#2C2C2C"
+                android:textSize="25sp" />
+
+
+            <Button
+                android:id="@+id/followingbtn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="팔로잉" />
+
+            <Button
+                    android:id="@+id/followerbtn"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="팔로워" />
+
+
+
+        </LinearLayout>
+    </FrameLayout>
+
     <TextView
         android:id="@+id/textView_month"
         android:layout_width="match_parent"
         android:layout_height="80dp"
-        android:textAlignment="center"
         android:background="#FFFFFF"
-        android:textColor="#2C2C2C"
-        android:textSize="25sp"
         android:gravity="center"
         android:text="NOVEMBER 2022"
-        app:layout_constraintTop_toTopOf="parent"/>
+        android:textAlignment="center"
+        android:textColor="#2C2C2C"
+        android:textSize="25sp"
+        app:layout_constraintTop_toBottomOf="@id/linearLayout2"
+        tools:layout_editor_absoluteX="0dp" />
 
     <View
         android:id="@+id/divider"
         android:layout_width="380dp"
         android:layout_height="2dp"
         android:background="#595959"
+        app:layout_constraintBottom_toTopOf="@id/compactcalendar_view"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.516"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/textView_month"
-        app:layout_constraintBottom_toTopOf="@id/compactcalendar_view" />
+        app:layout_constraintVertical_bias="1.0" />
 
     <com.github.sundeepk.compactcalendarview.CompactCalendarView
         android:id="@+id/compactcalendar_view"
@@ -42,18 +92,19 @@
         app:compactCalendarTextColor="#2C2C2C"
         app:compactCalendarTextSize="12sp"
         app:layout_constraintTop_toBottomOf="@id/textView_month"
-        tools:layout_editor_absoluteY="50dp" />
+        tools:layout_editor_absoluteX="44dp" />
 
     <TextView
         android:id="@+id/textView_result"
         android:layout_width="match_parent"
         android:layout_height="50dp"
-        android:textAlignment="center"
         android:background="#FFFFFF"
-        android:textColor="#2C2C2C"
         android:gravity="center"
         android:text="클릭한 날짜"
-        app:layout_constraintTop_toBottomOf="@id/compactcalendar_view"/>
+        android:textAlignment="center"
+        android:textColor="#2C2C2C"
+        app:layout_constraintTop_toBottomOf="@id/compactcalendar_view"
+        tools:layout_editor_absoluteX="16dp" />
 
     <TextView
         android:id="@+id/textView_feed"
