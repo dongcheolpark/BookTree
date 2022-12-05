@@ -1,4 +1,4 @@
-package com.booktree.ui.book.BookFragment;
+package com.booktree.ui.book.bookFragment;
 
 import androidx.recyclerview.widget.RecyclerView;
 import com.booktree.ui.book.bookList.bookSearchList.BookListAdapter.Type;

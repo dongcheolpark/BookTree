@@ -5,7 +5,7 @@
   xmlns:tools="http://schemas.android.com/tools"
   android:layout_width="match_parent"
   android:layout_height="match_parent"
-  tools:context=".ui.book.BookFragment.BookToInfoFragment"
+  tools:context=".ui.book.bookFragment.BookToInfoFragment"
   >
   <androidx.appcompat.widget.Toolbar
     android:id="@+id/toolbar"
@@ -41,6 +41,7 @@
     app:layout_constraintStart_toStartOf="parent"
     app:layout_constraintTop_toTopOf="parent">
     <FrameLayout
+      android:id="@+id/frameLayout"
       android:layout_width="match_parent"
       android:layout_height="0dp"
       android:layout_marginTop="20dp"
@@ -51,6 +52,7 @@
         android:id="@+id/bookInfoList"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:visibility="invisible"
         >
       </androidx.recyclerview.widget.RecyclerView>
     </FrameLayout>

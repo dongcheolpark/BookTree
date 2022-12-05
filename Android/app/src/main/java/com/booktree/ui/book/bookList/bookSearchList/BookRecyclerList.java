@@ -71,14 +71,12 @@ public class BookRecyclerList {
 
   }
 
-  public Observer<String> getInitialListItems() {
-    return s -> {
-      if(s == null || s.isEmpty()) return;
-      query = s;
-      currentPage = 0;
-      adapter.clearDocuments();
-      isEnd = false;
-      getItems(++currentPage);
-    };
+  public void getInitialListItems(String queryString) {
+    if(queryString == null || queryString.isEmpty()) return;
+    query = queryString;
+    currentPage = 0;
+    adapter.clearDocuments();
+    isEnd = false;
+    getItems(++currentPage);
   }
 }
