@@ -14,7 +14,7 @@ import androidx.lifecycle.ViewModelProvider;
 import com.booktree.component.ChooseImageBottomDialog;
 import com.booktree.databinding.ActivityCreateFeedBinding;
 import com.booktree.model.Documents;
-import com.booktree.ui.book.bookList.Viewholder.BasicViewHolder;
+import com.booktree.ui.book.bookList.bookSearchList.Viewholder.BasicViewHolder;
 import java.io.File;
 
 public class FeedCreateActivity extends AppCompatActivity {

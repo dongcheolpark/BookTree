@@ -5,12 +5,10 @@ import android.content.Intent;
 import android.os.Bundle;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
-import com.booktree.API.FBDatabase;
 import com.booktree.R;
 import com.booktree.databinding.FragmentBookSelectBinding;
 import com.booktree.model.Documents;
-import com.booktree.ui.book.BookFragment.BookGetInfoFragment;
-import com.booktree.ui.book.BookFragment.BookToInfoFragment;
+import com.booktree.ui.book.bookFragment.BookGetInfoFragment;
 
 public class FeedBookSelectActivity extends AppCompatActivity implements DocumentEventListener {
 
