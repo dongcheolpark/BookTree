@@ -41,6 +41,7 @@ public class HomeFragment extends Fragment {
     final var compactCalendarView = binding.compactcalendarView;
     final var textView_month = binding.textViewMonth;
     final var textView_result = binding.textViewResult;
+//    final var barChart = binding.barChart;
     today = new Date();
 
     textView_month.setText(dateFormatForMonth.format(compactCalendarView.getFirstDayOfCurrentMonth())); //위에 MMM yyyy 표시
@@ -77,6 +78,14 @@ public class HomeFragment extends Fragment {
     });
 
     homeViewModel.refreshCalendarFeedList(today,this::stopShimmer);
+    //1. 데이터 생성
+//    BarDataSet barDataSet1 = new BarDataSet(data1(), "Data1");
+//    //2. 바 데이터 생성
+//    BarData barData = new BarData();
+//    //3. 바 데이터에 데이터셋 추가
+//    barData.addDataSet(barDataSet1);
+//    //4. 바차트에 바데이터 등록
+//    barChart.setData(barData);
 
     View root = binding.getRoot();
 
@@ -94,6 +103,17 @@ public class HomeFragment extends Fragment {
     super.onResume();
     homeViewModel.refreshCalendarFeedList(today,this::stopShimmer);
   }
+//
+//  private ArrayList<BarEntry> data1(){
+//    ArrayList<BarEntry> dataList = new ArrayList<>();
+//
+//    dataList.add(new BarEntry(0,3));
+//    dataList.add(new BarEntry(1,6));
+//    dataList.add(new BarEntry(2,10));
+//    dataList.add(new BarEntry(3,15));
+//    return dataList;
+//  }
+
 
   @Override
   public void onDestroyView() {

@@ -7,6 +7,7 @@ import androidx.annotation.NonNull;
 import com.booktree.model.Feed;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.Timestamp;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseReference;
@@ -19,6 +20,7 @@ import com.google.firebase.storage.StorageReference;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.sql.Time;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -72,44 +74,26 @@ public class FBDatabase {
   public void getFeedInCalendar(Date date, FBCallbackWithArray<Feed> callback) {
     var res = new ArrayList<Feed>();
 
-    var minTime = date.getTime()/1000;
-    var maxTime = date.getTime()/1000+86400;
+    var timestamp = new Timestamp(date);
+    var tomorrow = new Date(date.getTime()+(long)(1000*60*60*24));
+    var timestamp2 = new Timestamp(tomorrow);
 
-
-//    DatabaseReference rootRef = FirebaseDatabase.getInstance().getReference();
-//    var eggRef = rootRef.child("Feeds").child("2JyzcW2HZby9NG7vWpIO").child("uploadDate");
-//
-//    eggRef.get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
-//      @Override
-//      public void onComplete(@NonNull Task<DataSnapshot> task) {
-//        if(task.isSuccessful()){
-//          String value = task.getResult().getValue(String.class);
-//          Log.d("timeTest",value);
-//        } else{
-//          Log.d("timeTest",task.getException().getMessage());
-//        }
-//      }
-//    });
-
-//    Log.d("timeTest",date.toString());
-//    Log.d("timeTest", String.valueOf(minTime));
-//    Log.d("timeTest", String.valueOf(maxTime));
-//    Log.d("timeTest", String.valueOf(database.collection("Feeds").document("2JyzcW2HZby9NG7vWpIO").collection("uploadDate").get().addOnCompleteListener((task)->{
-//      var tempList = task.getResult().getvalues();})));
-//    Log.d("timeTest",database.collection("Feeds").document("2JyzcW2HZby9NG7vWpIO").collection("uploadDate").toString());
-
-    database.collection("Feeds").get()
+    database.collection("Feeds").whereLessThan("uploadDate",timestamp2.toDate()).whereGreaterThanOrEqualTo("uploadDate",timestamp.toDate()).get()
             .addOnCompleteListener((task)-> {
               if(task.isSuccessful()) {
 //                for(QueryDocumentSnapshot document : task.getResult()){
 //                  Log.d("timeTest",document.getId() + "=>" + document.getData());
 //                  }
                 var feedFBList = task.getResult().getDocuments();
-                feedFBList.forEach((item) -> {
-                  res.add(item.toObject(Feed.class));
-                });
+                if(!feedFBList.isEmpty()){
+                  feedFBList.forEach((item) -> {
+                    res.add(item.toObject(Feed.class));
+                  });} else{
+                  Log.d("timeTest","피드 없음");
+                }
                 callback.onGetSuccess(res);
-              }});
+              }}
+            );
   }
 
   public void uploadImage(File file, FBCallbackUploadImage callback) {
