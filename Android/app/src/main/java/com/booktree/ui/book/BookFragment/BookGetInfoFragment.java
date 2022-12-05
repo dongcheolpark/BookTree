@@ -1,13 +1,8 @@
 package com.booktree.ui.book.BookFragment;
 
-import android.view.ViewGroup;
-import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
-import com.booktree.ui.book.bookList.BookListAdapter;
-import com.booktree.ui.book.bookList.BookListAdapter.Type;
-import com.booktree.ui.book.bookList.BookRecyclerList;
-import com.booktree.ui.book.bookList.Viewholder.getBookInfoViewholder;
-import org.jetbrains.annotations.NotNull;
+import com.booktree.ui.book.bookList.bookSearchList.BookListAdapter.Type;
+import com.booktree.ui.book.bookList.bookSearchList.BookRecyclerList;
 
 public class BookGetInfoFragment extends BookFragment {
 

@@ -1,4 +1,4 @@
-package com.booktree.ui.book.bookList.Viewholder;
+package com.booktree.ui.book.bookList.bookSearchList.Viewholder;
 
 import android.content.Context;
 import android.content.Intent;

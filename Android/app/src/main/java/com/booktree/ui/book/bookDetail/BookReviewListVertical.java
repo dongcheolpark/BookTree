@@ -2,10 +2,10 @@ package com.booktree.ui.book.bookDetail;
 
 import android.content.Context;
 import androidx.recyclerview.widget.RecyclerView;
-import com.booktree.common.RecyclerViewList.RecyclerViewList;
+import com.booktree.common.RecyclerViewList.RecyclerViewListVertical;
 
-public class BookReviewList extends RecyclerViewList<BookReviewAdapter> {
-  public BookReviewList(RecyclerView recyclerView,
+public class BookReviewListVertical extends RecyclerViewListVertical<BookReviewAdapter> {
+  public BookReviewListVertical(RecyclerView recyclerView,
       Context context) {
     super(recyclerView, context);
     adapter = new BookReviewAdapter(this.context);

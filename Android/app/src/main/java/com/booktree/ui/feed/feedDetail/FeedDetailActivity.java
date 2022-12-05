@@ -7,8 +7,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.ViewModelProvider;
 import com.booktree.databinding.ActivityFeedDetailBinding;
 import com.booktree.model.Feed;
-import com.booktree.ui.book.bookList.Viewholder.BasicViewHolder;
-import com.booktree.ui.book.bookList.Viewholder.ToBookInfoViewHolder;
+import com.booktree.ui.book.bookList.bookSearchList.Viewholder.ToBookInfoViewHolder;
 import com.bumptech.glide.Glide;
 
 public class FeedDetailActivity extends AppCompatActivity {

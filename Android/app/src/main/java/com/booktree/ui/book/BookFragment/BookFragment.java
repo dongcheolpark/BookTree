@@ -1,7 +1,5 @@
 package com.booktree.ui.book.BookFragment;
 
-import static androidx.core.content.ContextCompat.getSystemService;
-
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -10,21 +8,15 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
-import android.widget.Button;
-import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.RecyclerView;
-import com.booktree.R;
 import com.booktree.databinding.FragmentBookBinding;
 import com.booktree.ui.book.BarcodeScanActivity;
 import com.booktree.ui.book.BookViewModel;
-import com.booktree.ui.book.bookList.BookListAdapter;
-import com.booktree.ui.book.bookList.BookRecyclerList;
-import com.booktree.ui.book.bookList.Viewholder.ToBookInfoViewHolder;
-import org.jetbrains.annotations.NotNull;
+import com.booktree.ui.book.bookList.bookSearchList.BookRecyclerList;
 
 public abstract class BookFragment extends Fragment {
 
