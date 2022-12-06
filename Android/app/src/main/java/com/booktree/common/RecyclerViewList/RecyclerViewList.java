@@ -16,4 +16,8 @@ public abstract class RecyclerViewList<T extends Adapter> {
     this.context = context;
   }
 
+  public T getAdapter() {
+    return adapter;
+  }
+
 }

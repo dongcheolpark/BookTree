@@ -10,7 +10,7 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import com.booktree.databinding.FragmentFeedBinding;
 import com.booktree.ui.feed.feedCreate.FeedCreateActivity;
-import com.booktree.ui.feed.feedList.FeedRecyclerListVertical;
+import com.booktree.ui.feed.feedList.FeedRecyclerList;
 
 public class FeedFragment extends Fragment {
 
@@ -29,7 +29,7 @@ public class FeedFragment extends Fragment {
     binding.feedList.setVisibility(View.INVISIBLE);
 
     final var feedListView = binding.feedList;
-    var feedList = new FeedRecyclerListVertical(feedListView,getActivity());
+    var feedList = new FeedRecyclerList(feedListView,getActivity());
     feedViewModel.getFeedList().observe(getViewLifecycleOwner(), (list) -> {
       feedList.getAdapter().setList(list);
     });
