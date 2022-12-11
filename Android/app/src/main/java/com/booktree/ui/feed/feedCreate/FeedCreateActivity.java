@@ -11,12 +11,11 @@ import android.widget.Toast;
 import androidx.activity.result.contract.ActivityResultContracts.StartActivityForResult;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.ViewModelProvider;
-import com.booktree.MainActivity;
-import com.booktree.component.ChooseImageBottomDialog;
 import com.booktree.databinding.ActivityCreateFeedBinding;
+import com.booktree.ui.MainActivity;
+import com.booktree.component.ChooseImageBottomDialog;
 import com.booktree.model.Documents;
 import com.booktree.ui.book.bookList.bookSearchList.Viewholder.BasicViewHolder;
-import java.io.File;
 
 public class FeedCreateActivity extends AppCompatActivity {
 
