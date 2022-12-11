@@ -13,7 +13,7 @@ import com.booktree.databinding.ActivityBookDetailBinding;
 public class BookDetailActivity extends AppCompatActivity {
   private ActivityBookDetailBinding binding;
   private BookDetailViewModel viewModel;
-  private BookReviewList bookReviewList;
+  private BookReviewListVertical bookReviewList;
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
@@ -27,7 +27,7 @@ public class BookDetailActivity extends AppCompatActivity {
   protected void onStart() {
     super.onStart();
 
-    bookReviewList = new BookReviewList(binding.recyclerView,this);
+    bookReviewList = new BookReviewListVertical(binding.recyclerView,this);
     var isbn = getIntent().getStringExtra("isbn");
     if(TextUtils.isEmpty(isbn)) {
       viewModel.setDocument((Documents) getIntent().getSerializableExtra("document"));

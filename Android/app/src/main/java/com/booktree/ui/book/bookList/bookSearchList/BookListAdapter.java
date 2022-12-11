@@ -1,4 +1,4 @@
-package com.booktree.ui.book.bookList;
+package com.booktree.ui.book.bookList.bookSearchList;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -8,9 +8,9 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 import com.booktree.model.Documents;
 import com.booktree.R;
-import com.booktree.ui.book.bookList.Viewholder.BasicViewHolder;
-import com.booktree.ui.book.bookList.Viewholder.ToBookInfoViewHolder;
-import com.booktree.ui.book.bookList.Viewholder.getBookInfoViewholder;
+import com.booktree.ui.book.bookList.bookSearchList.Viewholder.BasicViewHolder;
+import com.booktree.ui.book.bookList.bookSearchList.Viewholder.ToBookInfoViewHolder;
+import com.booktree.ui.book.bookList.bookSearchList.Viewholder.getBookInfoViewholder;
 import java.util.ArrayList;
 import java.util.Arrays;
 import org.jetbrains.annotations.NotNull;

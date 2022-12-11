@@ -61,16 +61,33 @@ public class FBDatabase {
   }
 
   public void getFeed(FBCallbackWithArray<Feed> callback) {
-    var res = new ArrayList<Feed>();
     database.collection("Feeds").get()
         .addOnCompleteListener((task)-> {
           if(task.isSuccessful()) {
-            var feedFBList = task.getResult().getDocuments();
-            feedFBList.forEach((item) -> {
-              res.add(item.toObject(Feed.class));
-            });
-            callback.onGetSuccess(res);
+            var res = task.getResult()
+                .getDocuments()
+                .stream()
+                .map(item->item.toObject(Feed.class))
+                .collect(Collectors.toList());
+            callback.onGetSuccess(new ArrayList<>(res));
           }});
+  }
+
+  public void getFeedCurrentUpload(FBCallbackWithArray<Feed> callback) {
+    database.collection("Feeds")
+        .orderBy("uploadDate")
+        .limit(5)
+        .get()
+        .addOnCompleteListener((task) -> {
+          if(task.isSuccessful()) {
+            var res = task.getResult()
+                .getDocuments()
+                .stream()
+                .map(item->item.toObject(Feed.class))
+                .collect(Collectors.toList());
+            callback.onGetSuccess(res);
+          }
+        });
   }
 
   public void getFeedWithIsbn(String isbn,FBCallbackWithArray<Feed> callback) {
@@ -217,7 +234,7 @@ public class FBDatabase {
   }
 
   public interface FBCallbackWithArray<T> {
-    public void onGetSuccess(ArrayList<T> list);
+    public void onGetSuccess(List<T> list);
   }
   public interface FBCallbackUploadImage {
     public void func(String url);
