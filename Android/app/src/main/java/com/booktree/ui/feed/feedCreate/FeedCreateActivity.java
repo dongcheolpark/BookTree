@@ -79,10 +79,8 @@ public class FeedCreateActivity extends AppCompatActivity {
   }
 
   private void setImageBtn() {
-    viewModel.setImageFile(new File(getFilesDir(),"tempFile.png"));
-    var uri = getUriForFile(this,getApplicationContext().getPackageName() + ".fileProvider",viewModel.getFile().getValue());
     var dialog =
-        ChooseImageBottomDialog.Create(this,getLayoutInflater(),uri,() -> {
+        ChooseImageBottomDialog.Create(this,getLayoutInflater(),getFilesDir(),(uri) -> {
           viewModel.setImage(uri);
         });
 
@@ -98,7 +96,7 @@ public class FeedCreateActivity extends AppCompatActivity {
   private void setFeedContents() {
     binding.feedContent.setOnKeyListener((v, keyCode, event) -> {
       viewModel.setContents(binding.feedContent.getText().toString());
-      return true;
+      return false;
     });
   }
 
