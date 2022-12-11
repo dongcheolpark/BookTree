@@ -1,6 +1,7 @@
 package com.booktree.ui.book.bookFragment.ListFragment;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -9,6 +10,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import com.booktree.databinding.FragmentRecommendBinding;
+import com.booktree.ui.book.bookList.bookSearchList.BookRecyclerList;
 
 public class RecommendFragment extends Fragment {
   private RecommendViewModel viewModel;
@@ -25,11 +27,23 @@ public class RecommendFragment extends Fragment {
   public View onCreateView(@NonNull LayoutInflater inflater,
       @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
     binding = FragmentRecommendBinding.inflate(inflater,container,false);
+    viewModel.setRecommendList(new RecommendList(binding.recyclerView2,getContext()));
     return binding.getRoot();
   }
 
   @Override
   public void onStart() {
     super.onStart();
+    viewModel.refreshList();
+    viewModel.getDocList().observe(getViewLifecycleOwner(),(list) -> {
+      viewModel.getRecommendList().getAdapter()
+          .setList(list);
+    });
+  }
+
+  @Override
+  public void onDestroy() {
+    super.onDestroy();
+    Log.i("info", "onDestroy: ");
   }
 }
