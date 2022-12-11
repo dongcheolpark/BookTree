@@ -66,6 +66,7 @@ public class BookDetailActivity extends AppCompatActivity {
     binding.bookDetailAuthor.setText(doc.authorString());
     binding.bookDetailDate.setText(doc.getDateString());
     binding.bookDetailPublisher.setText(doc.publisher);
+    binding.BookDetailContent.setText(doc.contents);
     Glide.with(this).load(doc.thumbnail).into(binding.bookDetailThumbnail);
   }
 }

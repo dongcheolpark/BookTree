@@ -80,7 +80,7 @@ public class FBDatabase {
 
   public void getFeedCurrentUpload(FBCallbackWithArray<Feed> callback) {
     database.collection("Feeds")
-        .orderBy("uploadDate")
+        .orderBy("uploadDate",Direction.DESCENDING)
         .limit(5)
         .get()
         .addOnCompleteListener((task) -> {
