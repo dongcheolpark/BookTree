@@ -11,12 +11,11 @@ import android.widget.Toast;
 import androidx.activity.result.contract.ActivityResultContracts.StartActivityForResult;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.ViewModelProvider;
-import com.booktree.MainActivity;
-import com.booktree.component.ChooseImageBottomDialog;
 import com.booktree.databinding.ActivityCreateFeedBinding;
+import com.booktree.ui.MainActivity;
+import com.booktree.component.ChooseImageBottomDialog;
 import com.booktree.model.Documents;
 import com.booktree.ui.book.bookList.bookSearchList.Viewholder.BasicViewHolder;
-import java.io.File;
 
 public class FeedCreateActivity extends AppCompatActivity {
 
@@ -79,10 +78,8 @@ public class FeedCreateActivity extends AppCompatActivity {
   }
 
   private void setImageBtn() {
-    viewModel.setImageFile(new File(getFilesDir(),"tempFile.png"));
-    var uri = getUriForFile(this,getApplicationContext().getPackageName() + ".fileProvider",viewModel.getFile().getValue());
     var dialog =
-        ChooseImageBottomDialog.Create(this,getLayoutInflater(),uri,() -> {
+        ChooseImageBottomDialog.Create(this,getLayoutInflater(),getFilesDir(),(uri) -> {
           viewModel.setImage(uri);
         });
 
@@ -98,7 +95,7 @@ public class FeedCreateActivity extends AppCompatActivity {
   private void setFeedContents() {
     binding.feedContent.setOnKeyListener((v, keyCode, event) -> {
       viewModel.setContents(binding.feedContent.getText().toString());
-      return true;
+      return false;
     });
   }
 

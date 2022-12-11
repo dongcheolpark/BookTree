@@ -1,5 +1,6 @@
 package com.booktree.API;
 
+import android.net.Uri;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
@@ -21,6 +22,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.Query.Direction;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
@@ -61,7 +63,10 @@ public class FBDatabase {
   }
 
   public void getFeed(FBCallbackWithArray<Feed> callback) {
-    database.collection("Feeds").get()
+    database.collection("Feeds")
+        .orderBy("uploadDate", Direction.DESCENDING)
+        .limit(10)
+        .get()
         .addOnCompleteListener((task)-> {
           if(task.isSuccessful()) {
             var res = task.getResult()
@@ -75,7 +80,7 @@ public class FBDatabase {
 
   public void getFeedCurrentUpload(FBCallbackWithArray<Feed> callback) {
     database.collection("Feeds")
-        .orderBy("uploadDate")
+        .orderBy("uploadDate",Direction.DESCENDING)
         .limit(5)
         .get()
         .addOnCompleteListener((task) -> {
@@ -128,24 +133,17 @@ public class FBDatabase {
             );
   }
 
-  public void uploadImage(File file, FBCallbackUploadImage callback) {
-    try {
-      var imageRef = storageRef.child(file.getName());
-      var inputStream = new FileInputStream(file);
-      imageRef.putStream(inputStream).addOnCompleteListener((snapshot)-> {
-        if(snapshot.isSuccessful()) {
-          imageRef.getDownloadUrl().addOnCompleteListener((resTask) -> {
-            if(resTask.isSuccessful()) {
-              callback.func(resTask.getResult().toString());
-            }
-          });
-        }
-      });
-    } catch (FileNotFoundException e) {
-      return;
-    } catch (Exception e) {
-      return;
-    }
+  public void uploadImage(Uri uri, FBCallbackUploadImage callback) {
+    var imageRef = storageRef.child("image");
+    imageRef.putFile(uri).addOnCompleteListener((snapshot)-> {
+      if(snapshot.isSuccessful()) {
+        imageRef.getDownloadUrl().addOnCompleteListener((resTask) -> {
+          if(resTask.isSuccessful()) {
+            callback.func(resTask.getResult().toString());
+          }
+        });
+      }
+    });
   }
 
   public void createUser(User user, VoidCallback callback) {

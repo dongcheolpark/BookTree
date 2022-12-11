@@ -33,6 +33,7 @@ public class RecommendViewModel extends ViewModel {
     return recommendList;
   }
   public void refreshList() {
+    if(!mDocList.getValue().isEmpty()) return;
     FBDatabase.getInstance().getFeedCurrentUpload((feedList) -> {
       var isbnList = feedList.stream().map(item -> item.book).collect(Collectors.toList());
       mDocList.clear(false);
