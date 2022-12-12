@@ -10,7 +10,6 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 import com.booktree.R;
 import com.booktree.model.Feed;
-import com.bumptech.glide.Glide;
 import java.util.ArrayList;
 import org.jetbrains.annotations.NotNull;
 
@@ -33,7 +32,7 @@ public class BookReviewAdapter extends RecyclerView.Adapter<BookReviewAdapter.Vi
   @Override
   public ViewHolder onCreateViewHolder(@NonNull @NotNull ViewGroup parent, int viewType) {
     var view = LayoutInflater.from(parent.getContext())
-        .inflate(R.layout.book_detail_review_item, parent, false);
+        .inflate(R.layout.item_book_detail_review, parent, false);
     return new ViewHolder(view);
   }
 

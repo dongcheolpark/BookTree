@@ -3,6 +3,7 @@
   xmlns:android="http://schemas.android.com/apk/res/android"
   xmlns:app="http://schemas.android.com/apk/res-auto"
   xmlns:tools="http://schemas.android.com/tools"
+  android:background="@color/list_background"
   android:layout_width="match_parent"
   android:layout_height="match_parent"
   tools:context=".ui.feed.FeedFragment">
@@ -62,10 +63,10 @@
         android:layout_height="match_parent"
         android:orientation="vertical">
 
-        <include layout="@layout/layout_item_shimmer"/>
-        <include layout="@layout/layout_item_shimmer"/>
-        <include layout="@layout/layout_item_shimmer"/>
-        <include layout="@layout/layout_item_shimmer"/>
+        <include layout="@layout/item_shimmer_layout"/>
+        <include layout="@layout/item_shimmer_layout"/>
+        <include layout="@layout/item_shimmer_layout"/>
+        <include layout="@layout/item_shimmer_layout"/>
 
       </LinearLayout>
     </com.facebook.shimmer.ShimmerFrameLayout>

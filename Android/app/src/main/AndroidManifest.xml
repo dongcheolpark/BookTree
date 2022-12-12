@@ -14,7 +14,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.BookTree">
         <activity
-            android:name=".MainActivity"
+            android:name=".ui.MainActivity"
             android:exported="true"
             android:label="@string/app_name">
             <intent-filter>
@@ -22,7 +22,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".AuthActivity"
+            android:name=".ui.AuthActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -34,6 +34,10 @@
         <activity android:name=".ui.book.BarcodeScanActivity" />
         <activity android:name=".ui.feed.feedCreate.FeedCreateActivity" />
         <activity android:name=".ui.feed.feedCreate.FeedBookSelectActivity" />
+        <activity android:name=".ProfileEditActivity"/>
+        <activity android:name=".ui.home.friendsList.FollowerActivity"/>
+        <activity android:name=".ui.home.friendsList.FollowingActivity"/>
+        <activity android:name=".ui.feed.feedDetail.FeedDetailActivity" />
         <activity
             android:name="com.journeyapps.barcodescanner.CaptureActivity"
             android:screenOrientation="fullSensor"

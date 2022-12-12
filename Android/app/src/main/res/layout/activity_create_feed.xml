@@ -23,8 +23,7 @@
         android:id="@+id/selectBook"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="책 선택하기"
-        android:backgroundTint="#CDCDCD"
+        android:text="Button"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -32,7 +31,7 @@
     </androidx.constraintlayout.widget.ConstraintLayout>
     <include
       android:id="@+id/createFeedBookInfo"
-      layout="@layout/book_info_item"
+      layout="@layout/item_book_info"
       android:layout_width="match_parent"
       android:layout_height="match_parent"
       android:visibility="invisible"
@@ -88,7 +87,7 @@
     android:layout_height="wrap_content"
     android:layout_marginBottom="25dp"
     android:layout_marginEnd="25dp"
-    android:text="저장"
+    android:text="만들기"
     app:layout_constraintBottom_toBottomOf="parent"
     app:layout_constraintEnd_toEndOf="parent"/>
 </androidx.constraintlayout.widget.ConstraintLayout>

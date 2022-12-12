@@ -1,5 +1,10 @@
 package com.booktree.ui.home;
 
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.in;
+
+import android.content.Intent;
+import android.net.Uri;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
@@ -8,12 +13,22 @@ import android.view.View;
 import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
+
+import com.booktree.API.FBDatabase;
+import com.booktree.ui.MainActivity;
+import com.booktree.R;
+
+import com.booktree.ui.home.friendsList.FollowerActivity;
+import com.booktree.ui.home.friendsList.FollowingActivity;
+
 
 import com.booktree.common.MutableListLiveData;
 import com.booktree.databinding.FragmentHomeBinding;
 import com.booktree.ui.home.CalendarfeedList.CalendarFeedRecyclerList;
+import com.bumptech.glide.Glide;
 import com.github.sundeepk.compactcalendarview.CompactCalendarView;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -21,17 +36,24 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
+import com.booktree.model.User;
+import com.booktree.databinding.FragmentHomeBinding;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.github.sundeepk.compactcalendarview.domain.Event;
 
 import javax.crypto.spec.GCMParameterSpec;
 
 public class HomeFragment extends Fragment {
 
+//  private static final String TAG = "HomeFragment";
   private SimpleDateFormat dateFormatForMonth = new SimpleDateFormat("MMM yyyy", Locale.ENGLISH);
   private SimpleDateFormat dateFormatForDay = new SimpleDateFormat("yyyy-MM-dd", Locale.KOREA);
 
   private HomeViewModel homeViewModel;
   private FragmentHomeBinding binding;
+  private User user;
+  private FirebaseAuth mAuth;
   private Date today;
   private Event ev;
   private ArrayList<Event> eventsList = new ArrayList<>();
@@ -51,6 +73,28 @@ public class HomeFragment extends Fragment {
     final var compactCalendarView = binding.compactcalendarView;
     final var textView_month = binding.textViewMonth;
     final var textView_result = binding.textViewResult;
+    final var profile_image=binding.profileiv;
+    final var textView_username=binding.usernametv;
+    final var follower_Btn=binding.followerbtn;
+    final var following_Btn=binding.followingbtn;
+    mAuth=FirebaseAuth.getInstance();
+    final FirebaseUser curuser = mAuth.getCurrentUser();
+    FBDatabase.getInstance().getUser(curuser.getUid(),(user)->{
+      Glide.with(this).load(user.profileImg).into(profile_image);
+      textView_username.setText(user.name);
+    });
+
+    //팔로워 리스트 불러오기
+    follower_Btn.setOnClickListener(view -> {
+      Intent intent=new Intent(getActivity(), FollowerActivity.class);
+      startActivity(intent);
+    });
+
+    //팔로잉 리스트 불러오기
+    following_Btn.setOnClickListener(view->{
+      Intent intent=new Intent(getActivity(), FollowingActivity.class);
+      startActivity(intent);
+    });
 //    final var barChart = binding.barChart;
     today = new Date();
 
@@ -62,8 +106,6 @@ public class HomeFragment extends Fragment {
       @Override
       public void onDayClick(Date dateClicked) {
         String date = dateFormatForDay.format(dateClicked); //날짜 나오기
-//        Event ev1 = new Event(Color.BLACK, dateClicked.getTime()); //날짜
-//        compactCalendarView.addEvent(ev1);
         homeViewModel.refreshCalendarFeedList(dateClicked,this::stopShimmer);
         textView_result.setText(dateFormatForDay.format(dateClicked));
       }

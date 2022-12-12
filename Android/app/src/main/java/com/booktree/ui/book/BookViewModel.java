@@ -3,7 +3,8 @@ package com.booktree.ui.book;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
-import com.booktree.ui.book.bookList.BookRecyclerList;
+import com.booktree.ui.book.bookList.bookSearchList.BookRecyclerList;
+import java.util.Objects;
 
 public class BookViewModel extends ViewModel {
 
@@ -12,7 +13,6 @@ public class BookViewModel extends ViewModel {
 
   public BookViewModel() {
     mQueryString = new MutableLiveData<>();
-    mQueryString.setValue("This is book fragment");
   }
 
   public void setBookInfoList(BookRecyclerList bookInfoList) {
@@ -26,6 +26,7 @@ public class BookViewModel extends ViewModel {
     return mQueryString;
   }
   public void setQueryString(String value) {
+    if(mQueryString.getValue() != null && mQueryString.getValue().equals(value)) return;
     mQueryString.setValue(value);
   }
 }

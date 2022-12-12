@@ -1,9 +1,6 @@
-package com.booktree.ui.book.bookList;
+package com.booktree.ui.book.bookList.bookSearchList;
 
 import android.content.Context;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.lifecycle.Observer;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -11,9 +8,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.RecyclerView.OnScrollListener;
 import com.booktree.API.APIClient;
 import com.booktree.API.DTO.BookDTO;
-import com.booktree.R;
-import com.booktree.ui.book.bookList.BookListAdapter.Type;
-import com.booktree.ui.book.bookList.Viewholder.ToBookInfoViewHolder;
+import com.booktree.ui.book.bookList.bookSearchList.BookListAdapter.Type;
 import org.jetbrains.annotations.NotNull;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -76,13 +71,12 @@ public class BookRecyclerList {
 
   }
 
-  public Observer<String> getInitialListItems() {
-    return s -> {
-      query = s;
-      currentPage = 0;
-      adapter.clearDocuments();
-      isEnd = false;
-      getItems(++currentPage);
-    };
+  public void getInitialListItems(String queryString) {
+    if(queryString == null || queryString.isEmpty()) return;
+    query = queryString;
+    currentPage = 0;
+    adapter.clearDocuments();
+    isEnd = false;
+    getItems(++currentPage);
   }
 }

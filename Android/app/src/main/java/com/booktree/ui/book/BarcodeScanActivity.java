@@ -9,7 +9,7 @@ import android.widget.Toast;
 
 
 import com.booktree.ui.book.bookDetail.BookDetailActivity;
-import com.booktree.ui.book.BookFragment.BookFragment;
+import com.booktree.ui.book.bookFragment.BookFragment;
 import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
 
