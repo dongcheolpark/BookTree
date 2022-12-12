@@ -164,16 +164,22 @@ public class FBDatabase {
         });
   }
 
-  public void setUser(String userUid, VoidCallback callBack) {
+  public void getUser(String userUid, ResultCallBack<User> callBack) {
     database.collection("Users").whereEqualTo("uid",userUid).get()
         .addOnCompleteListener(task -> {
           if(task.isSuccessful()) {
             var res = task.getResult().getDocuments().get(0).toObject(User.class);
-            user = res;
-            callBack.func();
+            callBack.func(res);
           }
         });
 
+  }
+
+  public void setUser(String userUid, VoidCallback callBack) {
+    getUser(userUid,(res) -> {
+      user = res;
+      callBack.func();
+    });
   }
 
   public User getUserInfo(){
