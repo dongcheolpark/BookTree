@@ -54,7 +54,7 @@ public class FeedCreateViewModel extends ViewModel {
 
     FBDatabase.getInstance().uploadImage(mImage.getValue(),(uri) -> {
       var feed = new Feed(mDocument.getValue().getIsbn(),
-          "test",
+          FBDatabase.getInstance().getUserInfo().uid,
           mContents.getValue(),
           uri,
           new Date());
