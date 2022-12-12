@@ -26,7 +26,7 @@
   <fragment
     android:id="@+id/navigation_setting"
     android:label="@string/title_setting"
-    android:name="com.booktree.ui.notifications.NotificationsFragment"
-    tools:layout="@layout/fragment_notifications"/>
+    android:name="com.booktree.ui.setting.SettingFragment"
+    tools:layout="@layout/fragment_setting"/>
 
 </navigation>
