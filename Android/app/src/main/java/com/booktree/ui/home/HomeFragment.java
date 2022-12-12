@@ -80,12 +80,10 @@ public class HomeFragment extends Fragment {
     final var textView_username=binding.usernametv;
     final var follower_Btn=binding.followerbtn;
     final var following_Btn=binding.followingbtn;
-    mAuth=FirebaseAuth.getInstance();
-    final FirebaseUser curuser = mAuth.getCurrentUser();
-    FBDatabase.getInstance().getUser(curuser.getUid(),(user)->{
-      Glide.with(this).load(user.profileImg).into(profile_image);
-      textView_username.setText(user.name);
-    });
+
+    var user = FBDatabase.getInstance().getUserInfo();
+    Glide.with(this).load(user.profileImg).into(profile_image);
+    textView_username.setText(user.name);
 
     //팔로워 리스트 불러오기
     follower_Btn.setOnClickListener(view -> {

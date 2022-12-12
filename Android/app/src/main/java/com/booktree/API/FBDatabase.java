@@ -175,11 +175,13 @@ public class FBDatabase {
 
   }
 
-  public void setUser(User currentuser){
-    this.user.name= currentuser.name;
-    this.user.profileImg= currentuser.profileImg;
-    this.user.uid=currentuser.uid;
+  public void setUser(String userUid, VoidCallback callBack) {
+    getUser(userUid,(res) -> {
+      user = res;
+      callBack.func();
+    });
   }
+
   public User getUserInfo(){
     return user;
   }
@@ -226,10 +228,7 @@ public class FBDatabase {
                 var countLatch = new CountDownLatch(size);
                 friendList.forEach(item -> {
                     executorService.execute(() -> {
-                      getUser(item, (user) -> {
-                        res.add(user);
-                        countLatch.countDown();
-                      });
+                      res.add(getUserInfo());
                     });
                 });
                 countLatch.await(5, TimeUnit.SECONDS);
