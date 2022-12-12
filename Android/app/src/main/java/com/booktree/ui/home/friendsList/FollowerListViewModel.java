@@ -10,6 +10,7 @@ import com.booktree.model.User;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.FirebaseFirestore;
+import static org.assertj.core.api.Assertions.assertThat;
 
 import java.util.ArrayList;
 
@@ -34,10 +35,10 @@ public class FollowerListViewModel extends ViewModel {
     }
 
     public void refreshFollowList(){
-        /*FBDatabase.getInstance().showFollowerList((list)->{
-            mFollowerList.clear(false);
-            mFollowerList.addAll(list);
-        });*/
+        FirebaseUser user = mAuth.getCurrentUser();
+        FBDatabase.getInstance().getFollower(user.getUid(),(list)->{
+            mFollowerList.setValue(new ArrayList<>(list));
+        });
     }
 
     public LiveData<ArrayList<Friend>> getFriendList() {return mFriendList;}

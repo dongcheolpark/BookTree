@@ -1,11 +1,13 @@
 package com.booktree.API;
 
 import android.net.Uri;
+import android.content.Context;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
 
 import com.booktree.model.Feed;
+import com.bumptech.glide.Glide;
 import com.google.android.gms.tasks.OnCompleteListener;
 import android.os.AsyncTask;
 import android.util.Log;
@@ -26,6 +28,8 @@ import com.google.firebase.firestore.Query.Direction;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -47,6 +51,9 @@ public class FBDatabase {
   private static FBDatabase instance = null;
   private StorageReference storageRef;
   private SimpleDateFormat dateFormatForDay = new SimpleDateFormat("yyyy-MM-dd", Locale.KOREA);
+  private FirebaseAuth mAuth;
+  private Context context;
+  private User user;
 
   public static FBDatabase getInstance() {
     if(instance == null) instance = new FBDatabase();
@@ -166,6 +173,16 @@ public class FBDatabase {
             callBack.func(res);
           }
         });
+
+  }
+
+  public void setUser(User currentuser){
+    this.user.name= currentuser.name;
+    this.user.profileImg= currentuser.profileImg;
+    this.user.uid=currentuser.uid;
+  }
+  public User getUserInfo(){
+    return user;
   }
 
   public void createFollow(Friend friend,VoidCallback callback) {

@@ -3,17 +3,41 @@
   xmlns:android="http://schemas.android.com/apk/res/android"
   xmlns:app="http://schemas.android.com/apk/res-auto"
   xmlns:tools="http://schemas.android.com/tools"
+  android:background="@color/list_background"
   android:layout_width="match_parent"
   android:layout_height="match_parent"
   tools:context=".ui.feed.FeedFragment">
-  <include
+  <androidx.appcompat.widget.Toolbar
     android:id="@+id/toolbar"
-    layout="@layout/toolbar_feed"/>
+    android:layout_width="match_parent"
+    android:layout_height="40dp"
+    android:background="@color/white"
+    app:layout_constraintTop_toTopOf="parent"
+    android:elevation="5dp"
+    >
 
+    <TextView
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_gravity="center"
+      android:text="피드"
+      android:textColor="@color/black"
+      android:textSize="15dp"/>
+  </androidx.appcompat.widget.Toolbar>
+
+
+  <Button
+    android:id="@+id/createFeedBtn"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_marginBottom="32dp"
+    android:layout_marginEnd="32dp"
+    android:text="Button"
+    app:layout_constraintBottom_toBottomOf="parent"
+    app:layout_constraintEnd_toEndOf="parent"/>
   <androidx.constraintlayout.widget.ConstraintLayout
     android:layout_width="match_parent"
     android:layout_height="0dp"
-    android:background="@color/list_background"
     app:layout_constraintBottom_toBottomOf="parent"
     app:layout_constraintTop_toBottomOf="@+id/toolbar">
     <androidx.recyclerview.widget.RecyclerView
@@ -46,16 +70,5 @@
     </com.facebook.shimmer.ShimmerFrameLayout>
 
   </androidx.constraintlayout.widget.ConstraintLayout>
-  <ImageButton
-    android:id="@+id/createFeedBtn"
-    android:layout_marginBottom="25dp"
-    android:layout_marginEnd="25dp"
-    android:layout_width="60dp"
-    android:layout_height="60dp"
-    android:scaleType="centerCrop"
-    android:background="@null"
-    android:src="@drawable/add_feed"
-    app:layout_constraintBottom_toBottomOf="parent"
-    app:layout_constraintEnd_toEndOf="parent"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
