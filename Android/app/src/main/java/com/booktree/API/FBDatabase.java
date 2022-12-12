@@ -120,7 +120,6 @@ public class FBDatabase {
 
     var tomorrow = new Date(date.getTime()+(long)(1000*60*60*24));
     var uid = getUserInfo().uid;
-    Log.d("CalendarFeedTest",getUserInfo().uid);
 
     database.collection("Feeds").whereLessThan("uploadDate",tomorrow).whereGreaterThanOrEqualTo("uploadDate",date).get()
             .addOnCompleteListener((task)-> {
@@ -136,6 +135,22 @@ public class FBDatabase {
                     callback.onGetSuccess(res);
                   }}
             );
+  }
+
+  public void getMyFeed(FBCallbackWithArray<Feed> callback) {
+    var res = new ArrayList<Feed>();
+    database.collection("Feeds").whereEqualTo("author",getUserInfo().uid)
+            .get()
+            .addOnCompleteListener((task)-> {
+              if(task.isSuccessful()) {
+                var feedFBList=task.getResult().getDocuments();
+                if(!feedFBList.isEmpty()){
+                  feedFBList.forEach((item)->{
+                    res.add(item.toObject(Feed.class));
+                  });
+                }
+                callback.onGetSuccess((res));
+              }});
   }
 
   public void uploadImage(Uri uri, FBCallbackUploadImage callback) {
