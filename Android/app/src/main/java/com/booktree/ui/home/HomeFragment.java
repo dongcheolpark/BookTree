@@ -25,6 +25,7 @@ import com.booktree.ui.home.friendsList.FollowingActivity;
 
 import com.booktree.databinding.FragmentHomeBinding;
 import com.booktree.ui.home.CalendarfeedList.CalendarFeedRecyclerList;
+import com.bumptech.glide.Glide;
 import com.github.sundeepk.compactcalendarview.CompactCalendarView;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -69,9 +70,9 @@ public class HomeFragment extends Fragment {
     mAuth=FirebaseAuth.getInstance();
     final FirebaseUser curuser = mAuth.getCurrentUser();
     FBDatabase.getInstance().getUser(curuser.getUid(),(user)->{
-      });
-    profile_image.setImageURI(Uri.parse(user.profileImg));
-    textView_username.setText(user.name);
+      Glide.with(this).load(user.profileImg).into(profile_image);
+      textView_username.setText(user.name);
+    });
 
     //팔로워 리스트 불러오기
     follower_Btn.setOnClickListener(view -> {
