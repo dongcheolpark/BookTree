@@ -24,13 +24,13 @@ import com.booktree.API.FBDatabase;
 import com.booktree.ui.MainActivity;
 import com.booktree.R;
 
+import com.booktree.ui.feed.feedList.FeedRecyclerList;
 import com.booktree.ui.home.friendsList.FollowerActivity;
 import com.booktree.ui.home.friendsList.FollowingActivity;
 
 
 import com.booktree.common.MutableListLiveData;
 import com.booktree.databinding.FragmentHomeBinding;
-import com.booktree.ui.home.CalendarfeedList.CalendarFeedRecyclerList;
 import com.bumptech.glide.Glide;
 import com.github.sundeepk.compactcalendarview.CompactCalendarView;
 import java.text.SimpleDateFormat;
@@ -125,7 +125,7 @@ public class HomeFragment extends Fragment {
     });
 
     final var feedListView = binding.calendarFeedList;
-    var feedList = new CalendarFeedRecyclerList(feedListView,getActivity());
+    var feedList = new FeedRecyclerList(feedListView,getActivity());
     homeViewModel.getCalendarFeedList().observe(getViewLifecycleOwner(), (list) -> {
       feedList.getAdapter().setList(list);
     });
