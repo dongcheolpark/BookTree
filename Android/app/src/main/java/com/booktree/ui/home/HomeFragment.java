@@ -1,5 +1,6 @@
 package com.booktree.ui.home;
 
+import static android.widget.Toast.*;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.in;
 
@@ -11,6 +12,8 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
+
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
@@ -57,7 +60,7 @@ public class HomeFragment extends Fragment {
   private Date today;
   private Event ev;
   private ArrayList<Event> eventsList = new ArrayList<>();
-  private int count;
+  private long count;
 
   public View onCreateView(@NonNull LayoutInflater inflater,
                            ViewGroup container, Bundle savedInstanceState) {
@@ -133,16 +136,6 @@ public class HomeFragment extends Fragment {
     homeViewModel.refreshCalendarEvents(this::showEvents);
     Log.d("EventsTest","내부");
 
-
-    //1. 데이터 생성
-//    BarDataSet barDataSet1 = new BarDataSet(data1(), "Data1");
-//    //2. 바 데이터 생성
-//    BarData barData = new BarData();
-//    //3. 바 데이터에 데이터셋 추가
-//    barData.addDataSet(barDataSet1);
-//    //4. 바차트에 바데이터 등록
-//    barChart.setData(barData);
-
     View root = binding.getRoot();
 
     return root;
@@ -166,7 +159,8 @@ public class HomeFragment extends Fragment {
     Log.d("EventsTest","여기 들어옴");
     final var compactCalendarView = binding.compactcalendarView;
     compactCalendarView.removeAllEvents();
-    count = homeViewModel.getCalendarEvents().getValue().size(); //왜 얘가 자꾸 커지지
+    count = homeViewModel.getCalendarEvents().getValue().stream().count(); //왜 얘가 자꾸 커지지
+    Log.d("EventsTest","count : "+count);
     for(int i=0;i<count;i++){
       ev = new Event(Color.BLACK,homeViewModel.getCalendarEvents().getValue().get(i).getTime());
         compactCalendarView.addEvent(ev);
