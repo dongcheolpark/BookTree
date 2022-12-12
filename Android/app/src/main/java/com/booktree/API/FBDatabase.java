@@ -1,10 +1,13 @@
 package com.booktree.API;
 
+import android.net.Uri;
+import android.content.Context;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
 
 import com.booktree.model.Feed;
+import com.bumptech.glide.Glide;
 import com.google.android.gms.tasks.OnCompleteListener;
 import android.os.AsyncTask;
 import android.util.Log;
@@ -21,9 +24,12 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.Query.Direction;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -45,6 +51,9 @@ public class FBDatabase {
   private static FBDatabase instance = null;
   private StorageReference storageRef;
   private SimpleDateFormat dateFormatForDay = new SimpleDateFormat("yyyy-MM-dd", Locale.KOREA);
+  private FirebaseAuth mAuth;
+  private Context context;
+  private User user;
 
   public static FBDatabase getInstance() {
     if(instance == null) instance = new FBDatabase();
@@ -61,7 +70,10 @@ public class FBDatabase {
   }
 
   public void getFeed(FBCallbackWithArray<Feed> callback) {
-    database.collection("Feeds").get()
+    database.collection("Feeds")
+        .orderBy("uploadDate", Direction.DESCENDING)
+        .limit(10)
+        .get()
         .addOnCompleteListener((task)-> {
           if(task.isSuccessful()) {
             var res = task.getResult()
@@ -75,7 +87,7 @@ public class FBDatabase {
 
   public void getFeedCurrentUpload(FBCallbackWithArray<Feed> callback) {
     database.collection("Feeds")
-        .orderBy("uploadDate")
+        .orderBy("uploadDate",Direction.DESCENDING)
         .limit(5)
         .get()
         .addOnCompleteListener((task) -> {
@@ -89,7 +101,6 @@ public class FBDatabase {
           }
         });
   }
-
   public void getFeedWithIsbn(String isbn,FBCallbackWithArray<Feed> callback) {
     var res = new ArrayList<Feed>();
     database.collection("Feeds").whereEqualTo("book",isbn).get()
@@ -110,7 +121,7 @@ public class FBDatabase {
     var tomorrow = new Date(date.getTime()+(long)(1000*60*60*24));
     var timestamp2 = new Timestamp(tomorrow);
 
-    database.collection("Feeds").whereLessThan("uploadDate",timestamp2.toDate()).whereGreaterThanOrEqualTo("uploadDate",timestamp.toDate()).get()
+    database.collection("Feeds").whereLessThan("uploadDate",tomorrow).whereGreaterThanOrEqualTo("uploadDate",date).get()
             .addOnCompleteListener((task)-> {
               if(task.isSuccessful()) {
 //                for(QueryDocumentSnapshot document : task.getResult()){
@@ -128,24 +139,17 @@ public class FBDatabase {
             );
   }
 
-  public void uploadImage(File file, FBCallbackUploadImage callback) {
-    try {
-      var imageRef = storageRef.child(file.getName());
-      var inputStream = new FileInputStream(file);
-      imageRef.putStream(inputStream).addOnCompleteListener((snapshot)-> {
-        if(snapshot.isSuccessful()) {
-          imageRef.getDownloadUrl().addOnCompleteListener((resTask) -> {
-            if(resTask.isSuccessful()) {
-              callback.func(resTask.getResult().toString());
-            }
-          });
-        }
-      });
-    } catch (FileNotFoundException e) {
-      return;
-    } catch (Exception e) {
-      return;
-    }
+  public void uploadImage(Uri uri, FBCallbackUploadImage callback) {
+    var imageRef = storageRef.child("image");
+    imageRef.putFile(uri).addOnCompleteListener((snapshot)-> {
+      if(snapshot.isSuccessful()) {
+        imageRef.getDownloadUrl().addOnCompleteListener((resTask) -> {
+          if(resTask.isSuccessful()) {
+            callback.func(resTask.getResult().toString());
+          }
+        });
+      }
+    });
   }
 
   public void createUser(User user, VoidCallback callback) {
@@ -168,6 +172,16 @@ public class FBDatabase {
             callBack.func(res);
           }
         });
+
+  }
+
+  public void setUser(User currentuser){
+    this.user.name= currentuser.name;
+    this.user.profileImg= currentuser.profileImg;
+    this.user.uid=currentuser.uid;
+  }
+  public User getUserInfo(){
+    return user;
   }
 
   public void createFollow(Friend friend,VoidCallback callback) {

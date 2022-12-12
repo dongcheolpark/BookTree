@@ -97,30 +97,23 @@ import org.checkerframework.checker.units.qual.A;
 
 import java.util.ArrayList;
 
-public class FollowerFragment extends Fragment {
+public class FollowerActivity extends AppCompatActivity {
 
     private FollowerListViewModel followerListviewModel;
     private ActivityFollowerBinding binding;
-    private ArrayList<Friend> friendArrayList;
 
-    public View onCreateView(@NonNull LayoutInflater inflater,
-                             ViewGroup container, Bundle savedInstanceState) {
+
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
         followerListviewModel=new ViewModelProvider(this).get(FollowerListViewModel.class);
-        binding= ActivityFollowerBinding.inflate(inflater, container, false);
-
+        binding= ActivityFollowerBinding.inflate(getLayoutInflater());
+        setContentView(binding.getRoot());
         final var followerListView=binding.followerList;
-        var followerList = new FollowerRecyclerList(followerListView,getActivity());
-        followerListviewModel.getFollowerList().observe(getViewLifecycleOwner(),followerList::setFriendList);
+        var followerList = new FollowerRecyclerList(followerListView,this);
+        followerListviewModel.getFollowerList().observe(this,followerList::setFriendList);
         followerListviewModel.refreshFollowList();
 
-        View root = binding.getRoot();
-        return root;
-
     }
 
-    @Override
-    public void onDestroyView(){
-        super.onDestroyView();
-        binding=null;
-    }
+
 }

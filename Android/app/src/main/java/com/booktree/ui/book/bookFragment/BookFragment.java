@@ -82,7 +82,7 @@ public abstract class BookFragment extends Fragment {
         imm.hideSoftInputFromWindow(searchBookInfo.getWindowToken(),0);
         bookViewModel.setQueryString(searchBookInfo.getText().toString());
       }
-      return true;
+      return false;
     });
   }
 
