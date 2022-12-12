@@ -164,22 +164,18 @@ public class FBDatabase {
         });
   }
 
-  public void getUser(String userUid, ResultCallBack<User> callBack) {
+  public void setUser(String userUid, VoidCallback callBack) {
     database.collection("Users").whereEqualTo("uid",userUid).get()
         .addOnCompleteListener(task -> {
           if(task.isSuccessful()) {
             var res = task.getResult().getDocuments().get(0).toObject(User.class);
-            callBack.func(res);
+            user = res;
+            callBack.func();
           }
         });
 
   }
 
-  public void setUser(User currentuser){
-    this.user.name= currentuser.name;
-    this.user.profileImg= currentuser.profileImg;
-    this.user.uid=currentuser.uid;
-  }
   public User getUserInfo(){
     return user;
   }
@@ -226,10 +222,7 @@ public class FBDatabase {
                 var countLatch = new CountDownLatch(size);
                 friendList.forEach(item -> {
                     executorService.execute(() -> {
-                      getUser(item, (user) -> {
-                        res.add(user);
-                        countLatch.countDown();
-                      });
+                      res.add(getUserInfo());
                     });
                 });
                 countLatch.await(5, TimeUnit.SECONDS);
