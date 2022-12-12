@@ -1,4 +1,4 @@
-package com.booktree.ui.home.Profile;
+package com.booktree;
 
 import static android.app.Activity.RESULT_CANCELED;
 import static android.app.Activity.RESULT_OK;

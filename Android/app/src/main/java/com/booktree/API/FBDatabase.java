@@ -1,5 +1,13 @@
 package com.booktree.API;
 
+import android.content.Context;
+import android.util.Log;
+
+import androidx.annotation.NonNull;
+
+import com.booktree.model.Feed;
+import com.bumptech.glide.Glide;
+import com.google.android.gms.tasks.OnCompleteListener;
 import android.os.AsyncTask;
 import android.util.Log;
 import com.booktree.common.ResultCallBack;
@@ -8,14 +16,26 @@ import com.booktree.model.Feed;
 import com.booktree.model.Friend;
 import com.booktree.model.User;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.Timestamp;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.sql.Time;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.Locale;
 import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.CountDownLatch;
@@ -28,6 +48,10 @@ public class FBDatabase {
   private FirebaseFirestore database;
   private static FBDatabase instance = null;
   private StorageReference storageRef;
+  private SimpleDateFormat dateFormatForDay = new SimpleDateFormat("yyyy-MM-dd", Locale.KOREA);
+  private FirebaseAuth mAuth;
+  private Context context;
+  private User user;
 
   public static FBDatabase getInstance() {
     if(instance == null) instance = new FBDatabase();
@@ -67,6 +91,31 @@ public class FBDatabase {
             });
             callback.onGetSuccess(res);
           }});
+  }
+
+  public void getFeedInCalendar(Date date, FBCallbackWithArray<Feed> callback) {
+    var res = new ArrayList<Feed>();
+
+    var timestamp = new Timestamp(date);
+    var tomorrow = new Date(date.getTime()+(long)(1000*60*60*24));
+    var timestamp2 = new Timestamp(tomorrow);
+
+    database.collection("Feeds").whereLessThan("uploadDate",timestamp2.toDate()).whereGreaterThanOrEqualTo("uploadDate",timestamp.toDate()).get()
+            .addOnCompleteListener((task)-> {
+              if(task.isSuccessful()) {
+//                for(QueryDocumentSnapshot document : task.getResult()){
+//                  Log.d("timeTest",document.getId() + "=>" + document.getData());
+//                  }
+                var feedFBList = task.getResult().getDocuments();
+                if(!feedFBList.isEmpty()){
+                  feedFBList.forEach((item) -> {
+                    res.add(item.toObject(Feed.class));
+                  });} else{
+                  Log.d("timeTest","피드 없음");
+                }
+                callback.onGetSuccess(res);
+              }}
+            );
   }
 
   public void uploadImage(File file, FBCallbackUploadImage callback) {
@@ -109,6 +158,16 @@ public class FBDatabase {
             callBack.func(res);
           }
         });
+
+  }
+
+  public void setUser(User currentuser){
+    this.user.name= currentuser.name;
+    this.user.profileImg= currentuser.profileImg;
+    this.user.uid=currentuser.uid;
+  }
+  public User getUserInfo(){
+    return user;
   }
 
   public void createFollow(Friend friend,VoidCallback callback) {

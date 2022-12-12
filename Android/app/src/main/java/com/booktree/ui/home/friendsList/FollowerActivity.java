@@ -101,7 +101,7 @@ public class FollowerActivity extends AppCompatActivity {
 
     private FollowerListViewModel followerListviewModel;
     private ActivityFollowerBinding binding;
-    private ArrayList<Friend> friendArrayList;
+
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

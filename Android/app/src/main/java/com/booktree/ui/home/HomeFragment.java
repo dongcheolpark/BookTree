@@ -5,6 +5,7 @@ import static org.assertj.core.api.Assertions.in;
 
 import android.content.Intent;
 import android.net.Uri;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -21,6 +22,9 @@ import com.booktree.R;
 import com.booktree.ui.home.friendsList.FollowerActivity;
 import com.booktree.ui.home.friendsList.FollowingActivity;
 
+
+import com.booktree.databinding.FragmentHomeBinding;
+import com.booktree.ui.home.CalendarfeedList.CalendarFeedRecyclerList;
 import com.github.sundeepk.compactcalendarview.CompactCalendarView;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -30,6 +34,7 @@ import com.booktree.model.User;
 import com.booktree.databinding.FragmentHomeBinding;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.github.sundeepk.compactcalendarview.domain.Event;
 
 public class HomeFragment extends Fragment {
 
@@ -41,13 +46,18 @@ public class HomeFragment extends Fragment {
   private FragmentHomeBinding binding;
   private User user;
   private FirebaseAuth mAuth;
+  private Date today;
+
   public View onCreateView(@NonNull LayoutInflater inflater,
                            ViewGroup container, Bundle savedInstanceState) {
     homeViewModel =
         new ViewModelProvider(this).get(HomeViewModel.class);
 
     binding = FragmentHomeBinding.inflate(inflater, container, false);
-    View root = binding.getRoot();
+
+    binding.shimmerFeedList.startShimmer();
+    binding.shimmerFeedList.setVisibility(View.VISIBLE);
+    binding.calendarFeedList.setVisibility(View.INVISIBLE);
 
     final var compactCalendarView = binding.compactcalendarView;
     final var textView_month = binding.textViewMonth;
@@ -59,7 +69,7 @@ public class HomeFragment extends Fragment {
     mAuth=FirebaseAuth.getInstance();
     final FirebaseUser curuser = mAuth.getCurrentUser();
     FBDatabase.getInstance().getUser(curuser.getUid(),(user)->{
-      assertThat(user);});
+      });
     profile_image.setImageURI(Uri.parse(user.profileImg));
     textView_username.setText(user.name);
 
@@ -74,6 +84,8 @@ public class HomeFragment extends Fragment {
       Intent intent=new Intent(getActivity(), FollowingActivity.class);
       startActivity(intent);
     });
+//    final var barChart = binding.barChart;
+    today = new Date();
 
     textView_month.setText(dateFormatForMonth.format(compactCalendarView.getFirstDayOfCurrentMonth())); //위에 MMM yyyy 표시
     compactCalendarView.setFirstDayOfWeek(Calendar.SUNDAY);  //일요일을 시작으로
@@ -84,78 +96,68 @@ public class HomeFragment extends Fragment {
       @Override
       public void onDayClick(Date dateClicked) {
         String date = dateFormatForDay.format(dateClicked); //날짜 나오기
-        textView_result.setText(date);
+        homeViewModel.refreshCalendarFeedList(dateClicked,this::stopShimmer);
+        Event ev1 = new Event(Color.BLACK, dateClicked.getTime()); //날짜
+        compactCalendarView.addEvent(ev1);
+        textView_result.setText(dateClicked.toString());
       }
 
-
+      private void stopShimmer() {
+        binding.shimmerFeedList.stopShimmer();
+        binding.calendarFeedList.setVisibility(View.VISIBLE);
+        binding.shimmerFeedList.setVisibility(View.INVISIBLE);
+      }
 
       @Override
       public void onMonthScroll(Date firstDayOfNewMonth) {
         textView_month.setText(dateFormatForMonth.format(firstDayOfNewMonth));
       }
 
-
-
-//        // 해당날짜에 이벤트가 있으면
-//        if (events.size() > 0) {
-//          textView_result.setText(events.get(0).getData().toString());
-//        }
-//        // 해당날짜에 이벤트가 없으면
-//        else {
-//          SimpleDateFormat simpleDate = new SimpleDateFormat("yyyy-MM-dd", Locale.KOREA);
-//          String clickDate = simpleDate.format(dateClicked);
-//
-//          EditText editText = new EditText(HomeFragment.this.getContext());
-//          AlertDialog.Builder builder = new AlertDialog.Builder(HomeFragment.this.getContext());
-//          AlertDialog dialogText = builder.setTitle("추가할 일정을 입력해 주세요.")
-//                  // .setMessage("메시지 입력")
-//                  .setView(editText)
-//                  .setPositiveButton("저장하기", new DialogInterface.OnClickListener() {
-//                    @SuppressLint("SetTextI18n")
-//                    @Override
-//                    public void onClick(DialogInterface dialog, int which) {
-//                      String dateClicked_st = simpleDate.format(dateClicked);
-//                      Log.d(TAG, "태그 dateClicked_st : " + dateClicked_st);
-//
-//                      Date currentDay = null;
-//                      try {
-//                        // .parse 함수 : Parses text from a string to produce a Date (문자열에서 텍스트를 분석하여 날짜 생성)
-//                        currentDay = simpleDate.parse(dateClicked_st);
-//                        Log.d(TAG, "태그 currentDay : " + currentDay);
-//
-//                      } catch (ParseException e) {
-//                        e.printStackTrace();
-//                      }
-//                      Long currentLong = currentDay.getTime();
-//                      Log.d(TAG, "태그 currentLong : " + currentLong);
-//
-//                      Event ev1 = new Event(Color.GREEN, currentLong, clickDate + " : " + editText.getText().toString());
-//                      compactCalendarView.addEvent(ev1);
-//                      textView_result.setText(clickDate + " : " + editText.getText().toString());
-//                      Toast.makeText(HomeFragment.this.getContext(), "일정이 저장되었습니다.", Toast.LENGTH_SHORT).show();
-//                    }
-//                  })
-//                  .setNegativeButton("취소", new DialogInterface.OnClickListener() {
-//                    @Override
-//                    public void onClick(DialogInterface dialog, int which) {
-//                      // 취소 클릭 시 실행할 거 작성
-//                      Toast.makeText(HomeFragment.this.getContext(), "일정입력 취소되었습니다.", Toast.LENGTH_SHORT).show();
-//                    }
-//                  })
-//                  .create();
-//          dialogText.show();
-//        }
-//      }
-
-//      @Override
-//      public void onMonthScroll(Date firstDayOfNewMonth) {
-//        textView_month.setText(dateFormatForMonth.format(firstDayOfNewMonth));
-//        Log.d(TAG, "Month was scrolled to: " + firstDayOfNewMonth);
-//      }
     });
+
+    final var feedListView = binding.calendarFeedList;
+    var feedList = new CalendarFeedRecyclerList(feedListView,getActivity());
+    homeViewModel.getCalendarFeedList().observe(getViewLifecycleOwner(), (list) -> {
+      feedList.getAdapter().setList(list);
+    });
+
+    homeViewModel.refreshCalendarFeedList(today,this::stopShimmer);
+    //1. 데이터 생성
+//    BarDataSet barDataSet1 = new BarDataSet(data1(), "Data1");
+//    //2. 바 데이터 생성
+//    BarData barData = new BarData();
+//    //3. 바 데이터에 데이터셋 추가
+//    barData.addDataSet(barDataSet1);
+//    //4. 바차트에 바데이터 등록
+//    barChart.setData(barData);
+
+    View root = binding.getRoot();
 
     return root;
   }
+
+  protected void stopShimmer() {
+    binding.shimmerFeedList.stopShimmer();
+    binding.calendarFeedList.setVisibility(View.VISIBLE);
+    binding.shimmerFeedList.setVisibility(View.INVISIBLE);
+  }
+
+  @Override
+  public void onResume() {
+    super.onResume();
+    homeViewModel.refreshCalendarFeedList(today,this::stopShimmer);
+  }
+//
+//  private ArrayList<BarEntry> data1(){
+//    ArrayList<BarEntry> dataList = new ArrayList<>();
+//
+//    dataList.add(new BarEntry(0,3));
+//    dataList.add(new BarEntry(1,6));
+//    dataList.add(new BarEntry(2,10));
+//    dataList.add(new BarEntry(3,15));
+//    return dataList;
+//  }
+
 
   @Override
   public void onDestroyView() {

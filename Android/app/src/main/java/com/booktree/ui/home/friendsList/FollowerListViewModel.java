@@ -36,7 +36,9 @@ public class FollowerListViewModel extends ViewModel {
 
     public void refreshFollowList(){
         FirebaseUser user = mAuth.getCurrentUser();
-        FBDatabase.getInstance().getFollowing(user.getUid(),(list)->{assertThat(list.size());});
+        FBDatabase.getInstance().getFollower(user.getUid(),(list)->{
+            mFollowerList.setValue(new ArrayList<>(list));
+        });
     }
 
     public LiveData<ArrayList<Friend>> getFriendList() {return mFriendList;}
