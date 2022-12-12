@@ -10,9 +10,11 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
+import com.booktree.API.FBDatabase;
 import com.booktree.ui.book.bookDetail.BookDetailActivity;
 import com.booktree.R;
 import com.booktree.model.Feed;
+import com.booktree.ui.feed.feedDetail.FeedDetailActivity;
 import com.bumptech.glide.Glide;
 import java.util.ArrayList;
 import org.jetbrains.annotations.NotNull;
@@ -66,12 +68,14 @@ public class FeedListAdapter extends RecyclerView.Adapter<FeedListAdapter.ViewHo
     }
 
     public void setContents(Context context,Feed feed) {
-      author.setText(feed.author);
-      content.setText(feed.contents);
+      FBDatabase.getInstance().getUser(feed.author, (user) -> {
+        author.setText(user.name);
+        content.setText(feed.contents);
+      });
       Glide.with(context).load(feed.imageUrl).into(image);
       card.setOnClickListener((view) -> {
-        Intent intent = new Intent(context, BookDetailActivity.class);
-        intent.putExtra("isbn",feed.book);
+        Intent intent = new Intent(context, FeedDetailActivity.class);
+        intent.putExtra("feed",feed);
         context.startActivity(intent);
       });
     }

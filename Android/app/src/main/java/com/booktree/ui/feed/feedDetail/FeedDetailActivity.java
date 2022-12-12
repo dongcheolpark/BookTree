@@ -5,6 +5,7 @@ import android.os.Bundle;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.ViewModelProvider;
+import com.booktree.API.FBDatabase;
 import com.booktree.databinding.ActivityFeedDetailBinding;
 import com.booktree.model.Feed;
 import com.booktree.ui.book.bookList.bookSearchList.Viewholder.ToBookInfoViewHolder;
@@ -37,7 +38,10 @@ public class FeedDetailActivity extends AppCompatActivity {
 
   private void setContents() {
     viewModel.getFeed().observe(this,(feed) -> {
-      binding.feedAuthor.setText(feed.author);
+      FBDatabase.getInstance().getUser(feed.author,(user) -> {
+        Glide.with(this).load(user.profileImg).into(binding.feedAvatar);
+        binding.feedAuthor.setText(user.name);
+      });
       binding.feedContent.setText(feed.contents);
       Glide.with(this).load(feed.imageUrl).into(binding.feedImage);
       setViewHolder(feed.book);
