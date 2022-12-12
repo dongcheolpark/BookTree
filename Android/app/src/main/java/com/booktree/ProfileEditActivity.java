@@ -26,7 +26,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 
 import com.booktree.API.FBDatabase;
-import com.booktree.MainActivity;
+import com.booktree.ui.MainActivity;
 import com.booktree.R;
 import com.booktree.common.VoidCallback;
 import com.booktree.databinding.ActivityProfileeditBinding;
