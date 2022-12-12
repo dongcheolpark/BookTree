@@ -14,12 +14,10 @@ public abstract class RecyclerViewList<T extends Adapter> {
   public RecyclerViewList(RecyclerView recyclerView, Context context) {
     this.recyclerView = recyclerView;
     this.context = context;
-    layoutManager = new LinearLayoutManager(this.context);
-    layoutManager.setOrientation(RecyclerView.VERTICAL);
-    recyclerView.setLayoutManager(layoutManager);
   }
 
   public T getAdapter() {
     return adapter;
   }
+
 }

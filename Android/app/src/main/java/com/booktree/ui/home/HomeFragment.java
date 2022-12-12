@@ -16,7 +16,7 @@ import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.booktree.API.FBDatabase;
-import com.booktree.MainActivity;
+import com.booktree.ui.MainActivity;
 import com.booktree.R;
 
 import com.booktree.ui.home.friendsList.FollowerActivity;

@@ -15,18 +15,15 @@ public class FeedCreateViewModel extends ViewModel {
   private MutableLiveData<Documents> mDocument;
   private MutableLiveData<String> mContents;
   private MutableLiveData<Uri> mImage;
-  private MutableLiveData<File> mImageFile;
 
   public FeedCreateViewModel() {
     mDocument = new MutableLiveData<>();
     mContents = new MutableLiveData<>();
     mImage = new MutableLiveData<>();
-    mImageFile = new MutableLiveData<>();
   }
   public void setImage(Uri uri) {
     mImage.setValue(uri);
   }
-  public void setImageFile(File file) {mImageFile.setValue(file);}
 
   public void setDocument(Documents document) {
     mDocument.postValue(document);
@@ -40,12 +37,12 @@ public class FeedCreateViewModel extends ViewModel {
     return mDocument;
   }
   public LiveData<Uri> getUri() {return mImage;}
-  public LiveData<File> getFile() {return mImageFile;}
 
   private boolean validate() {
     if(mDocument.getValue() == null) return false;
     if(mDocument.getValue().isbn.equals("")) return false;
     if(mContents.getValue() == null) return false;
+    if(mImage == null) return false;
     return true;
   }
 
@@ -54,7 +51,8 @@ public class FeedCreateViewModel extends ViewModel {
       fail.func();
       return;
     }
-    FBDatabase.getInstance().uploadImage(mImageFile.getValue(),(uri) -> {
+
+    FBDatabase.getInstance().uploadImage(mImage.getValue(),(uri) -> {
       var feed = new Feed(mDocument.getValue().getIsbn(),
           "test",
           mContents.getValue(),

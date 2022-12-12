@@ -1,8 +1,9 @@
-package com.booktree;
+package com.booktree.ui;
 
 import android.content.Intent;
 import android.os.Bundle;
 import android.widget.Toast;
+import com.booktree.R;
 import com.booktree.ui.book.BarcodeScanActivity;
 
 

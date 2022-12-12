@@ -1,10 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    tools:context=".ui.home.HomeFragment"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+<androidx.constraintlayout.widget.ConstraintLayout
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.home.HomeFragment">
+    android:background="#C1E1E1E1">
 
     <FrameLayout
         android:id="@+id/linearLayout2"
@@ -43,17 +48,15 @@
                 android:text="팔로잉" />
 
             <Button
-                    android:id="@+id/followerbtn"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="팔로워" />
+                android:id="@+id/followerbtn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="팔로워" />
 
 
 
         </LinearLayout>
     </FrameLayout>
-
-
 
 
     <TextView
@@ -70,6 +73,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/linearLayout2" />
+
     <View
         android:id="@+id/divider"
         android:layout_width="380dp"
@@ -116,7 +120,6 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView_result">
 
-
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/calendarFeedList"
             android:layout_width="match_parent"
@@ -141,10 +144,11 @@
                 android:layout_height="match_parent"
                 android:orientation="vertical">
 
-                <include layout="@layout/layout_item_shimmer" />
-                <include layout="@layout/layout_item_shimmer" />
-                <include layout="@layout/layout_item_shimmer" />
-                <include layout="@layout/layout_item_shimmer" />
+                <include layout="@layout/item_shimmer_layout" />
+                <include layout="@layout/item_shimmer_layout" />
+                <include layout="@layout/item_shimmer_layout" />
+                <include layout="@layout/item_shimmer_layout" />
+
             </LinearLayout>
         </com.facebook.shimmer.ShimmerFrameLayout>
 

@@ -6,6 +6,7 @@ import androidx.lifecycle.ViewModel;
 import com.booktree.API.APIClient;
 import com.booktree.API.DTO.BookDTO;
 import com.booktree.API.FBDatabase;
+import com.booktree.API.GetDocumentAPI;
 import com.booktree.common.MutableListLiveData;
 import com.booktree.common.VoidCallback;
 import com.booktree.model.Documents;
@@ -42,19 +43,9 @@ public class BookDetailViewModel extends ViewModel {
   }
 
   public void setDocumentWithIsbn(String isbn) {
-    APIClient.getInstance().getKakaoAPI().getBookInfo(isbn,
-        "accuracy",
-        1, 10).enqueue(
-        new Callback<BookDTO>() {
-          @Override
-          public void onResponse(Call<BookDTO> call, Response<BookDTO> response) {
-            mDocument.setValue(response.body().documents[0]);
-          }
-          @Override
-          public void onFailure(Call<BookDTO> call, Throwable t) {
-          }
-        }
-    );
+    GetDocumentAPI.getInstance().getDocumentWithISBN(isbn,(res) -> {
+      mDocument.setValue(res);
+    });
   }
 
   public LiveData<Documents> getDocument() {

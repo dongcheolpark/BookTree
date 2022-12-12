@@ -1,4 +1,4 @@
-package com.booktree;
+package com.booktree.ui;
 
 import androidx.activity.result.ActivityResult;
 import androidx.activity.result.ActivityResultCallback;
@@ -14,6 +14,7 @@ import android.util.Log;
 import android.view.View;
 
 import com.booktree.API.FBDatabase;
+import com.booktree.R;
 import com.booktree.databinding.ActivityAuthBinding;
 import com.booktree.ProfileEditActivity;
 import com.bumptech.glide.Glide;
