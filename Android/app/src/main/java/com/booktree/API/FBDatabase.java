@@ -37,6 +37,8 @@ import java.io.FileNotFoundException;
 import java.io.Serializable;
 import java.sql.Time;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.Locale;
@@ -155,7 +157,7 @@ public class FBDatabase {
   }
 
   public void uploadImage(Uri uri, FBCallbackUploadImage callback) {
-    var imageRef = storageRef.child("image");
+    var imageRef = storageRef.child("image").child(LocalDate.now().toString()+LocalTime.now().toString());
     imageRef.putFile(uri).addOnCompleteListener((snapshot)-> {
       if(snapshot.isSuccessful()) {
         imageRef.getDownloadUrl().addOnCompleteListener((resTask) -> {
