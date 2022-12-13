@@ -59,7 +59,6 @@ public class HomeFragment extends Fragment {
   private FirebaseAuth mAuth;
   private Date today;
   private Event ev;
-  private ArrayList<Event> eventsList = new ArrayList<>();
   private long count;
 
   public View onCreateView(@NonNull LayoutInflater inflater,
@@ -132,7 +131,6 @@ public class HomeFragment extends Fragment {
 
     homeViewModel.refreshCalendarFeedList(today,this::stopShimmer);
     homeViewModel.refreshCalendarEvents(this::showEvents);
-    Log.d("EventsTest","내부");
 
     View root = binding.getRoot();
 
@@ -150,41 +148,18 @@ public class HomeFragment extends Fragment {
     super.onResume();
     homeViewModel.refreshCalendarFeedList(today,this::stopShimmer);
     homeViewModel.refreshCalendarEvents(this::showEvents);
-    Log.d("EventsTest","onResume");
   }
 
-  public void showEvents(){
-    Log.d("EventsTest","여기 들어옴");
+  public void showEvents() {
     final var compactCalendarView = binding.compactcalendarView;
-    compactCalendarView.removeAllEvents();
     count = homeViewModel.getCalendarEvents().getValue().stream().count(); //왜 얘가 자꾸 커지지
-    Log.d("EventsTest","count : "+count);
-    for(int i=0;i<count;i++){
-      ev = new Event(Color.BLACK,homeViewModel.getCalendarEvents().getValue().get(i).getTime());
+    for (int i = 0; i < count; i++) {
+      if(compactCalendarView.getEvents(homeViewModel.getCalendarEvents().getValue().get(i).getTime()).isEmpty()) {
+        ev = new Event(Color.BLACK, homeViewModel.getCalendarEvents().getValue().get(i).getTime());
         compactCalendarView.addEvent(ev);
-        Log.d("EventsTest", String.valueOf(i));
+      }
     }
-//    homeViewModel.getCalendarEvents();
-//    homeViewModel.getCalendarEvents().observe((list)->{
-//      list.forEach((Date)->{
-//        ev = new Event(Color.BLACK,Date.getTime());
-//        compactCalendarView.addEvent(ev);
-//        Log.d("EventsTest", String.valueOf(list.stream().count()));
-//      });
-//
-//    });
   }
-
-//
-//  private ArrayList<BarEntry> data1(){
-//    ArrayList<BarEntry> dataList = new ArrayList<>();
-//
-//    dataList.add(new BarEntry(0,3));
-//    dataList.add(new BarEntry(1,6));
-//    dataList.add(new BarEntry(2,10));
-//    dataList.add(new BarEntry(3,15));
-//    return dataList;
-//  }
 
 
   @Override
