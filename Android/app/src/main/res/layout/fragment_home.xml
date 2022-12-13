@@ -18,14 +18,14 @@
             android:id="@+id/linearLayout3"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:padding="10dp"
-            >
+            android:padding="10dp">
 
-            <ImageView
+            <de.hdodenhof.circleimageview.CircleImageView
                 android:id="@+id/profileiv"
                 android:layout_width="100dp"
                 android:layout_height="100dp"
-                android:src="@drawable/exprofile" />
+                android:layout_margin ="5dp"
+                android:src="@drawable/avatar" />
 
 
             <TextView
