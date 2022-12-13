@@ -53,20 +53,17 @@ public class FollowerListAdapter extends RecyclerView.Adapter<FollowerListAdapte
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
 
-        private final TextView tv_followerid;
         private final ImageView iv_followerprofile;
         private final TextView tv_followername;
 
         public ViewHolder(@NonNull View view) {
             super(view);
             iv_followerprofile=view.findViewById(R.id.iv_followerprofile);
-            tv_followerid=view.findViewById(R.id.tv_followerid);
             tv_followername=view.findViewById(R.id.tv_userid);
         }
 
         public void setContents(Context context, User user){
             tv_followername.setText(user.name);
-            tv_followerid.setText(user.uid);
             Glide.with(context).load(user.profileImg).into(iv_followerprofile);
         }
     }

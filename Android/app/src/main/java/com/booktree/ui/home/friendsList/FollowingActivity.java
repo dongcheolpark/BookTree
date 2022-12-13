@@ -44,11 +44,15 @@ public class FollowingActivity extends AppCompatActivity {
         followingListviewModel = new ViewModelProvider(this).get(FollowingListViewModel.class);
         binding= ActivityFollowingBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
-        followingListviewModel.setFollow((Follow) getIntent().getSerializableExtra("follow"));
         final var followingListView=binding.followingList;
         var followingList = new FollowerRecyclerList(followingListView,this);
         followingListviewModel.getFollowerList().observe(this,followingList::setFriendList);
-        followingListviewModel.refreshFollowingList();
+        if(getIntent().getSerializableExtra("follow") == Follow.Follower) {
+            followingListviewModel.refreshFollowerList();
+        }
+        if(getIntent().getSerializableExtra("follow") == Follow.Following) {
+            followingListviewModel.refreshFollowingList();
+        }
 
     }
 
