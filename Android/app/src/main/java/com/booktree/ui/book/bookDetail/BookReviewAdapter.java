@@ -8,8 +8,10 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
+import com.booktree.API.FBDatabase;
 import com.booktree.R;
 import com.booktree.model.Feed;
+import com.bumptech.glide.Glide;
 import java.util.ArrayList;
 import org.jetbrains.annotations.NotNull;
 
@@ -61,9 +63,11 @@ public class BookReviewAdapter extends RecyclerView.Adapter<BookReviewAdapter.Vi
     }
 
     public void setContents(Feed feed) {
-      author.setText(feed.author);
+      FBDatabase.getInstance().getUser(feed.author, (user) -> {
+        author.setText(user.name);
+        Glide.with(context).load(user.profileImg).into(avatar);
+      });
       contents.setText(feed.contents);
-      //Glide.with(context).load(이미지 URL).into(avatar);
     }
   }
 }

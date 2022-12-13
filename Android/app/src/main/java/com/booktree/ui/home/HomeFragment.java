@@ -1,5 +1,6 @@
 package com.booktree.ui.home;
 
+import static android.widget.Toast.*;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.in;
 
@@ -11,6 +12,8 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
+
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
@@ -21,13 +24,13 @@ import com.booktree.API.FBDatabase;
 import com.booktree.ui.MainActivity;
 import com.booktree.R;
 
+import com.booktree.ui.feed.feedList.FeedRecyclerList;
 import com.booktree.ui.home.friendsList.FollowerActivity;
 import com.booktree.ui.home.friendsList.FollowingActivity;
 
 
 import com.booktree.common.MutableListLiveData;
 import com.booktree.databinding.FragmentHomeBinding;
-import com.booktree.ui.home.CalendarfeedList.CalendarFeedRecyclerList;
 import com.bumptech.glide.Glide;
 import com.github.sundeepk.compactcalendarview.CompactCalendarView;
 import java.text.SimpleDateFormat;
@@ -56,8 +59,7 @@ public class HomeFragment extends Fragment {
   private FirebaseAuth mAuth;
   private Date today;
   private Event ev;
-  private ArrayList<Event> eventsList = new ArrayList<>();
-  private int count;
+  private long count;
 
   public View onCreateView(@NonNull LayoutInflater inflater,
                            ViewGroup container, Bundle savedInstanceState) {
@@ -77,12 +79,10 @@ public class HomeFragment extends Fragment {
     final var textView_username=binding.usernametv;
     final var follower_Btn=binding.followerbtn;
     final var following_Btn=binding.followingbtn;
-    mAuth=FirebaseAuth.getInstance();
-    final FirebaseUser curuser = mAuth.getCurrentUser();
-    FBDatabase.getInstance().getUser(curuser.getUid(),(user)->{
-      Glide.with(this).load(user.profileImg).into(profile_image);
-      textView_username.setText(user.name);
-    });
+
+    var user = FBDatabase.getInstance().getUserInfo();
+    Glide.with(this).load(user.profileImg).into(profile_image);
+    textView_username.setText(user.name);
 
     //팔로워 리스트 불러오기
     follower_Btn.setOnClickListener(view -> {
@@ -124,24 +124,13 @@ public class HomeFragment extends Fragment {
     });
 
     final var feedListView = binding.calendarFeedList;
-    var feedList = new CalendarFeedRecyclerList(feedListView,getActivity());
+    var feedList = new FeedRecyclerList(feedListView,getActivity());
     homeViewModel.getCalendarFeedList().observe(getViewLifecycleOwner(), (list) -> {
       feedList.getAdapter().setList(list);
     });
 
     homeViewModel.refreshCalendarFeedList(today,this::stopShimmer);
     homeViewModel.refreshCalendarEvents(this::showEvents);
-    Log.d("EventsTest","내부");
-
-
-    //1. 데이터 생성
-//    BarDataSet barDataSet1 = new BarDataSet(data1(), "Data1");
-//    //2. 바 데이터 생성
-//    BarData barData = new BarData();
-//    //3. 바 데이터에 데이터셋 추가
-//    barData.addDataSet(barDataSet1);
-//    //4. 바차트에 바데이터 등록
-//    barChart.setData(barData);
 
     View root = binding.getRoot();
 
@@ -159,40 +148,18 @@ public class HomeFragment extends Fragment {
     super.onResume();
     homeViewModel.refreshCalendarFeedList(today,this::stopShimmer);
     homeViewModel.refreshCalendarEvents(this::showEvents);
-    Log.d("EventsTest","onResume");
   }
 
-  public void showEvents(){
-    Log.d("EventsTest","여기 들어옴");
+  public void showEvents() {
     final var compactCalendarView = binding.compactcalendarView;
-    compactCalendarView.removeAllEvents();
-    count = homeViewModel.getCalendarEvents().getValue().size(); //왜 얘가 자꾸 커지지
-    for(int i=0;i<count;i++){
-      ev = new Event(Color.BLACK,homeViewModel.getCalendarEvents().getValue().get(i).getTime());
+    count = homeViewModel.getCalendarEvents().getValue().stream().count(); //왜 얘가 자꾸 커지지
+    for (int i = 0; i < count; i++) {
+      if(compactCalendarView.getEvents(homeViewModel.getCalendarEvents().getValue().get(i).getTime()).isEmpty()) {
+        ev = new Event(Color.BLACK, homeViewModel.getCalendarEvents().getValue().get(i).getTime());
         compactCalendarView.addEvent(ev);
-        Log.d("EventsTest", String.valueOf(i));
+      }
     }
-//    homeViewModel.getCalendarEvents();
-//    homeViewModel.getCalendarEvents().observe((list)->{
-//      list.forEach((Date)->{
-//        ev = new Event(Color.BLACK,Date.getTime());
-//        compactCalendarView.addEvent(ev);
-//        Log.d("EventsTest", String.valueOf(list.stream().count()));
-//      });
-//
-//    });
   }
-
-//
-//  private ArrayList<BarEntry> data1(){
-//    ArrayList<BarEntry> dataList = new ArrayList<>();
-//
-//    dataList.add(new BarEntry(0,3));
-//    dataList.add(new BarEntry(1,6));
-//    dataList.add(new BarEntry(2,10));
-//    dataList.add(new BarEntry(3,15));
-//    return dataList;
-//  }
 
 
   @Override

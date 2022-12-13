@@ -23,6 +23,7 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query.Direction;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
@@ -117,26 +118,39 @@ public class FBDatabase {
   public void getFeedInCalendar(Date date, FBCallbackWithArray<Feed> callback) {
     var res = new ArrayList<Feed>();
 
-    var timestamp = new Timestamp(date);
     var tomorrow = new Date(date.getTime()+(long)(1000*60*60*24));
-    var timestamp2 = new Timestamp(tomorrow);
+    var uid = getUserInfo().uid;
 
     database.collection("Feeds").whereLessThan("uploadDate",tomorrow).whereGreaterThanOrEqualTo("uploadDate",date).get()
             .addOnCompleteListener((task)-> {
-              if(task.isSuccessful()) {
-//                for(QueryDocumentSnapshot document : task.getResult()){
-//                  Log.d("timeTest",document.getId() + "=>" + document.getData());
-//                  }
-                var feedFBList = task.getResult().getDocuments();
-                if(!feedFBList.isEmpty()){
-                  feedFBList.forEach((item) -> {
-                    res.add(item.toObject(Feed.class));
-                  });} else{
-                  Log.d("timeTest","피드 없음");
-                }
-                callback.onGetSuccess(res);
-              }}
+              if(task.isSuccessful()){
+                  var feedFBList = task.getResult().getDocuments();
+                  if(!feedFBList.isEmpty()){
+                    feedFBList.forEach((item) -> {
+                        if(uid.equals(item.get("author")))
+                          res.add(item.toObject(Feed.class));
+                      });} else{
+                      Log.d("timeTest","피드 없음");
+                    }
+                    callback.onGetSuccess(res);
+                  }}
             );
+  }
+
+  public void getMyFeed(FBCallbackWithArray<Feed> callback) {
+    var res = new ArrayList<Feed>();
+    database.collection("Feeds").whereEqualTo("author",getUserInfo().uid)
+            .get()
+            .addOnCompleteListener((task)-> {
+              if(task.isSuccessful()) {
+                var feedFBList=task.getResult().getDocuments();
+                if(!feedFBList.isEmpty()){
+                  feedFBList.forEach((item)->{
+                    res.add(item.toObject(Feed.class));
+                  });
+                }
+                callback.onGetSuccess((res));
+              }});
   }
 
   public void uploadImage(Uri uri, FBCallbackUploadImage callback) {
@@ -175,11 +189,13 @@ public class FBDatabase {
 
   }
 
-  public void setUser(User currentuser){
-    this.user.name= currentuser.name;
-    this.user.profileImg= currentuser.profileImg;
-    this.user.uid=currentuser.uid;
+  public void setUser(String userUid, VoidCallback callBack) {
+    getUser(userUid,(res) -> {
+      user = res;
+      callBack.func();
+    });
   }
+
   public User getUserInfo(){
     return user;
   }
@@ -226,10 +242,7 @@ public class FBDatabase {
                 var countLatch = new CountDownLatch(size);
                 friendList.forEach(item -> {
                     executorService.execute(() -> {
-                      getUser(item, (user) -> {
-                        res.add(user);
-                        countLatch.countDown();
-                      });
+                      res.add(getUserInfo());
                     });
                 });
                 countLatch.await(5, TimeUnit.SECONDS);

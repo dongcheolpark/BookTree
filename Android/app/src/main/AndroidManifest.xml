@@ -13,24 +13,24 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.BookTree">
+        <activity android:name=".ui.SplashActivity"
+          android:theme="@style/SplashTheme"
+          android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
         <activity
             android:name=".ui.MainActivity"
             android:exported="true"
             android:label="@string/app_name">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-            </intent-filter>
         </activity>
         <activity
             android:name=".ui.AuthActivity"
             android:exported="true">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
         </activity>
-        <activity android:name=".ui.book.bookDetail.BookDetailActivity" />
+        <activity android:name=".ui.book.bookDetail.BookDetailActivity" android:launchMode="singleTask"/>
         <activity android:name=".ui.book.BarcodeScanActivity" />
         <activity android:name=".ui.feed.feedCreate.FeedCreateActivity" />
         <activity android:name=".ui.feed.feedCreate.FeedBookSelectActivity" />

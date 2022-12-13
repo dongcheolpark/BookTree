@@ -6,11 +6,13 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import com.booktree.databinding.FragmentFeedBinding;
 import com.booktree.ui.feed.feedCreate.FeedCreateActivity;
 import com.booktree.ui.feed.feedList.FeedRecyclerList;
+import org.jetbrains.annotations.NotNull;
 
 public class FeedFragment extends Fragment {
 
@@ -21,9 +23,15 @@ public class FeedFragment extends Fragment {
       ViewGroup container, Bundle savedInstanceState) {
     feedViewModel =
         new ViewModelProvider(this).get(FeedViewModel.class);
-
     binding = FragmentFeedBinding.inflate(inflater, container, false);
+    View root = binding.getRoot();
+    return root;
+  }
 
+  @Override
+  public void onViewCreated(@NonNull @NotNull View view,
+      @Nullable @org.jetbrains.annotations.Nullable Bundle savedInstanceState) {
+    super.onViewCreated(view, savedInstanceState);
     binding.shimmerFeedList.startShimmer();
     binding.shimmerFeedList.setVisibility(View.VISIBLE);
     binding.feedList.setVisibility(View.INVISIBLE);
@@ -34,29 +42,18 @@ public class FeedFragment extends Fragment {
       feedList.getAdapter().setList(list);
     });
 
-    feedViewModel.refreshFeedList(this::stopShimmer);
-
-    final var createFeedBtn = binding.createFeedBtn;
-    createFeedBtn.setOnClickListener((view) -> {
+    binding.createFeedBtn.setOnClickListener((v) -> {
       Intent intent = new Intent(getActivity(), FeedCreateActivity.class);
       startActivity(intent);
     });
 
-    View root = binding.getRoot();
-
-    return root;
+    feedViewModel.refreshFeedList(this::stopShimmer);
   }
 
   private void stopShimmer() {
     binding.shimmerFeedList.stopShimmer();
     binding.feedList.setVisibility(View.VISIBLE);
     binding.shimmerFeedList.setVisibility(View.INVISIBLE);
-  }
-
-  @Override
-  public void onResume() {
-    super.onResume();
-    feedViewModel.refreshFeedList(this::stopShimmer);
   }
 
   @Override
