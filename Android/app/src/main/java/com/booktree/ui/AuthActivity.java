@@ -87,7 +87,7 @@ public class AuthActivity extends AppCompatActivity {
             mAuth=FirebaseAuth.getInstance();
             final FirebaseUser curUser = mAuth.getCurrentUser();
             FBDatabase.getInstance().setUser(curUser.getUid(),()->{
-                Intent intent = new Intent(this, ProfileEditActivity.class);
+                Intent intent = new Intent(this, MainActivity.class);
                 startActivity(intent);
                 finish();
             });

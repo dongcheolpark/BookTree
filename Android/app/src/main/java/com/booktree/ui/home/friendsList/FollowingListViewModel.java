@@ -4,6 +4,7 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.ViewModel;
 
 import com.booktree.API.FBDatabase;
+import com.booktree.API.FBDatabase.Follow;
 import com.booktree.common.MutableListLiveData;
 import com.booktree.model.Friend;
 import com.booktree.model.User;
@@ -16,20 +17,23 @@ import java.util.ArrayList;
 public class FollowingListViewModel extends ViewModel {
     private MutableListLiveData<User> mFollowingList;
     private MutableListLiveData<Friend>mFriendList;
-    private FirebaseFirestore database;
-    private FirebaseAuth mAuth;
-
-    public static FollowingListViewModel instance = null;
-
-    public static FollowingListViewModel getInstance(){
-        if(instance==null) instance = new FollowingListViewModel();
-        return instance;
+    private FBDatabase.Follow follow = Follow.Follower;
+    public FollowingListViewModel() {
+        mFollowingList = new MutableListLiveData<>();
+        mFriendList = new MutableListLiveData<>();
     }
 
-    public void refreshFollowList(){
-        FirebaseUser user = mAuth.getCurrentUser();
-        FBDatabase.getInstance().getFollowing(user.getUid(),(list)->{
-            mFollowingList.setValue(new ArrayList<>(list));
+    public void setFollow(Follow follow) {
+        this.follow = follow;
+    }
+    public void refreshFollowerList(){
+        FBDatabase.getInstance().getFollower(FBDatabase.getInstance().getUserInfo().uid,(list)->{
+            mFollowingList.postValue(new ArrayList<>(list));
+        });
+    }
+    public void refreshFollowingList(){
+        FBDatabase.getInstance().getFollowing(FBDatabase.getInstance().getUserInfo().uid,(list)->{
+            mFollowingList.postValue(new ArrayList<>(list));
         });
     }
 
