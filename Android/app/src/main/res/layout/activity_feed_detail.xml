@@ -42,7 +42,7 @@
         android:layout_height="match_parent"
         app:layout_constraintTop_toBottomOf="@+id/feedImage">
 
-        <ImageView
+        <de.hdodenhof.circleimageview.CircleImageView
           android:id="@+id/feedAvatar"
           android:layout_width="50dp"
           android:layout_height="50dp"
