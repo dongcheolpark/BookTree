@@ -28,12 +28,6 @@
                 android:layout_height="wrap_content"
                 android:text="나를 팔로우 중"
                 android:layout_margin="5dp"/>
-            <TextView
-                android:id="@+id/tv_followerid"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="팔로워 id"
-                android:layout_margin="5dp"/>
 
         </LinearLayout>
 
