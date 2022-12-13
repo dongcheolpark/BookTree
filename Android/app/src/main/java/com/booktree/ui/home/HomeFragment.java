@@ -21,6 +21,7 @@ import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.booktree.API.FBDatabase;
+import com.booktree.API.FBDatabase.Follow;
 import com.booktree.ui.MainActivity;
 import com.booktree.R;
 
@@ -85,15 +86,16 @@ public class HomeFragment extends Fragment {
     Glide.with(this).load(user.profileImg).into(profile_image);
     textView_username.setText(user.name);
 
+    var intent=new Intent(getActivity(), FollowingActivity.class);
     //팔로워 리스트 불러오기
     follower_Btn.setOnClickListener(view -> {
-      Intent intent=new Intent(getActivity(), FollowerActivity.class);
+      intent.putExtra("follow",Follow.Follower);
       startActivity(intent);
     });
 
     //팔로잉 리스트 불러오기
     following_Btn.setOnClickListener(view->{
-      Intent intent=new Intent(getActivity(), FollowingActivity.class);
+      intent.putExtra("follow",Follow.Following);
       startActivity(intent);
     });
 //    final var barChart = binding.barChart;
