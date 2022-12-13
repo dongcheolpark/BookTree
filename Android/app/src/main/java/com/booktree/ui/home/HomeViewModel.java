@@ -40,19 +40,16 @@ public class HomeViewModel extends ViewModel {
   }
 
   public void refreshCalendarEvents(VoidCallback callback){
-    FBDatabase.getInstance().getFeed((list)->{
+    FBDatabase.getInstance().getMyFeed((list)->{
       mFeedList2.clear(false);
-      if(!list.isEmpty())
+      if(!list.isEmpty()){
         mFeedList2.addAll(list);
-      long count =  mFeedList2.getValue().stream().count(); //mFeedList 피드 수
-      for(int i=0;i<count;i++){
+        long count =  mFeedList2.getValue().stream().count(); //mFeedList 피드 수
+        for(int i=0;i<count;i++){
         eventsDateList.add(mFeedList2.getValue().get(i).uploadDate); //eventsDateList에 각피드의 uploadDate를 Date타입으로 저장
-      }
+        }
       callback.func();
-//      for(int i=0;i<count;i++)
-//        Log.d("refreshTest", String.valueOf(eventsDateList.getValue()));
-//        Log.d("refreshTest","진행됨"+count);
-    });
+    }});
   }
 
   public LiveData<ArrayList<Feed>> getCalendarFeedList(){return mFeedList;}
