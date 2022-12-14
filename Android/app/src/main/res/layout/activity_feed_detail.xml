@@ -26,52 +26,81 @@
         android:layout_width="match_parent"
         android:layout_height="320dp"
         android:scaleType="centerCrop"
-        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/constraintLayout4"
         tools:srcCompat="@tools:sample/avatars"/>
-      <include
-        android:id="@+id/include"
-        layout="@layout/item_book_info"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/constraintLayout4"/>
+
       <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/constraintLayout4"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        app:layout_constraintTop_toBottomOf="@+id/feedImage">
+          android:id="@+id/constraintLayout4"
+          android:layout_width="match_parent"
+          android:layout_height="match_parent"
+          android:layout_marginTop="7dp"
+          app:layout_constraintEnd_toEndOf="parent"
+          app:layout_constraintHorizontal_bias="0.0"
+          app:layout_constraintStart_toStartOf="parent"
+          app:layout_constraintTop_toTopOf="parent">
 
         <de.hdodenhof.circleimageview.CircleImageView
-          android:id="@+id/feedAvatar"
-          android:layout_width="50dp"
-          android:layout_height="50dp"
-          android:layout_marginTop="10dp"
-          android:layout_marginBottom="10dp"
-          android:layout_marginStart="30dp"
-          android:src="@drawable/avatar"
-          app:layout_constraintBottom_toBottomOf="parent"
-          app:layout_constraintStart_toStartOf="parent"
-          app:layout_constraintTop_toTopOf="parent"/>
+            android:id="@+id/feedAvatar"
+            android:layout_width="55dp"
+            android:layout_height="55dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="10dp"
+            android:src="@drawable/avatar"
+            app:civ_border_color="#B8B8B8"
+            app:civ_border_width="0.8dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.0" />
+
         <TextView
-          android:id="@+id/feedAuthor"
+            android:id="@+id/feedAuthor"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
+            android:text="작성자 이름"
+            android:textSize="20sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/feedAvatar"
+            app:layout_constraintTop_toTopOf="parent" />
+
+      </androidx.constraintlayout.widget.ConstraintLayout>
+
+      <include
+          android:id="@+id/include"
+          layout="@layout/item_book_info"
           android:layout_width="wrap_content"
           android:layout_height="wrap_content"
-          android:layout_marginStart="20dp"
-          android:text="작성자 이름"
-          app:layout_constraintBottom_toBottomOf="parent"
-          app:layout_constraintStart_toEndOf="@+id/feedAvatar"
-          app:layout_constraintTop_toTopOf="parent"/>
-      </androidx.constraintlayout.widget.ConstraintLayout>
+          android:layout_marginTop="6dp"
+          app:layout_constraintEnd_toEndOf="parent"
+          app:layout_constraintHorizontal_bias="0.495"
+          app:layout_constraintStart_toStartOf="parent"
+          app:layout_constraintTop_toBottomOf="@id/feedImage" />
+
       <TextView
-        android:id="@+id/feedContent"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="한줄 평"
-        android:textAppearance="@style/TextAppearance.AppCompat.Large"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/include"/>
+          android:id="@+id/feedContent"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:text="한줄 평"
+          android:textAppearance="@style/TextAppearance.AppCompat.Large"
+          app:layout_constraintEnd_toEndOf="parent"
+          app:layout_constraintStart_toStartOf="parent"
+          app:layout_constraintTop_toBottomOf="@id/include"
+          android:layout_marginTop="8dp"/>
+
+      <View
+          android:id="@+id/divider2"
+          android:layout_width="match_parent"
+          android:layout_height="1dp"
+          android:background="?android:attr/listDivider"
+          app:layout_constraintTop_toTopOf="parent" />
+
     </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+
   </ScrollView>
+
+
 </androidx.constraintlayout.widget.ConstraintLayout>
