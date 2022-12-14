@@ -11,3 +11,5 @@ android framework, Java
 ### [브랜치 전략](https://github.com/dongcheolpark/TenTen/wiki/%EB%B8%8C%EB%9E%9C%EC%B9%98-%EC%A0%84%EB%9E%B5)
 ### [회의록](https://github.com/dongcheolpark/TenTen/wiki/%ED%9A%8C%EC%9D%98%EB%A1%9D)
 
+### 유튜브 링크
+https://www.youtube.com/watch?v=PmbHeL8K0Lg&t=1s&ab_channel=%EB%B0%95%EB%8F%99%EC%B2%A0
