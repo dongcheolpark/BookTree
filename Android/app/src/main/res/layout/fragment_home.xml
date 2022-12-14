@@ -25,37 +25,39 @@
                 android:layout_width="100dp"
                 android:layout_height="100dp"
                 android:layout_margin ="5dp"
-                android:src="@drawable/avatar" />
+                android:src="@drawable/avatar"
+                app:civ_border_width="0.8dp"
+                app:civ_border_color="#B8B8B8"/>
 
 
             <TextView
-              android:id="@+id/usernametv"
-              android:layout_width="wrap_content"
-              android:layout_height="wrap_content"
-              android:layout_marginTop="10dp"
-              android:layout_marginStart="10dp"
-              android:background="#FFFFFF"
-              android:text="닉네임"
-              android:textColor="#2C2C2C"
-              android:textSize="25sp"
-              app:layout_constraintStart_toEndOf="@+id/profileiv"
-              app:layout_constraintTop_toTopOf="parent"/>
+                android:id="@+id/usernametv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:layout_marginStart="10dp"
+                android:background="#FFFFFF"
+                android:text="닉네임"
+                android:textColor="#2C2C2C"
+                android:textSize="25sp"
+                app:layout_constraintStart_toEndOf="@+id/profileiv"
+                app:layout_constraintTop_toTopOf="parent"/>
             <Button
-              android:id="@+id/followingbtn"
-              android:layout_width="wrap_content"
-              android:layout_height="wrap_content"
-              android:layout_marginStart="10dp"
-              android:text="팔로잉"
-              app:layout_constraintStart_toEndOf="@+id/profileiv"
-              app:layout_constraintTop_toBottomOf="@+id/usernametv"/>
+                android:id="@+id/followingbtn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:text="팔로잉"
+                app:layout_constraintStart_toEndOf="@+id/profileiv"
+                app:layout_constraintTop_toBottomOf="@+id/usernametv"/>
             <Button
-              android:id="@+id/followerbtn"
-              android:layout_width="wrap_content"
-              android:layout_height="wrap_content"
-              android:layout_marginStart="10dp"
-              android:text="팔로워"
-              app:layout_constraintStart_toEndOf="@+id/followingbtn"
-              app:layout_constraintTop_toBottomOf="@+id/usernametv"/>
+                android:id="@+id/followerbtn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:text="팔로워"
+                app:layout_constraintStart_toEndOf="@+id/followingbtn"
+                app:layout_constraintTop_toBottomOf="@+id/usernametv"/>
         </androidx.constraintlayout.widget.ConstraintLayout>
     </FrameLayout>
 
@@ -87,7 +89,8 @@
                 android:id="@+id/divider"
                 android:layout_width="380dp"
                 android:layout_height="2dp"
-                android:background="#595959" />
+                android:background="#595959"
+                android:layout_marginLeft="13dp"/>
             <com.github.sundeepk.compactcalendarview.CompactCalendarView
                 android:id="@+id/compactcalendar_view"
                 android:layout_width="match_parent"
