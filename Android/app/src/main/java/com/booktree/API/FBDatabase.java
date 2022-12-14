@@ -34,8 +34,11 @@ import com.google.firebase.auth.FirebaseUser;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.Serializable;
 import java.sql.Time;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.Locale;
@@ -154,7 +157,7 @@ public class FBDatabase {
   }
 
   public void uploadImage(Uri uri, FBCallbackUploadImage callback) {
-    var imageRef = storageRef.child("image");
+    var imageRef = storageRef.child("image").child(LocalDate.now().toString()+LocalTime.now().toString());
     imageRef.putFile(uri).addOnCompleteListener((snapshot)-> {
       if(snapshot.isSuccessful()) {
         imageRef.getDownloadUrl().addOnCompleteListener((resTask) -> {
@@ -231,22 +234,26 @@ public class FBDatabase {
                 .stream()
                 .map(item -> {
                       var obj = item.toObject(Friend.class);
-                      return follow == Follow.Follower ? obj.Follower : obj.Following;
+                      var result = follow == Follow.Follower ? obj.Follower : obj.Following;
+                      return result;
                     })
                 .collect(Collectors.toList());
             int size = friendList.size();
             var executorService = Executors.newFixedThreadPool(size+1);
             executorService.execute(() -> {
               try {
-                var res = Collections.synchronizedList(new ArrayList<User>());
+                var resultList = Collections.synchronizedList(new ArrayList<User>());
                 var countLatch = new CountDownLatch(size);
                 friendList.forEach(item -> {
                     executorService.execute(() -> {
-                      res.add(getUserInfo());
+                      getUser(item,(user) -> {
+                        resultList.add(user);
+                        countLatch.countDown();
+                      });
                     });
                 });
                 countLatch.await(5, TimeUnit.SECONDS);
-                callBack.func(res);
+                callBack.func(resultList);
               } catch (InterruptedException e) {
                 Log.e("Error", e.getMessage(), null);
               }

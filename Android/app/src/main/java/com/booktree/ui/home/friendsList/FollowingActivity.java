@@ -1,5 +1,7 @@
 package com.booktree.ui.home.friendsList;
 
+import android.os.Build.VERSION;
+import android.os.Build.VERSION_CODES;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
@@ -14,6 +16,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.booktree.API.FBDatabase;
+import com.booktree.API.FBDatabase.Follow;
 import com.booktree.R;
 
 import com.booktree.databinding.ActivityFollowingBinding;
@@ -38,13 +41,18 @@ public class FollowingActivity extends AppCompatActivity {
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        followingListviewModel=new ViewModelProvider(this).get(FollowingListViewModel.class);
+        followingListviewModel = new ViewModelProvider(this).get(FollowingListViewModel.class);
         binding= ActivityFollowingBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
         final var followingListView=binding.followingList;
         var followingList = new FollowerRecyclerList(followingListView,this);
         followingListviewModel.getFollowerList().observe(this,followingList::setFriendList);
-        followingListviewModel.refreshFollowList();
+        if(getIntent().getSerializableExtra("follow") == Follow.Follower) {
+            followingListviewModel.refreshFollowerList();
+        }
+        if(getIntent().getSerializableExtra("follow") == Follow.Following) {
+            followingListviewModel.refreshFollowingList();
+        }
 
     }
 
